@@ -3,25 +3,18 @@ Java 2D Game è un progetto collaborativo sviluppato in Java da un team di 3 per
 
 --------------------------------
 
-Ogni membro sul proprio PC:
-
-git clone https://github.com/utente/java-2d-game.git
-
-Entra nella cartella:
+Ogni membro sul proprio PC, entra nella cartella:
 
 cd java-2d-game
-
+e poi: git clone https://github.com/AntonioColasanto/Java-2d-game.git
 
 --------------------------------------
 
 COMANDI GIT
 
+Regole fondamentali di lavoro in team (IMPORTANTISSIMO)
 
-5) Regole fondamentali di lavoro in team (IMPORTANTISSIMO)
-
-Non lavorate tutti sullo stesso file insieme senza regole, altrimenti avrete conflitti continui.
-
-👉 Metodo consigliato: branch separati
+BRANCH SEPARATI
 
 Ogni persona crea un branch:
 
