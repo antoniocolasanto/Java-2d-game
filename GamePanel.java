@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -65,3 +66,8 @@ public class GamePanel extends JPanel {
         g.dispose(); // Libera la memoria del componente grafico
     }
 }
+=======
+public class GamePanel {
+    
+}
+>>>>>>> 1f4eeefc168cf7d074a1cb2da504186507132481
