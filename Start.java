@@ -1,6 +1,6 @@
 import javax.swing.JFrame;
 
-public class Start{
+public class Start {
     public static void main(String[] args) {
         // Crea la finestra base
         JFrame window = new JFrame();
@@ -13,7 +13,7 @@ public class Start{
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
 
-        // Adatta la finestra alle dimensioni definite nel GamePanel (1536x960)
+        // Adatta la finestra alle dimensioni definite nel GamePanel
         window.pack();
 
         // Mettila al centro dello schermo e rendila visibile
