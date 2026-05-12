@@ -8,5 +8,9 @@ package com.game.utils;
  * - Evita i "magic numbers" (numeri sparsi nel codice senza spiegazione).
  */
 public class Constants {
+<<<<<<< HEAD
     
+=======
+    // ...
+>>>>>>> c6d01502ce38e2716d70a46fd457128a3e74565b
 }
