@@ -45,12 +45,13 @@ public class Player extends Entity {
 // restringiamo la heatbox rispetto al padre entity
     @Override
     protected void initHitbox() {
-        hitbox = new Rectangle((int) x, (int) y, width, height);
+        hitbox = new Rectangle((int) x+23, (int) y+30, width-50, height-31);
     }
         @Override
     protected void updateHitbox() {
-        hitbox.x = (int) x;
-        hitbox.y = (int) y+20;
+        hitbox.x = (int) x+23;
+        hitbox.y = (int) y+30;
+
     }
 
     // Metodo per aggiornare le coordinate del giocatore (logica del movimento, gravità, ecc.)
@@ -118,7 +119,7 @@ public class Player extends Entity {
         // Infine, aggiorna la coordinata X
         x += xSpeed; 
     }
-
+ 
 
     
 }
