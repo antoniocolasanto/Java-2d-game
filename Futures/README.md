@@ -38,9 +38,11 @@ LE CARTELLE SONO COMPOSTE IN QEUSTO MODO:
         📂 Characters
             📂 Default
             📂 Double
+
         📂 Enemies
             📂 Default
             📂 Double
+            
         📂 Tiles
             📂 Default
             📂 Double
