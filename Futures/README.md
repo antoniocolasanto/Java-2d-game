@@ -16,12 +16,34 @@ git clone https://github.com/AntonioColasanto/Java-2d-game.git
 LE CARTELLE SONO COMPOSTE IN QEUSTO MODO:
 📂 res
     📂 Map
+        level1.txt
+        level2.txt
+        level3.txt
     📂 Sounds
+        sfx_dump.ogg
+        sfx_coin.ogg
+        sfx_disappear.ogg
+        sfx_gem.ogg
+        sfx_hurt.ogg
+        sfx_jump_high.ogg
+        sfx_jump.ogg
+        sfx_magic.ogg
+        sfx_select.ogg
+        sfx_throw.ogg
     📂 Sprites
         📂 Background
+            📂 Default
+            📂 Double
+
         📂 Characters
+            📂 Default
+            📂 Double
         📂 Enemies
+            📂 Default
+            📂 Double
         📂 Tiles
+            📂 Default
+            📂 Double
 
 📂 src
 
