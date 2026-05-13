@@ -8,7 +8,8 @@ package com.game.utils;
  * - Evita i "magic numbers" (numeri sparsi nel codice senza spiegazione).
  */
 public class Constants {
-    public static final int LARGHEZZA_FINESTRA = 800;
-    public static final int ALTEZZA_FINESTRA = 600;
+    public static final int LARGHEZZA_FINESTRA = 1280;
+    public static final int ALTEZZA_FINESTRA = 720;
     public static final int FPS_SET = 60;
+    public static final int SIZE_BLOCCO = 64;
 }

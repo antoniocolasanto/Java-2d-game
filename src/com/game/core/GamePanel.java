@@ -11,6 +11,7 @@ package com.game.core;
  */
 import com.game.entities.Player;
 import com.game.graphics.Background;
+import com.game.levels.LevelManager;
 import com.game.utils.Constants; //importa la classe Constants per accedere alle costanti di gioco
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,6 +38,9 @@ public class GamePanel extends JPanel implements Runnable {
     private Player player;
     private Background bg;
 
+    //Dichiariamo l'oggetto Livello
+    private LevelManager levelManager;
+
     //Costruttore del GamePanel
     public GamePanel(){
 
@@ -57,6 +61,8 @@ public class GamePanel extends JPanel implements Runnable {
         // Creiamo lo sfondo collegandolo passandogli
         // il percorso dell'immagine che vogliamo
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
+        // Creiamo il livello (che carica la mappa e i blocchi)
+        levelManager = new LevelManager();
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(100, 100, 100, 100);
     }
@@ -120,6 +126,11 @@ public class GamePanel extends JPanel implements Runnable {
         // Lo sfondo usa la sua funzione draw per apparire
         if (bg != null) {
             bg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
+        }
+
+        // Disegna il livello (Layer intermedio)
+        if (levelManager != null) {
+        levelManager.draw(g); // <-- Aggiungi questa riga qui
         }
 
         // Il giocatore usa la sua funzione draw per apparire
