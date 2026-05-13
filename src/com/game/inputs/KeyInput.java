@@ -6,5 +6,5 @@ package com.game.inputs;
  * - Trasmette questi eventi boolean (true/false) direttamente al Player per farlo muovere fluidamente.
  */
 public class KeyInput {
-    // ...
+   
 }
