@@ -10,6 +10,7 @@ package com.game.core;
  * - Gestisce le liste dinamiche (es. ArrayList<Entity> per i nemici).
  */
 import com.game.entities.Player;
+import com.game.graphics.Background;
 import com.game.utils.Constants; //importa la classe Constants per accedere alle costanti di gioco
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Dichiariamo l'oggetto Player
     private Player player;
+    private Background bg;
 
     //Costruttore del GamePanel
     public GamePanel(){
@@ -96,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
             // La classe Player calcola la propria gravità 
             // e i tasti premuti
             player.update(); 
-        }     
+        } 
     }
 
     @Override
@@ -110,6 +112,10 @@ public class GamePanel extends JPanel implements Runnable {
         // Il giocatore usa il pennello del pannello per apparire
         if (player != null) {
             player.draw(g);
+        }
+
+        if (bg != null) {
+            bg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
         }
 
         // Libera la memoria della grafica occupata in precedenza
