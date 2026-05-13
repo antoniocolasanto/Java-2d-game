@@ -67,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Creiamo il livello (che carica la mappa e i blocchi)
         levelManager = new LevelManager();
         // Creiamo il giocatore alle coordinate iniziali
-        player = new Player(100, 100, 100, 100);
+        player = new Player(100, 500, 100, 100);
     }
 
     public void startGameThread() {
