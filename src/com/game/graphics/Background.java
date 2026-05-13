@@ -14,10 +14,7 @@ public class Background {
 
     private BufferedImage image;
 
-    /**
      //Costruttore della classe Background.
-     //  path Il percorso del file immagine (es. "res/Sprites/Backgrounds/Default/background_clouds.png")
-     */
     public Background(String path) {
         try {
             // Carichiamo l'immagine dal disco alla memoria RAM

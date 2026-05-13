@@ -31,7 +31,7 @@ public class LevelManager {
         tileSprites = new BufferedImage[10]; // Mappiamo fino a 10 tipi di blocchi diversi
         
         loadTileImages();
-        loadMap("res/Maps/level1.txt");
+        loadMap("res/Map/level1.txt");
     }
 
     private void loadTileImages() {

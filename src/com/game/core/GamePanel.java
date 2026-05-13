@@ -9,12 +9,12 @@ package com.game.core;
  * 2. repaint(): pulisce lo schermo e ridisegna tutto nelle nuove posizioni.
  * - Gestisce le liste dinamiche (es. ArrayList<Entity> per i nemici).
  */
-import com.game.entities.Player;
+import com.game.entities.*;
 import com.game.graphics.Background;
 import com.game.inputs.KeyInput;
 import com.game.levels.LevelManager;
-import com.game.utils.Constants; //importa la classe Constants per accedere alle costanti di gioco
-import java.awt.Color;
+import com.game.utils.Constants;
+import java.awt.Color; //importa la classe Constants per accedere alle costanti di gioco
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -37,6 +37,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Dichiariamo l'oggetto Player
     private Player player;
+    // dichiariamo l oggetto enemy(nemico)
+    private Enemy enemy;
     private Background bg;
 
     //Dichiariamo l'oggetto Livello
@@ -66,8 +68,11 @@ public class GamePanel extends JPanel implements Runnable {
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
         // Creiamo il livello (che carica la mappa e i blocchi)
         levelManager = new LevelManager();
+
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(100, 500, 100, 100);
+        //creiamo il primo nemico
+        enemy = new Enemy(400, 300, 330, 330);
     }
 
     public void startGameThread() {
@@ -83,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player getPlayer() {
         return player;
     }
+    
 
     @Override
     public void run() {
@@ -115,6 +121,7 @@ public class GamePanel extends JPanel implements Runnable {
             // La classe Player calcola la propria gravità 
             // e i tasti premuti
             player.update(); 
+            enemy.update();
         } 
     }
 
@@ -139,6 +146,10 @@ public class GamePanel extends JPanel implements Runnable {
         // Il giocatore usa la sua funzione draw per apparire
         if (player != null) {
             player.draw(g);
+        }
+        // il nemico appare utilizzando la sua funzione draw
+        if (enemy!=null){
+            enemy.draw(g);
         }
 
         // Libera la memoria della grafica occupata in precedenza
