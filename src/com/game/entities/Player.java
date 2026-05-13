@@ -60,6 +60,17 @@ public class Player extends Entity {
         updateHitbox();
     }
 
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public void setJump(boolean jump) {
+        this.jump = jump;
+    }
 
     // Metodo per disegnare il giocatore sullo schermo
     public void draw(Graphics g) {
