@@ -122,10 +122,6 @@ public class GamePanel extends JPanel implements Runnable {
             player.draw(g);
         }
 
-        if (bg != null) {
-            bg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
-        }
-
         // Libera la memoria della grafica occupata in precedenza
         g.dispose();
         
