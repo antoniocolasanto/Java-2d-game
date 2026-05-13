@@ -70,6 +70,11 @@ public class GamePanel extends JPanel implements Runnable {
         running = true;
     }
 
+    //Getter er il player che ci servirà (es. per la tastiera)
+    public Player getPlayer() {
+        return player;
+    }
+
     @Override
     public void run() {
         // Finchè running è true eseguiamo ininterrottamente
