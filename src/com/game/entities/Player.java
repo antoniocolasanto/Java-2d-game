@@ -45,7 +45,12 @@ public class Player extends Entity {
 // restringiamo la heatbox rispetto al padre entity
     @Override
     protected void initHitbox() {
-        hitbox = new Rectangle((int) x + 5, (int) y, width - 10, height);
+        hitbox = new Rectangle((int) x, (int) y, width, height);
+    }
+        @Override
+    protected void updateHitbox() {
+        hitbox.x = (int) x;
+        hitbox.y = (int) y+20;
     }
 
     // Metodo per aggiornare le coordinate del giocatore (logica del movimento, gravità, ecc.)
@@ -102,9 +107,9 @@ public class Player extends Entity {
             
             // --- PAVIMENTO PROVVISORIO ---
             // Siccome non hai ancora il codice per controllare se sbatti contro i blocchi di terra,
-            // mettiamo un "pavimento invisibile" provvisorio a Y = 400.
-            if (y >= 400) {
-                y = 400;         // Fermalo a questa altezza
+            // mettiamo un "pavimento invisibile" provvisorio a Y = 500.
+            if (y >= 450) {
+                y = 450;         // Fermalo a questa altezza
                 ariaSpeed = 0;   // Azzera la velocità di caduta
                 inAria = false;  // Fagli capire che ha toccato terra
             }
@@ -113,6 +118,7 @@ public class Player extends Entity {
         // Infine, aggiorna la coordinata X
         x += xSpeed; 
     }
+
 
     
 }

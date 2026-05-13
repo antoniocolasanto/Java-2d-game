@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
         // il percorso dell'immagine che vogliamo
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
         // Creiamo il giocatore alle coordinate iniziali
-        player = new Player(100, 100, 32, 32);
+        player = new Player(100, 100, 100, 100);
     }
 
     public void startGameThread() {
