@@ -54,7 +54,8 @@ public class GamePanel extends JPanel implements Runnable {
         // dice al computer che questo pannello è pronto a ricevere 
         // input da tastiera
         this.setFocusable(true); 
-        // Creiamo lo sfondo
+        // Creiamo lo sfondo collegandolo passandogli
+        // il percorso dell'immagine che vogliamo
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(100, 100, 32, 32);
@@ -119,6 +120,10 @@ public class GamePanel extends JPanel implements Runnable {
         // Il giocatore usa la sua funzione draw per apparire
         if (player != null) {
             player.draw(g);
+        }
+
+        if (bg != null) {
+            bg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
         }
 
         // Libera la memoria della grafica occupata in precedenza

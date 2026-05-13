@@ -1,43 +1,62 @@
 # Java-2d-game
-Java 2D Game è un progetto collaborativo sviluppato in Java da un team di 3 persone. L’obiettivo è creare un videogioco 2D con una struttura modulare e organizzata, applicando principi di programmazione orientata agli oggetti e sviluppo collaborativo tramite Git e GitHub.
+Java 2D Game è un progetto sviluppato in Java da un team di 3 persone. L’obiettivo è creare un videogioco 2D applicando principi di programmazione orientata agli oggetti.
+Il progetto è stato sviluppato tramite GitHub.
 
---------------------------------
+-------------------------------------
 
-Ogni membro sul proprio PC, entra nella cartella:
+Per clonare il progetto:
+Ogni membro sul proprio PC entra in una cartella:
 
 cd java-2d-game
-e poi: git clone https://github.com/AntonioColasanto/Java-2d-game.git
 
---------------------------------------
+git clone https://github.com/AntonioColasanto/Java-2d-game.git
 
-COMANDI GIT
+-------------------------------------
 
-Regole fondamentali di lavoro in team (IMPORTANTISSIMO)
+LE CARTELLE SONO COMPOSTE IN QEUSTO MODO:
+📂 res
+    📂 Map
+    📂 Sounds
+    📂 Sprites
+        📂 Background
+        📂 Characters
+        📂 Enemies
+        📂 Tiles
 
-BRANCH SEPARATI
+📂 src
 
-Ogni persona crea un branch:
+    📂 com
 
-Esempio:
+        📂 game 
 
-git checkout -b player-system
+            📂 core
+                GamePanel.java
 
-Oppure:
+            📂 db
+                LeaderboardDAO.java
+                MongoDBManager.java
+                PlayerDAO.java
+                PlayerProfile.java
+                RedisManager.java
 
-git checkout -b enemy-ai
-git checkout -b map-system
-6) Flusso di lavoro quotidiano
-1. Aggiorna il progetto
+            📂 entities
+                Enemy.java
+                Entity.java
+                Player.java
 
-Prima di iniziare a lavorare:
+            📂 graphics
+                Background.java
+                Renderer.java
 
-git pull origin main
-2. Lavora sul tuo branch
+            📂 inputs
+                KeyInput.java
 
-Modifica codice, aggiungi feature.
+            📂 levels
+                LevelManager.java
+            
+            📂 main
+                GameWindow.java
+                Main.java
 
-3. Salva le modifiche
-git add .
-git commit -m "Aggiunto movimento player"
-4. Carica su GitHub
-git push origin player-system
+            📂 utils
+                Constants.java
