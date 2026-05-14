@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean running = false;
 
     private Player player;
-    private Enemy enemy;
+    private Bee bee;
     private Background bg;
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
         levelManager = new LevelManager();
         player = new Player(100, 500, 100, 100);
-        enemy = new Enemy(400, 300, 60, 60);
+        bee = new Bee(400, 300, 60, 60);
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
     }
@@ -97,6 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
         switch (state) {
             case PLAYING:
                 if (player != null) player.update();
+                if (bee != null) bee.update();
                 break;
             default:
                 break;
@@ -136,6 +137,6 @@ public class GamePanel extends JPanel implements Runnable {
     private void renderGameWorld(Graphics g) {
         if (levelManager != null) levelManager.draw(g);
         if (player != null) player.draw(g);
-        if (enemy != null) enemy.draw(g);
+        if (bee != null) bee.draw(g);
     }
 }
