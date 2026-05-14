@@ -35,7 +35,7 @@ public class Player extends Entity {
 
     private void caricaImmagine() {
         try {
-            File file = new File("res/Sprites/Characters/Default/character_green_idle.png");
+            File file = new File("res/Sprites/Characters/Double/character_yellow_idle.png");
             sprite = ImageIO.read(file);
         } catch (IOException e) {
             System.err.println("Errore: Immagine del Player non trovata!");
