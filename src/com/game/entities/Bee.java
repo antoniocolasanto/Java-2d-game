@@ -85,7 +85,6 @@ private void caricaImmagine() {
     }
 
 // Disegna il nemico sullo schermo in base all indice attuale aniIndex
-@Override
     public void draw(Graphics g) {
         if (sprites != null && sprites[aniIndex] != null) {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
