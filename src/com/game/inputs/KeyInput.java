@@ -54,6 +54,9 @@ public class KeyInput implements KeyListener {
         else if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) {
             gamePanel.getPlayer().setJump(true);
         }
+        else if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
+            gamePanel.getPlayer().setDown(true);
+        }
     }
 
     //È un metodo speciale integrato in Java che viene attivato
@@ -73,6 +76,9 @@ public class KeyInput implements KeyListener {
         }
         else if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) {
             gamePanel.getPlayer().setJump(false);
+        }
+        else if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
+            gamePanel.getPlayer().setDown(false);
         }
     }
 }
