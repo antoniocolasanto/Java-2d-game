@@ -12,9 +12,14 @@ package com.game.core;
 import com.game.entities.*;
 import com.game.graphics.Background;
 import com.game.inputs.KeyInput;
+<<<<<<< Updated upstream
 import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 import java.awt.Color; //importa la classe Constants per accedere alle costanti di gioco
+=======
+import com.game.utils.Constants; //importa la classe Constants per accedere alle costanti di gioco
+import java.awt.Color;
+>>>>>>> Stashed changes
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -62,7 +67,8 @@ public class GamePanel extends JPanel implements Runnable {
         // Permette a questo pannello di interagire con la tastiera
         // dice al computer che questo pannello è pronto a ricevere 
         // input da tastiera
-        this.setFocusable(true); 
+        this.setFocusable(true);
+        this.addKeyListener(new KeyInput(this)); 
         // Creiamo lo sfondo collegandolo passandogli
         // il percorso dell'immagine che vogliamo
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
