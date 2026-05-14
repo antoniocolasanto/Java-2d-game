@@ -36,25 +36,26 @@ public class LevelManager {
 
     private void loadTileImages() {
         try {
-            // Mappatura Terreno (Numeri 1 e 2)
-            tileSprites[1] = ImageIO.read(new File("res/Sprites/Tiles/Default/terrain_grass_block.png"));
-            tileSprites[2] = ImageIO.read(new File("res/Sprites/Tiles/Default/terrain_dirt_block.png"));
+            // Mappatura Terreno (Risoluzione Double)
+            // Usiamo "top" per la superficie (erba sopra) e "center" per il riempimento (terra sotto)
+            tileSprites[1] = ImageIO.read(new File("res/Sprites/Tiles/Double/terrain_grass_block_top.png"));
+            tileSprites[2] = ImageIO.read(new File("res/Sprites/Tiles/Double/terrain_grass_block_center.png"));
             
-            // Collezionabili (Numero 3)
-            tileSprites[3] = ImageIO.read(new File("res/Sprites/Tiles/Default/coin_gold.png"));
+            // Collezionabili
+            tileSprites[3] = ImageIO.read(new File("res/Sprites/Tiles/Double/coin_gold.png"));
             
-            // Ostacoli Pericolosi (Numero 4)
-            tileSprites[4] = ImageIO.read(new File("res/Sprites/Tiles/Default/spikes.png"));
+            // Ostacoli Pericolosi
+            tileSprites[4] = ImageIO.read(new File("res/Sprites/Tiles/Double/spikes.png"));
             
-            // Blocchi e Piattaforme sospese (Numeri 5 e 6)
-            tileSprites[5] = ImageIO.read(new File("res/Sprites/Tiles/Default/block_coin.png"));
-            tileSprites[6] = ImageIO.read(new File("res/Sprites/Tiles/Default/bridge.png"));
+            // Blocchi e Piattaforme sospese
+            tileSprites[5] = ImageIO.read(new File("res/Sprites/Tiles/Double/block_coin.png"));
+            tileSprites[6] = ImageIO.read(new File("res/Sprites/Tiles/Double/bridge_logs.png"));
             
-            // Decorazioni / Fine Livello (Numero 7)
-            tileSprites[7] = ImageIO.read(new File("res/Sprites/Tiles/Default/sign_exit.png"));
+            // Decorazioni / Fine Livello
+            tileSprites[7] = ImageIO.read(new File("res/Sprites/Tiles/Double/sign_exit.png"));
             
         } catch (IOException e) {
-            System.out.println("ERRORE: Impossibile caricare alcune immagini dei blocchi! Verifica i percorsi nella cartella res.");
+            System.out.println("ERRORE: Impossibile caricare le immagini Double! Controlla che la cartella /Double/ esista.");
             e.printStackTrace();
         }
     }
