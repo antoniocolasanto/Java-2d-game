@@ -16,18 +16,18 @@ public class Player extends Entity {
     private boolean left, right, jump, down;
 
         // Variabili per gestire il tempo e i fotogrammi
-    private int aniTick = 0;   // Il nostro cronometro che conta i frame del gioco
-    private int aniIndex = 0;  // L'indice del fotogramma attuale 
-    private int aniSpeed = 10; // La velocità dell'animazione 
+    private int aniTick = 0;   // cronometro che conta i frame
+    private int aniIndex = 0;  // indice del fotogramma attuale 
+    private int aniSpeed = 10; // velocità dell'animazione 
     
     // Costanti per il movimento orizzontale
-    private float playerSpeed = 5.0f; // Velocità di camminata
+    private float playerSpeed = 5.0f; // Velocità camminata
 
     // Variabili per la fisica verticale (Salto e Gravità)
-    private float ariaSpeed = 0f;      // La velocità sull'asse Y (che cambia saltando/cadendo)
-    private float gravita = 0.5f;      // Quanto velocemente cade verso il basso
-    private float forzaSalto = -10.0f; // Forza iniziale del salto (negativa perché in Java lo Y sale verso il basso)
-    private boolean inAria = true;     // Ci dice se il giocatore sta cadendo o è sul pavimento
+    private float ariaSpeed = 0f;      // La velocità sull'asse Y
+    private float gravita = 0.5f;      // velocità di caduta
+    private float forzaSalto = -10.0f; // Forza iniziale del salto
+    private boolean inAria = true;     // giocatore in aria o a terra
 
 
 
@@ -42,9 +42,6 @@ public class Player extends Entity {
 private void caricaImmagine() {
 //carichiamo un array che conterra 4 immagini per l animazione del Player
         sprites = new BufferedImage[5]; 
-        if (!jump) {
-            
-        }
         try {
             // Carichiamo la prima immagine alla posizione 0 abbassato
             sprites[0] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_duck.png"));
@@ -62,7 +59,7 @@ private void caricaImmagine() {
         }
     }
 
-// restringiamo la heatbox rispetto al padre entity
+// adattiamo la heatbox rispetto a entity
     @Override
     protected void initHitbox() {
         hitbox = new Rectangle((int) x+23, (int) y+30, width-50, height-31);
@@ -82,6 +79,74 @@ private void caricaImmagine() {
         updateHitbox();
     }
 
+
+    private void aggiornaPosizione() {
+         //MOVIMENTO ORIZZONTALE
+        float xSpeed = 0; 
+        if (left) xSpeed -= playerSpeed;
+        if (right) xSpeed += playerSpeed;
+        // SALTO
+        if (jump && !inAria) {
+            ariaSpeed = forzaSalto;
+            inAria = true;
+        }
+        // APPLICARE LA GRAVITÀ
+        if (inAria) {
+            ariaSpeed += gravita; // La gravità aumenta la velocità di caduta frame dopo frame
+            y += ariaSpeed;
+            
+            // --- PAVIMENTO PROVVISORIO ---
+            // Siccome non hai ancora il codice per controllare se sbatti contro i blocchi di terra,
+            // mettiamo un "pavimento invisibile" provvisorio a Y = 500.
+            if (y >= 450) {
+                y = 450;         // Fermalo a questa altezza
+                ariaSpeed = 0;   // Azzera la velocità di caduta
+                inAria = false;  // Fagli capire che ha toccato terra
+            }
+        } 
+        
+        x += xSpeed; 
+    }
+
+    
+
+    // disegno il giocatore sullo schermo in base all indice aniIndex (stato del movimento attuale)
+    @Override
+    public void draw(Graphics g) {
+        if (sprites != null && sprites[aniIndex] != null) {
+            g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
+        }
+        
+        drawHitbox(g);
+    }
+
+ //aggiorno l animazione in base al movimento(abbassato,salto,cammino,fermo)
+private void aggiornaAnimazione() {
+        if (inAria) {
+            aniIndex = 1;
+        } 
+        else if (down) {
+            aniIndex = 0;
+        } 
+        else if (left || right) {
+            aniTick++;
+            
+            if (aniTick >= aniSpeed) {
+                aniTick = 0; 
+                if (aniIndex == 3) {
+                    aniIndex = 4;
+                } else {
+                    aniIndex = 3;
+                }
+            }
+        } 
+        else {
+            aniIndex = 2;
+        }
+    }
+
+    
+    //Funzioni Setter per il movimento
     public void setLeft(boolean left) {
         this.left = left;
     }
@@ -97,79 +162,5 @@ private void caricaImmagine() {
         this.down = down;
     }
 
-
-    // Metodo per disegnare il giocatore sullo schermo in base all indice aniIndex
-    public void draw(Graphics g) {
-        if (sprites != null && sprites[aniIndex] != null) {
-            g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
-        }
-        
-        drawHitbox(g);
-    }
-
-    private void aggiornaPosizione() {
-        // 1. MOVIMENTO ORIZZONTALE
-        // Azzera temporaneamente il movimento orizzontale per questo frame
-        float xSpeed = 0; 
-        
-        if (left) xSpeed -= playerSpeed;
-        if (right) xSpeed += playerSpeed;
-
-        // 2. IL SALTO
-        // Se premo salto e NON sono in aria, dammi la spinta verso l'alto!
-        if (jump && !inAria) {
-            ariaSpeed = forzaSalto;
-            inAria = true;
-        }
-
-        // 3. APPLICARE LA GRAVITÀ
-        // Se non stiamo toccando terra, continuiamo a cadere
-        if (inAria) {
-            ariaSpeed += gravita; // La gravità aumenta la velocità di caduta frame dopo frame
-            y += ariaSpeed;       // Aggiorna la coordinata Y
-            
-            // --- PAVIMENTO PROVVISORIO ---
-            // Siccome non hai ancora il codice per controllare se sbatti contro i blocchi di terra,
-            // mettiamo un "pavimento invisibile" provvisorio a Y = 500.
-            if (y >= 450) {
-                y = 450;         // Fermalo a questa altezza
-                ariaSpeed = 0;   // Azzera la velocità di caduta
-                inAria = false;  // Fagli capire che ha toccato terra
-            }
-        } 
-        
-        // Infine, aggiorna la coordinata X
-        x += xSpeed; 
-    }
- 
-private void aggiornaAnimazione() {
-        // 1. Se siamo in aria, mostra sempre l'immagine del salto
-        if (inAria) {
-            aniIndex = 1;
-        } 
-        // 2. Se stiamo premendo il tasto per abbassarci
-        else if (down) {
-            aniIndex = 0;
-        } 
-        // 3. Se ci stiamo muovendo a destra o a sinistra, facciamo l'animazione della camminata!
-        else if (left || right) {
-            aniTick++; // Facciamo partire il cronometro
-            
-            if (aniTick >= aniSpeed) {
-                aniTick = 0; // Azzera il cronometro
-                
-                // Alterna tra l'immagine 3 (walk_a) e l'immagine 4 (walk_b)
-                if (aniIndex == 3) {
-                    aniIndex = 4;
-                } else {
-                    aniIndex = 3;
-                }
-            }
-        } 
-        // 4. Se non stiamo facendo nessuna di queste cose, siamo fermi (indice 2)
-        else {
-            aniIndex = 2;
-        }
-    }
     
 }
