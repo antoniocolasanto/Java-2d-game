@@ -11,6 +11,8 @@
  */
 package com.game.levels;
 
+import com.game.entities.Bee;
+import com.game.entities.Entity;
 import com.game.utils.Constants;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -18,10 +20,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class LevelManager {
-
+    
+    private ArrayList<Entity> nemici;
     private int[][] mapData;
     private BufferedImage[] tileSprites;
 
@@ -29,9 +33,10 @@ public class LevelManager {
         // Matrice 12 righe x 20 colonne 
         // (per risoluzione 1280x720)
         mapData = new int[12][20];
-        // Mappiamo fino a 10 tipi di blocchi diversi
-        tileSprites = new BufferedImage[10]; 
+        // Mappiamo fino a 20 tipi di blocchi diversi
+        tileSprites = new BufferedImage[20]; 
         loadTileImages();
+        nemici =new ArrayList<Entity>();
         loadMap("res/Map/level1.txt");
     }
 
@@ -172,5 +177,27 @@ public class LevelManager {
         if (riga >= 0 && riga < 12 && col >= 0 && col < 20) {
             mapData[riga][col] = 0; // Diventa vuoto
         }
+    }
+
+    //mappa i nemici e sostituisce con 0
+    public ArrayList<Entity> getListaNemici(){
+        for (int riga = 0; riga < mapData.length; riga++) {
+            for (int col = 0; col < mapData[riga].length; col++) {
+                
+                int tileType = mapData[riga][col];
+                switch(tileType){
+                    case 9:nemici.add(new Bee(col*Constants.SIZE_BLOCCO, riga*Constants.SIZE_BLOCCO,100,100));
+                    mapData[riga][col] = 0;
+                        break;
+
+                        default: break;
+                }
+                
+            }
+        }
+
+
+
+        return nemici;
     }
 }
