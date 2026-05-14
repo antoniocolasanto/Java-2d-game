@@ -9,10 +9,16 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
-    // L'immagine che rappresenta il giocatore (il suo sprite)
-    private BufferedImage sprite;
+    // L'array di immagini che rappresenta il giocatore (il suo sprite)
+    private BufferedImage[] sprites;
+
     // Variabili per gli Input (Tastiera)
-    private boolean left, right, jump;
+    private boolean left, right, jump, down;
+
+        // Variabili per gestire il tempo e i fotogrammi
+    private int aniTick = 0;   // Il nostro cronometro che conta i frame del gioco
+    private int aniIndex = 0;  // L'indice del fotogramma attuale 
+    private int aniSpeed = 10; // La velocità dell'animazione 
     
     // Costanti per il movimento orizzontale
     private float playerSpeed = 5.0f; // Velocità di camminata
@@ -33,12 +39,26 @@ public class Player extends Entity {
         caricaImmagine();
     }
 
-    private void caricaImmagine() {
+private void caricaImmagine() {
+//carichiamo un array che conterra 4 immagini per l animazione del Player
+        sprites = new BufferedImage[5]; 
+        if (!jump) {
+            
+        }
         try {
-            File file = new File("res/Sprites/Characters/Default/character_green_idle.png");
-            sprite = ImageIO.read(file);
+            // Carichiamo la prima immagine alla posizione 0 abbassato
+            sprites[0] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_duck.png"));
+            // Carichiamo la seconda immagine alla posizione fermo
+            sprites[1] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_jump.png"));
+            // Carichiamo la terza  immagine alla posizione salto
+            sprites[2] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_idle.png"));
+            // Carichiamo la quarta immagine alla posizione movimento1
+            sprites[3] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_a.png"));
+            // Carichiamo la quinta immagine alla posizione movimento2
+            sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_b.png"));
+
         } catch (IOException e) {
-            System.err.println("Errore: Immagine del Player non trovata!");
+            System.err.println("Errore: Immagini del Player non trovate!");
         }
     }
 
@@ -58,6 +78,7 @@ public class Player extends Entity {
     @Override
     public void update() {
         aggiornaPosizione();
+        aggiornaAnimazione();
         updateHitbox();
     }
 
@@ -72,16 +93,17 @@ public class Player extends Entity {
     public void setJump(boolean jump) {
         this.jump = jump;
     }
+      public void setDown(boolean down) {
+        this.down = down;
+    }
 
-    // Metodo per disegnare il giocatore sullo schermo
+
+    // Metodo per disegnare il giocatore sullo schermo in base all indice aniIndex
     public void draw(Graphics g) {
-        if (sprite != null) {
-            g.drawImage(sprite, (int) x, (int) y, width, height, null);
+        if (sprites != null && sprites[aniIndex] != null) {
+            g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
         }
         
-        // --- SOLO PER TEST ---
-        // Richiamiamo il metodo del padre per vedere la hitbox rosa. 
-        // Una volta finito il gioco, basterà cancellare questa riga.
         drawHitbox(g);
     }
 
@@ -120,6 +142,34 @@ public class Player extends Entity {
         x += xSpeed; 
     }
  
-
+private void aggiornaAnimazione() {
+        // 1. Se siamo in aria, mostra sempre l'immagine del salto
+        if (inAria) {
+            aniIndex = 1;
+        } 
+        // 2. Se stiamo premendo il tasto per abbassarci
+        else if (down) {
+            aniIndex = 0;
+        } 
+        // 3. Se ci stiamo muovendo a destra o a sinistra, facciamo l'animazione della camminata!
+        else if (left || right) {
+            aniTick++; // Facciamo partire il cronometro
+            
+            if (aniTick >= aniSpeed) {
+                aniTick = 0; // Azzera il cronometro
+                
+                // Alterna tra l'immagine 3 (walk_a) e l'immagine 4 (walk_b)
+                if (aniIndex == 3) {
+                    aniIndex = 4;
+                } else {
+                    aniIndex = 3;
+                }
+            }
+        } 
+        // 4. Se non stiamo facendo nessuna di queste cose, siamo fermi (indice 2)
+        else {
+            aniIndex = 2;
+        }
+    }
     
 }
