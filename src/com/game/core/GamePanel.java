@@ -34,9 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean running = false;
 
     private Player player;
-    // dichiariamo l oggetto bee(nemico)
     private Bee bee;
-    private Fish fish;
     private Background bg;
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
@@ -59,10 +57,9 @@ public class GamePanel extends JPanel implements Runnable {
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
         levelManager = new LevelManager();
         player = new Player(100, 500, 100, 100);
-        //creiamo il primo nemico
         bee = new Bee(400, 300, 60, 60);
-        //creiamo il primo pesce
-        fish = new Fish(600, 400, 80, 80);
+        mainMenu = new MainMenu();
+        pauseMenu = new PauseMenu();
     }
 
     public void startGameThread() {
@@ -95,18 +92,16 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void update(){
-        // Il GamePanel non fa i calcoli, 
-        // ordina agli altri di farli!
-        
-        if (player != null) {
-            // La classe Player calcola la propria gravità 
-            // e i tasti premuti
-            player.update(); 
-            bee.update();
-            fish.update();
-        
-        } 
+    public void update() {
+        // Aggiorna la logica solo se stiamo giocando
+        switch (state) {
+            case PLAYING:
+                if (player != null) player.update();
+                if (bee != null) bee.update();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -140,6 +135,6 @@ public class GamePanel extends JPanel implements Runnable {
     private void renderGameWorld(Graphics g) {
         if (levelManager != null) levelManager.draw(g);
         if (player != null) player.draw(g);
-        if (enemy != null) enemy.draw(g);
+        if (bee != null) bee.draw(g);
     }
 }
