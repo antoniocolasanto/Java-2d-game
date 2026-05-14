@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-public class Bee extends Entity {
+public class Fish extends Entity {
 
 // array che conterrà tutti i fotogrammi dell'animazione dell ape
     private BufferedImage[] sprites;
@@ -24,11 +24,11 @@ public class Bee extends Entity {
     
     
     // Variabili per il movimento del nemico
-    private float beeSpeed = 2.0f;    // velocità ape
+    private float fishSpeed = 2.0f;    // velocità pesce
     private boolean movingRight = true;
 
     // Costruttore
-    public Bee(float x, float y, int width, int height) {
+    public Fish(float x, float y, int width, int height) {
 
         super(x, y, width, height);
         caricaImmagine();
@@ -39,8 +39,8 @@ private void caricaImmagine() {
         sprites = new BufferedImage[2];
         //gestiamo eccezione
         try {
-            sprites[0] = ImageIO.read(new File("res/Sprites/Enemies/Double/bee_a.png"));
-            sprites[1] = ImageIO.read(new File("res/Sprites/Enemies/Double/bee_b.png"));
+            sprites[0] = ImageIO.read(new File("res/Sprites/Enemies/Double/fish_yellow_swim_a.png"));
+            sprites[1] = ImageIO.read(new File("res/Sprites/Enemies/Double/fish_yellow_swim_b.png"));
         } catch (IOException e) {
             System.err.println("Errore: Immagini del Nemico non trovate!");
         }
@@ -59,6 +59,7 @@ private void caricaImmagine() {
 
     }
         // Inizializza il rettangolo della hitbox sulle coordinate dell'entità
+        @Override
     protected void initHitbox() {
         hitbox = new Rectangle((int) x+5, (int) y+20, width-20, height-30);
     }
@@ -66,7 +67,7 @@ private void caricaImmagine() {
 
     private void pattuglia() {
         if (movingRight) {
-            x += beeSpeed;
+            x += fishSpeed;
             
             // --- MURO PROVVISORIO A DESTRA ---
             // Quando arriva alla coordinata X = 800, inverte la direzione
@@ -74,7 +75,7 @@ private void caricaImmagine() {
                 movingRight = false;
             }
         } else {
-            x -= beeSpeed;
+            x -= fishSpeed;
             
             // --- MURO PROVVISORIO A SINISTRA ---
             // Quando torna alla coordinata X = 400, inverte di nuovo la direzione
