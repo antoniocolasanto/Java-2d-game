@@ -11,6 +11,7 @@ package com.game.core;
  */
 import com.game.entities.*;
 import com.game.graphics.Background;
+import com.game.graphics.LayeredBackground;
 import com.game.graphics.MainMenu;
 import com.game.graphics.PauseMenu;
 import com.game.inputs.KeyInput;
@@ -61,7 +62,14 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         // Creiamo lo sfondo collegandolo passandogli
         // il percorso dell'immagine che vogliamo
-        bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
+        bg = new Background("res/Sprites/Backgrounds/Double/background_clouds.png");
+        
+        // ALTERNATIVA: Per usare sfondi layered (concatenati), decommentare:
+        // LayeredBackground layeredBg = new LayeredBackground(new String[]{
+        //     "res/Sprites/Backgrounds/Double/background_solid_sky.png",
+        //     "res/Sprites/Backgrounds/Double/background_solid_cloud.png",
+        //     "res/Sprites/Backgrounds/Double/background_color_hills.png"
+        // }, 2, 2);  // 2 tile orizzontali, 2 verticali
         levelManager = new LevelManager();
         // Creiamo il controllore delle collisioni
         collisionChecker = new CollisionChecker(levelManager);
