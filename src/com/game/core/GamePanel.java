@@ -18,7 +18,6 @@ import java.awt.Color; //importa la classe Constants per accedere alle costanti 
 import java.awt.Dimension; //importa la classe Constants per accedere alle costanti di gioco
 import java.awt.Graphics; //importa la classe Constants per accedere alle costanti di gioco
 import javax.swing.JPanel;
-
 //* 
 // -Per diseganre qualcosa a schermo si utilizza la classe
 // astratta JPANEL
@@ -34,6 +33,9 @@ public class GamePanel extends JPanel implements Runnable {
     // con RUNNABLE 
     private Thread gameThread;
     private boolean running = false;
+    
+    //Dichiariamo l'oggetto CollisionChecker
+    private CollisionChecker collisionChecker;
 
     //Dichiariamo l'oggetto Player
     private Player player;
@@ -63,15 +65,16 @@ public class GamePanel extends JPanel implements Runnable {
         // dice al computer che questo pannello è pronto a ricevere 
         // input da tastiera
         this.setFocusable(true);
-        this.addKeyListener(new KeyInput(this)); 
         // Creiamo lo sfondo collegandolo passandogli
         // il percorso dell'immagine che vogliamo
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
         // Creiamo il livello (che carica la mappa e i blocchi)
         levelManager = new LevelManager();
+        // Creiamo il controllore delle collisioni
+        collisionChecker = new CollisionChecker(levelManager);
 
         // Creiamo il giocatore alle coordinate iniziali
-        player = new Player(100, 500, 100, 100);
+        player = new Player(30, 500, 100, 100, this);
         //creiamo il primo nemico
         enemy = new Enemy(400, 300, 60, 60);
     }
@@ -125,6 +128,11 @@ public class GamePanel extends JPanel implements Runnable {
             enemy.update();
         } 
     }
+
+    // Serve al Player per prendere i controlli fisici
+    public CollisionChecker getCollisionChecker() {
+    return collisionChecker;
+}
 
     @Override
     public void paintComponent(Graphics g){
