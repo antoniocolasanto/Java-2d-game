@@ -1,3 +1,4 @@
+package com.game.entities;
 /**
  * SUPERCLASSE ASTRATTA
  * - Definisce le proprietà comuni di ogni cosa che si muove: x, y, width, height, speed.
@@ -5,7 +6,6 @@
  * - Dichiara i metodi astratti update() e draw(Graphics g) che le sottoclassi 
  * dovranno obbligatoriamente implementare.
  */
-package com.game.entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,7 +16,12 @@ public abstract class Entity {
     protected float x, y;
     protected int width, height;
     
-    // creo una heatbox rettangolare per inizaire 
+    // AGGIUNTE PER LE COLLISIONI (a tutte le entità)
+    public float speed;
+    public String direction = "IDLE";
+    public boolean collisionOn = false;
+
+    // creo una heatbox per inizaire 
     protected Rectangle hitbox;
 
     // Costruttore: chi crea il player inserirà dove nascerà coordinate(x,y) e quanto sarà grande
@@ -29,6 +34,22 @@ public abstract class Entity {
         //polimorfismo
         initHitbox();
     }
+
+    // --- GETTER ---
+    public float getX() { return x; }
+    public float getY() { return y; }
+    public float getSpeed() { return speed; }
+    public String getDirection() { return direction; }
+    public boolean isCollisionOn() { return collisionOn; }
+
+    // --- SETTER ---
+    public void setCollisionOn(boolean collisionOn) {
+        this.collisionOn = collisionOn;
+    }
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+    
         // polimorfismo
     // Inizializza il rettangolo della hitbox sulle coordinate dell'entità ma su questa funzione sarà fatto Override
     protected void initHitbox() {

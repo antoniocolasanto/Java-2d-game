@@ -32,6 +32,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     private Thread gameThread;
     private boolean running = false;
+    
+    //Dichiariamo l'oggetto CollisionChecker
+    private CollisionChecker collisionChecker;
 
     private Player player;
     private Bee bee;
@@ -52,11 +55,19 @@ public class GamePanel extends JPanel implements Runnable {
         
         // Inizializzazione componenti
         this.addKeyListener(new KeyInput(this));
-        
-        // Inizializziamo gli oggetti necessari
+        // Permette a questo pannello di interagire con la tastiera
+        // dice al computer che questo pannello è pronto a ricevere 
+        // input da tastiera
+        this.setFocusable(true);
+        // Creiamo lo sfondo collegandolo passandogli
+        // il percorso dell'immagine che vogliamo
         bg = new Background("res/Sprites/Backgrounds/Default/background_clouds.png");
         levelManager = new LevelManager();
-        player = new Player(100, 500, 100, 100);
+        // Creiamo il controllore delle collisioni
+        collisionChecker = new CollisionChecker(levelManager);
+        // Creiamo il giocatore alle coordinate iniziali
+        player = new Player(30, 500, 100, 100, this);
+        // Creiamo il primo nemico
         bee = new Bee(400, 300, 60, 60);
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
@@ -103,6 +114,11 @@ public class GamePanel extends JPanel implements Runnable {
                 break;
         }
     }
+
+    // Serve al Player per prendere i controlli fisici
+    public CollisionChecker getCollisionChecker() {
+    return collisionChecker;
+}
 
     @Override
     public void paintComponent(Graphics g) {
