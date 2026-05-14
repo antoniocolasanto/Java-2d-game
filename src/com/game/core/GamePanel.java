@@ -37,8 +37,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Dichiariamo l'oggetto Player
     private Player player;
-    // dichiariamo l oggetto enemy(nemico)
-    private Enemy enemy;
+    // dichiariamo l oggetto bee(nemico)
+    private Bee bee;
+    private Fish fish;
     private Background bg;
 
     //Dichiariamo l'oggetto Livello
@@ -73,7 +74,9 @@ public class GamePanel extends JPanel implements Runnable {
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(100, 500, 100, 100);
         //creiamo il primo nemico
-        enemy = new Enemy(400, 300, 60, 60);
+        bee = new Bee(400, 300, 60, 60);
+        //creiamo il primo pesce
+        fish = new Fish(600, 400, 80, 80);
     }
 
     public void startGameThread() {
@@ -122,7 +125,9 @@ public class GamePanel extends JPanel implements Runnable {
             // La classe Player calcola la propria gravità 
             // e i tasti premuti
             player.update(); 
-            enemy.update();
+            bee.update();
+            fish.update();
+        
         } 
     }
 
@@ -149,8 +154,12 @@ public class GamePanel extends JPanel implements Runnable {
             player.draw(g);
         }
         // il nemico appare utilizzando la sua funzione draw
-        if (enemy!=null){
-            enemy.draw(g);
+        if (bee!=null){
+            bee.draw(g);
+        }
+        // il pesce appare utilizzando la sua funzione draw
+        if (fish!=null){
+            fish.draw(g);
         }
 
         // Libera la memoria della grafica occupata in precedenza
