@@ -26,17 +26,18 @@ public class LevelManager {
     private BufferedImage[] tileSprites;
 
     public LevelManager() {
-        // Matrice 12 righe x 20 colonne (per risoluzione 1280x720 con TILE_SIZE = 64)
-        mapData = new int[12][20]; 
-        tileSprites = new BufferedImage[10]; // Mappiamo fino a 10 tipi di blocchi diversi
-        
+        // Matrice 12 righe x 20 colonne 
+        // (per risoluzione 1280x720)
+        mapData = new int[12][20];
+        // Mappiamo fino a 10 tipi di blocchi diversi
+        tileSprites = new BufferedImage[10]; 
         loadTileImages();
         loadMap("res/Map/level1.txt");
     }
 
     private void loadTileImages() {
         try {
-            // Mappatura Terreno (Risoluzione Double)
+            // Mappatura Terreno
             // Usiamo "top" per la superficie (erba sopra) e "center" per il riempimento (terra sotto)
             tileSprites[1] = ImageIO.read(new File("res/Sprites/Tiles/Double/terrain_grass_block_top.png"));
             tileSprites[2] = ImageIO.read(new File("res/Sprites/Tiles/Double/terrain_grass_block_center.png"));
@@ -67,7 +68,6 @@ public class LevelManager {
             // SISTEMA DI SICUREZZA: Se il file .txt non esiste, carica la mappa di riserva
             if (!file.exists()) {
                 System.out.println("ATTENZIONE: File della mappa non trovato in " + filePath + ". Carico la mappa di backup.");
-                loadDefaultMap();
                 return;
             }
 
@@ -86,27 +86,7 @@ public class LevelManager {
             
         } catch (Exception e) {
             System.out.println("ERRORE CRITICO: Eccezione durante la lettura della mappa!");
-            loadDefaultMap(); // Carica comunque la mappa di emergenza se c'è un errore
         }
-    }
-
-    // MAPPA DI EMERGENZA (Hardcoded in Java nel caso manchi il file testuale)
-    private void loadDefaultMap() {
-         int[][] defaultMap = {
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-            {0,0,0,0,0,5,0,5,0,0,0,0,0,0,0,3,3,0,2,2},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,2,2},
-            {0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,2,2},
-            {0,0,0,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0,2,2},
-            {0,0,1,2,2,2,0,0,0,1,2,2,2,1,0,0,0,0,2,2},
-            {1,1,2,2,2,2,4,4,4,2,2,2,2,2,1,1,0,0,2,2},
-            {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,2,2},
-            {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,2,2}
-        };
-        this.mapData = defaultMap;
     }
 
     public void draw(Graphics g) {
@@ -133,5 +113,64 @@ public class LevelManager {
      */
     public int[][] getLevelData() {
         return mapData;
+    }
+
+    /**
+     * Se il tuo giocatore si trova alle coordinate X = 130 e Y = 70, e ogni
+     * blocco (Constants.SIZE_BLOCCO) è grande 64 pixel, il gioco fa una 
+     * divisione matematica per capire la sua posizione sulla griglia:
+     * Colonna: 130 / 64 = 2 (Si trova nella terza colonna, partendo da 0)
+     * Riga: 70 / 64 = 1 (Si trova nella seconda riga, partendo da 0)
+
+     * Sapendo questo, il gioco va a guardare dentro la tua matrice mapData[1][2] per vedere che numero c'è. Se c'è un 1 (Erba), ti deve bloccare. Se c'è un 3 (Moneta), la deve raccogliere.
+    
+    /**
+     * Restituisce il numero del blocco a una specifica riga e colonna.
+     */
+    public int getTileType(int riga, int col) {
+        // Controllo di sicurezza: se il player cerca di uscire fuori dai 
+        // bordi dello schermo,
+        // fingiamo che ci sia un muro invisibile (ritorniamo 1)
+        if (riga < 0 || riga >= 12 || col < 0 || col >= 20) {
+            return 1; 
+        }
+        return mapData[riga][col];
+    }
+
+    /**
+     * Ritorna true se il blocco NON si può attraversare (muri, pavimenti)
+     * Legenda: 1 = Erba, 2 = Terra, 5 = Cassa, 6 = Ponte
+     */
+    public boolean isSolid(int riga, int col) {
+        // --- BLINDA I BORDI DELLO SCHERMO ---
+        // Se cerchi di andare fuori dalla griglia a sinistra (col < 0) 
+        // o in qualsiasi altra direzione, il gioco fa finta che ci sia un muro solido!
+        if (col < 0 || col >= 20 || riga < 0 || riga >= 12) {
+            return true; 
+        }
+        
+        int tile = getTileType(riga, col);
+        if (tile == 1 || tile == 2 || tile == 5 || tile == 6) {
+            return true; // È solido, il player sbatte!
+        }
+        return false; // Ci si può camminare attraverso (vuoto, monete, ecc.)
+    }
+
+    /**
+     * Ritorna true se il blocco è una Moneta (3)
+     */
+    public boolean isCoin(int riga, int col) {
+        int tile = getTileType(riga, col);
+        return tile == 3;
+    }
+    
+    /**
+     * Sostituisce il blocco attuale con il vuoto (0). 
+     * Utile quando il player raccoglie la moneta!
+     */
+    public void removeTile(int riga, int col) {
+        if (riga >= 0 && riga < 12 && col >= 0 && col < 20) {
+            mapData[riga][col] = 0; // Diventa vuoto
+        }
     }
 }
