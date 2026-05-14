@@ -38,7 +38,7 @@ public class MainMenu {
         }
 
         // --- DISEGNO TITOLO CON OMBRA ---
-        String title = "SUPER NICOLO'";
+        String title = "NICK MongoDB";
         g2.setFont(new Font("Verdana", Font.BOLD, 80));
         
         // Centriamo il titolo dinamicamente calcolando la larghezza della costante
@@ -47,11 +47,11 @@ public class MainMenu {
         
         // Ombra
         g2.setColor(Color.BLACK);
-        g2.drawString(title, titoloX + 5, 205);
+        g2.drawString(title, titoloX + 5, 115);
         
         // Testo Principale (Giallo acceso)
         g2.setColor(new Color(255, 215, 0));
-        g2.drawString(title, titoloX, 200);
+        g2.drawString(title, titoloX, 100);
 
         // --- ISTRUZIONI ---
         g2.setFont(new Font("Arial", Font.BOLD, 30));
