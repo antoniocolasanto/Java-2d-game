@@ -1,6 +1,6 @@
 /**
- * NEMICO BASE (Estende Entity)
- * - Definisce l'Intelligenza Artificiale (IA) del nemico (es. pattuglia a destra finché non tocca un muro, poi gira a sinistra).
+ * NEMICO APE (Estende Entity)
+ * - Definisce l'Intelligenza Artificiale (IA) del nemico pattuglia.
  * - Calcola le collisioni con il Player per capire se infliggere danno o morire.
  */
 
@@ -12,48 +12,39 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+public class Bee extends Entity {
 
-/**
- * NEMICO BASE (Estende Entity)
- * - Definisce l'Intelligenza Artificiale (IA) del nemico (pattuglia a destra finché non tocca un muro, poi gira a sinistra).
- * - Calcola le collisioni con il Player per capire se infliggere danno o morire.
- */
-public class Enemy extends Entity {
-
-// L'array che conterrà tutti i fotogrammi dell'animazione dell ape
+// array che conterrà tutti i fotogrammi dell'animazione dell ape
     private BufferedImage[] sprites;
     
     // Variabili per gestire il tempo e i fotogrammi
-    private int aniTick = 0;   // Il nostro cronometro che conta i frame del gioco
-    private int aniIndex = 0;  // L'indice del fotogramma attuale 
-    private int aniSpeed = 10; // La velocità dell'animazione  
+    private int aniTick = 0;   // cronometro frame
+    private int aniIndex = 0;  // indice fotogramma attuale 
+    private int aniSpeed = 10; // velocità dell'animazione  
     
     
     // Variabili per il movimento del nemico
-    private float enemySpeed = 2.0f;    // I nemici di solito sono un po' più lenti del player
-    private boolean movingRight = true; // All'inizio lo facciamo camminare verso destra
+    private float beeSpeed = 2.0f;    // velocità ape
+    private boolean movingRight = true;
 
     // Costruttore
-    public Enemy(float x, float y, int width, int height) {
-        super(x, y, width, height); // Chiama il costruttore di Entity per impostare x, y, ecc.
-        
+    public Bee(float x, float y, int width, int height) {
+
+        super(x, y, width, height);
         caricaImmagine();
     }
 
 private void caricaImmagine() {
-//carichiamo un array che conterra 2 immagini per l animazione dell ape
-        sprites = new BufferedImage[2]; 
-        
+//array che contiene 2 immagini per l animazione dell ape
+        sprites = new BufferedImage[2];
+        //gestiamo eccezione
         try {
-            // Carichiamo la prima immagine alla posizione 0
             sprites[0] = ImageIO.read(new File("res/Sprites/Enemies/Double/bee_a.png"));
-            // Carichiamo la seconda immagine alla posizione 1
             sprites[1] = ImageIO.read(new File("res/Sprites/Enemies/Double/bee_b.png"));
         } catch (IOException e) {
             System.err.println("Errore: Immagini del Nemico non trovate!");
         }
     }
-
     // Aggiorna le coordinate del nemico (Logica IA)
     @Override
     public void update() {
@@ -73,12 +64,9 @@ private void caricaImmagine() {
     }
     
 
-
-
     private void pattuglia() {
-        // Se movingRight è true, aumenta la X, altrimenti diminuiscila
         if (movingRight) {
-            x += enemySpeed;
+            x += beeSpeed;
             
             // --- MURO PROVVISORIO A DESTRA ---
             // Quando arriva alla coordinata X = 800, inverte la direzione
@@ -86,7 +74,7 @@ private void caricaImmagine() {
                 movingRight = false;
             }
         } else {
-            x -= enemySpeed;
+            x -= beeSpeed;
             
             // --- MURO PROVVISORIO A SINISTRA ---
             // Quando torna alla coordinata X = 400, inverte di nuovo la direzione
@@ -106,14 +94,13 @@ private void caricaImmagine() {
     }
 
     private void aggiornaAnimazione() {
-        aniTick++; // Il cronometro aumenta di 1 ad ogni giro del gioco
+        aniTick++; // Il cronometro aumenta di 1 ad ogni frame
         
-        // Se il cronometro raggiunge la velocità desiderata (es. 15)
+        // Se il cronometro raggiunge la velocità desiderata (es. 15) resetto il cronometro e passo all immagine successiva
         if (aniTick >= aniSpeed) {
-            aniTick = 0; // Azzera il cronometro
-            aniIndex++;  // Passa all'immagine successiva
-            
-            // Se siamo andati oltre le nostre 2 immagini, torna alla prima (indice 0)
+            aniTick = 0; 
+            aniIndex++;  
+            // Quando scorro tutto l array inizio da capo
             if (aniIndex >= sprites.length) {
                 aniIndex = 0;
             }
