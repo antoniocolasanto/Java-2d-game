@@ -16,7 +16,7 @@ import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 import java.awt.Color; //importa la classe Constants per accedere alle costanti di gioco
 import java.awt.Dimension; //importa la classe Constants per accedere alle costanti di gioco
-import java.awt.Graphics;
+import java.awt.Graphics; //importa la classe Constants per accedere alle costanti di gioco
 import javax.swing.JPanel;
 
 //* 
