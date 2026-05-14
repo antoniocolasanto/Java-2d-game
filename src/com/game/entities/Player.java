@@ -11,19 +11,25 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
-    // L'immagine che rappresenta il giocatore (il suo sprite)
-    private BufferedImage sprite;
+    // L'array di immagini che rappresenta il giocatore (il suo sprite)
+    private BufferedImage[] sprites;
+
     // Variabili per gli Input (Tastiera)
-    private boolean left, right, jump;
+    private boolean left, right, jump, down;
+
+        // Variabili per gestire il tempo e i fotogrammi
+    private int aniTick = 0;   // cronometro che conta i frame
+    private int aniIndex = 0;  // indice del fotogramma attuale 
+    private int aniSpeed = 10; // velocità dell'animazione 
     
     // Costanti per il movimento orizzontale
-    private float playerSpeed = 5.0f; // Velocità di camminata
+    private float playerSpeed = 5.0f; // Velocità camminata
 
     // Variabili per la fisica verticale (Salto e Gravità)
-    private float ariaSpeed = 0f;      // La velocità sull'asse Y (che cambia saltando/cadendo)
-    private float gravita = 0.5f;      // Quanto velocemente cade verso il basso
-    private float forzaSalto = -10.0f; // Forza iniziale del salto (negativa perché in Java lo Y sale verso il basso)
-    private boolean inAria = true;     // Ci dice se il giocatore sta cadendo o è sul pavimento
+    private float ariaSpeed = 0f;      // La velocità sull'asse Y
+    private float gravita = 0.5f;      // velocità di caduta
+    private float forzaSalto = -10.0f; // Forza iniziale del salto
+    private boolean inAria = true;     // giocatore in aria o a terra
 
     //Inizializza GamePanel per poterlo utilizzare (es. collisioni)
     private GamePanel gamePanel;
@@ -37,16 +43,27 @@ public class Player extends Entity {
         caricaImmagine();
     }
 
-    private void caricaImmagine() {
+private void caricaImmagine() {
+//carichiamo un array che conterra 4 immagini per l animazione del Player
+        sprites = new BufferedImage[5]; 
         try {
-            File file = new File("res/Sprites/Characters/Double/character_yellow_idle.png");
-            sprite = ImageIO.read(file);
+            // Carichiamo la prima immagine alla posizione 0 abbassato
+            sprites[0] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_duck.png"));
+            // Carichiamo la seconda immagine alla posizione fermo
+            sprites[1] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_jump.png"));
+            // Carichiamo la terza  immagine alla posizione salto
+            sprites[2] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_idle.png"));
+            // Carichiamo la quarta immagine alla posizione movimento1
+            sprites[3] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_a.png"));
+            // Carichiamo la quinta immagine alla posizione movimento2
+            sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_b.png"));
+
         } catch (IOException e) {
-            System.err.println("Errore: Immagine del Player non trovata!");
+            System.err.println("Errore: Immagini del Player non trovate!");
         }
     }
 
-// restringiamo la heatbox rispetto al padre entity
+// adattiamo la heatbox rispetto a entity
     @Override
     protected void initHitbox() {
         hitbox = new Rectangle((int) x+23, (int) y+30, width-50, height-31);
@@ -64,31 +81,9 @@ public class Player extends Entity {
         aggiornaPosizione();
         // 1. Controlla se hai preso monete
         gamePanel.getCollisionChecker().checkCoins(this);
+        aggiornaAnimazione();
     }
 
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public void setRight(boolean right) {
-        this.right = right;
-    }
-
-    public void setJump(boolean jump) {
-        this.jump = jump;
-    }
-
-    // Metodo per disegnare il giocatore sullo schermo
-    public void draw(Graphics g) {
-        if (sprite != null) {
-            g.drawImage(sprite, (int) x, (int) y, width, height, null);
-        }
-        
-        // --- SOLO PER TEST ---
-        // Richiamiamo il metodo del padre per vedere la hitbox rosa. 
-        // Una volta finito il gioco, basterà cancellare questa riga.
-        drawHitbox(g);
-    }
 
     private void aggiornaPosizione() {
         // --- PARTE 1: MOVIMENTO ORIZZONTALE (X) ---
@@ -175,4 +170,64 @@ public class Player extends Entity {
             }
         }
     }   
+        } 
+        
+        x += xSpeed; 
+    }
+
+    
+
+    // disegno il giocatore sullo schermo in base all indice aniIndex (stato del movimento attuale)
+    @Override
+    public void draw(Graphics g) {
+        if (sprites != null && sprites[aniIndex] != null) {
+            g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
+        }
+        
+        drawHitbox(g);
+    }
+
+ //aggiorno l animazione in base al movimento(abbassato,salto,cammino,fermo)
+private void aggiornaAnimazione() {
+        if (inAria) {
+            aniIndex = 1;
+        } 
+        else if (down) {
+            aniIndex = 0;
+        } 
+        else if (left || right) {
+            aniTick++;
+            
+            if (aniTick >= aniSpeed) {
+                aniTick = 0; 
+                if (aniIndex == 3) {
+                    aniIndex = 4;
+                } else {
+                    aniIndex = 3;
+                }
+            }
+        } 
+        else {
+            aniIndex = 2;
+        }
+    }
+
+    
+    //Funzioni Setter per il movimento
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public void setJump(boolean jump) {
+        this.jump = jump;
+    }
+      public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    
 }
