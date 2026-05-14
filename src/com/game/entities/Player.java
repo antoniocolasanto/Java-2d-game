@@ -57,8 +57,6 @@ private void caricaImmagine() {
             // Carichiamo la quinta immagine alla posizione movimento2
             sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_b.png"));
 
-            File file = new File("res/Sprites/Characters/Double/character_yellow_idle.png");
-            sprite = ImageIO.read(file);
         } catch (IOException e) {
             System.err.println("Errore: Immagini del Player non trovate!");
         }
