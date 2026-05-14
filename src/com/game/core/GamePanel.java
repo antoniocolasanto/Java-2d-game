@@ -18,7 +18,6 @@ import com.game.inputs.KeyInput;
 import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
@@ -62,8 +61,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         // Creiamo lo sfondo collegandolo passandogli
         // il percorso dell'immagine che vogliamo
-        bg = new Background("res/Sprites/Backgrounds/Double/background_clouds.png");
-         LayeredBackground layeredBg = new LayeredBackground(new String[]{
+        bg = new Background("res/Sprites/Backgrounds/Double/background_color_desert.png");
+        //(PER ORA INUTILE QUESTO WAGLIU)
+        LayeredBackground layeredBg = new LayeredBackground(new String[]{
              "res/Sprites/Backgrounds/Double/background_solid_sky.png",
              "res/Sprites/Backgrounds/Double/background_solid_cloud.png",
              "res/Sprites/Backgrounds/Double/background_color_hills.png"
