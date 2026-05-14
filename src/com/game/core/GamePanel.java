@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(100, 500, 100, 100);
         //creiamo il primo nemico
-        enemy = new Enemy(400, 300, 330, 330);
+        enemy = new Enemy(400, 300, 60, 60);
     }
 
     public void startGameThread() {

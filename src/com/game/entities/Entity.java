@@ -48,6 +48,8 @@ public abstract class Entity {
 
     // funzione che aggiorna le coordinate del personaggio
     public abstract void update();
+    // funzione per stampare a schermo l entità
+    public abstract void draw(Graphics g);
 
     // Questo metodo disegnerà un rettangolo rosa attorno al personaggio
     //metodo per il debug
