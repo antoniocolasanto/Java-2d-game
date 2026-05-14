@@ -117,17 +117,19 @@ public class GamePanel extends JPanel implements Runnable {
                 mainMenu.draw(g); 
                 break;
 
-        // Il giocatore usa la sua funzione draw per apparire
-        if (player != null) {
-            player.draw(g);
-        }
-        // il nemico appare utilizzando la sua funzione draw
-        if (bee!=null){
-            bee.draw(g);
-        }
-        // il pesce appare utilizzando la sua funzione draw
-        if (fish!=null){
-            fish.draw(g);
+            case PLAYING:
+                renderGameWorld(g);
+                break;
+
+            case PAUSE:
+                renderGameWorld(g); 
+                pauseMenu.draw(g); // Sovrappone il menu di pausa
+                break;
+
+            case LEADERBOARD:
+                g.setColor(Color.YELLOW);
+                g.drawString("CLASSIFICA - In attesa di MongoDB...", 500, 300);
+                break;
         }
     }
 
