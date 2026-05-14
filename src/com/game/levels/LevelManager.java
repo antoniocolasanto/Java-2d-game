@@ -53,10 +53,10 @@ public class LevelManager {
             tileSprites[6] = ImageIO.read(new File("res/Sprites/Tiles/Double/bridge_logs.png"));
             
             // Decorazioni / Fine Livello
-            tileSprites[7] = ImageIO.read(new File("res/Sprites/Tiles/Double/sign_exit.png"));
+            tileSprites[7] = ImageIO.read(new File("res/Sprites/Tiles/Double/background_color_trees.png"));
             
         } catch (IOException e) {
-            System.out.println("ERRORE: Impossibile caricare le immagini Double! Controlla che la cartella /Double/ esista.");
+            System.out.println("ERRORE: Impossibile caricare le immagini");
             e.printStackTrace();
         }
     }
