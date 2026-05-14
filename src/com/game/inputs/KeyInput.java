@@ -1,6 +1,7 @@
 package com.game.inputs;
 
 import com.game.core.GamePanel;
+import com.game.core.GameState;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -19,12 +20,8 @@ public class KeyInput implements KeyListener {
         this.gamePanel = gamePanel;
     }
 
-    // Questo metodo è obbligatorio per il KeyListener, 
-    // ma per il movimento, lo lasciamo vuoto
-    // non ci serve (si usa più che altro per i campi di testo)
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) {}
 
 
     //È un metodo speciale integrato in Java che viene attivato
@@ -35,22 +32,29 @@ public class KeyInput implements KeyListener {
         // corrisponde al tasto fisico premuto
         int key = e.getKeyCode();
 
-        // Se il player non è ancora nato 
-        // evitiamo errori (NullPointerException)
-        if (gamePanel.getPlayer() == null) return; 
+        // GESTIONE CAMBIO STATI
+        if (GamePanel.state == GameState.MENU) {
+            if (key == KeyEvent.VK_ENTER) GamePanel.state = GameState.PLAYING;
+            return; 
+        }
 
-        // Se premiamo A o Freccia Sinistra, accendiamo 
-        // l'interruttore "left"
+        if (key == KeyEvent.VK_ESCAPE) {
+            if (GamePanel.state == GameState.PLAYING) GamePanel.state = GameState.PAUSE;
+            else if (GamePanel.state == GameState.PAUSE) GamePanel.state = GameState.MENU;
+        }
+
+        // MOVIMENTO PLAYER (solo se in gioco)
+        if (GamePanel.state != GameState.PLAYING || gamePanel.getPlayer() == null) return; 
+
+        // Se premiamo A o Freccia Sinistra, accendiamo l'interruttore "left"
         if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
             gamePanel.getPlayer().setLeft(true);
         }
-        // Se premiamo D o Freccia Destra, 
-        // accendiamo l'interruttore "right"
+        // Se premiamo D o Freccia Destra, accendiamo l'interruttore "right"
         else if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
             gamePanel.getPlayer().setRight(true);
         }
-        // Se premiamo W, Freccia Su o Spazio, 
-        // accendiamo l'interruttore "jump"
+        // Se premiamo W, Freccia Su o Spazio, accendiamo l'interruttore "jump"
         else if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) {
             gamePanel.getPlayer().setJump(true);
         }
