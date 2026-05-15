@@ -13,6 +13,9 @@ public class Player extends Entity {
 
     // L'array di immagini che rappresenta il giocatore (il suo sprite)
     private BufferedImage[] sprites;
+    // Statistiche del giocatore
+    private int vite = 3;         
+    private int monetePrese = 0;
 
     // Variabili per gli Input (Tastiera)
     private boolean left, right, jump, down;
@@ -79,9 +82,9 @@ private void caricaImmagine() {
     @Override
     public void update() {
         aggiornaPosizione();
+        aggiornaAnimazione();
         // 1. Controlla se hai preso monete
         gamePanel.getCollisionChecker().checkCoins(this);
-        aggiornaAnimazione();
     }
 
 
@@ -205,6 +208,28 @@ private void aggiornaAnimazione() {
             aniIndex = 2;
         }
     }
+    //MONETE
+    public void aggiungiMoneta() {
+        monetePrese++; // Aumenta di 1
+        System.out.println("Moneta presa! Totale: " + monetePrese);
+    }
+    public int getMonetePrese() {
+        return monetePrese;
+    }
+    //VITA
+    public void subisciDanno() {
+        vite--;
+        System.out.println("Hai subito danno! Vite rimaste: " + vite);
+        if (vite <= 0) {
+            System.out.println("Game Over!");
+            // Qui potresti aggiungere logica per terminare il gioco o resettare il livello
+        }
+    }
+    public int getVite() {
+        return vite;
+    }
+
+
 
     
     //Funzioni Setter per il movimento

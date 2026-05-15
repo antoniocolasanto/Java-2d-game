@@ -1,6 +1,7 @@
 package com.game.core;
 
 import com.game.entities.Entity;
+import com.game.entities.Player;
 import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 
@@ -79,6 +80,11 @@ public class CollisionChecker {
 
         if (levelManager.isCoin(row, col)) {
             levelManager.removeTile(row, col); 
+            // cast necessario
+            if (entity instanceof Player) {
+                Player p = (Player) entity;
+                p.aggiungiMoneta();
+            }
             System.out.println("Nicolo Non sa Fare i Merge!!");
         }
     }

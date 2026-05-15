@@ -195,9 +195,7 @@ public class LevelManager {
                 
             }
         }
-
-
-
+ 
         return nemici;
     }
 }
