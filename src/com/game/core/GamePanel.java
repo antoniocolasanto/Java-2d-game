@@ -10,7 +10,6 @@ package com.game.core;
  * - Gestisce le liste dinamiche (es. ArrayList<Entity> per i nemici).
  */
 import com.game.entities.*;
-import com.game.graphics.Background;
 import com.game.graphics.LayeredBackground;
 import com.game.graphics.MainMenu;
 import com.game.graphics.PauseMenu;
@@ -19,9 +18,7 @@ import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -37,16 +34,15 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     private boolean running = false;
     private ArrayList<Entity> nemici;
-    private ArrayList<Entity> nemici;
     
     //Dichiariamo l'oggetto CollisionChecker
     private CollisionChecker collisionChecker;
 
     private Player player;
-    private Background bg;
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
     private LevelManager levelManager;
+    private LayeredBackground layeredBg;
 
     // Lo stato iniziale è il MENU
     public static GameState state = GameState.MENU;
@@ -65,21 +61,27 @@ public class GamePanel extends JPanel implements Runnable {
         // input da tastiera
         this.setFocusable(true);
         // Creiamo lo sfondo collegandolo passandogli
-        // il percorso dell'immagine che vogliamo
-        bg = new Background("res/Sprites/Backgrounds/Double/background_color_desert.png");
-        //(PER ORA INUTILE QUESTO WAGLIU)
-        LayeredBackground layeredBg = new LayeredBackground(new String[]{
-             "res/Sprites/Backgrounds/Double/background_solid_sky.png",
-             "res/Sprites/Backgrounds/Double/background_solid_cloud.png",
-             "res/Sprites/Backgrounds/Double/background_color_hills.png"
-        }, 2, 2);
+        
+        //Qui istanziamo lo sfondo mappabile come vogliamo
+        layeredBg = new LayeredBackground();
 
+        // 1. IL CIELO (Lo mettiamo come primissimo livello, partendo da 0,0. Coprirà tutta la fascia vuota!)
+        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_cloud.png", 0, 0, true, true);
+
+        // 2. LE NUVOLE (Partono da Y=50 e si ripetono SOLO in orizzontale, così non coprono gli alberi sotto)
+        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_cloud.png", 0, 50, true, false);
+
+        // 3. GLI ALBERI (Partono da Y=100 e si ripetono SOLO in orizzontale)
+        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_color_desert.png", 0, 100, true, false);
+
+        // 4. L'ERBA / TERRENO (Partono da Y=450 e si ripetono SOLO in orizzontale)
+        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_sand.png", 0, 450, true, false);
         levelManager = new LevelManager();
         // Creiamo il controllore delle collisioni
         collisionChecker = new CollisionChecker(levelManager);
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(30, 500, 100, 100, this);
-        // Creiamo i nemici
+        // Creiamo i nrmici
         nemici=levelManager.getListaNemici();
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
@@ -138,8 +140,9 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         // 1. Lo sfondo (sempre presente)
-        if (bg != null) bg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
-
+        if (layeredBg != null) {
+            layeredBg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
+        }
         // 2. Rendering basato sullo stato
         switch (state) {
             case MENU:
