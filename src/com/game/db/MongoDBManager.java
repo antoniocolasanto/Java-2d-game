@@ -9,6 +9,12 @@ import com.mongodb.client.MongoDatabase;
  * - Inizializza il driver MongoDB e gestisce l'apertura/chiusura sicura della connessione.
  * - Utilizza il pattern Singleton: crea la connessione una sola volta e la riutilizza.
  * - È il ponte tra il gioco locale in Java e il database (in questo caso locale su localhost).
+ * 
+ * MongoDBManager.java dice di connettersi a SuperNicoloDB 
+ * e PlayerDAO.java cerca la collezione Players
+ * 
+ * Arriva alla schermata di Inserimento Nickname (la classe IdentificationScreen). 
+ * Quando inserisci un nome e premi INVIO, il gioco chiamerà il metodo createNewPlayer(nickname) del tuo PlayerDAO.
  */
 public class MongoDBManager {
     

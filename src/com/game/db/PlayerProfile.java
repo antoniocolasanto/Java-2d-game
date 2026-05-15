@@ -7,7 +7,7 @@ import java.util.List;
  * MODELLO DEI DATI (Data Transfer Object - DTO)
  * - Mappa i dati del giocatore per prepararli all'invio al database o per leggerli (simile a un JSON).
  * - Contiene il nome e la lista delle sue partite precedenti.
- * - Contiene metodi di business logic come getAverageCoins() per calcolare statistiche in tempo reale.
+ * - Contiene metodi di business logic come getPerformanceRatio() per calcolare statistiche in tempo reale.
  */
 public class PlayerProfile {
     
@@ -16,7 +16,8 @@ public class PlayerProfile {
 
     public PlayerProfile(String nickname) {
         this.nickname = nickname;
-        this.sessions = nList<>()ew Array;
+        // ERRORE DI SINTASSI CORRETTO QUI:
+        this.sessions = new ArrayList<>();
     }
 
     public String getNickname() { return nickname; }
@@ -26,16 +27,23 @@ public class PlayerProfile {
     public void setSessions(List<GameSession> sessions) { this.sessions = sessions; }
 
     /**
-     * Calcola la media delle monete raccolte nelle sessioni precedenti.
-     * Utile per mostrare statistiche al giocatore o per la valutazione del professore.
+     * Calcola il rapporto di prestazione tra monete raccolte e tempo impiegato.
      */
-    public double getAverageCoins() {
+    public double getPerformanceRatio() {
         if (sessions.isEmpty()) return 0.0;
-        int total = 0;
+        
+        int totalCoins = 0;
+        long totalTimeSec = 0;
+        
         for (GameSession s : sessions) {
-            total += s.getCoins();
+            totalCoins += s.getCoins();
+            totalTimeSec += s.getTimeSec();
         }
-        return (double) total / sessions.size();
+        
+        // Evitiamo la divisione per zero nel caso in cui il tempo sia 0
+        if (totalTimeSec == 0) return (double) totalCoins;
+        
+        return (double) totalCoins / totalTimeSec;
     }
 }
 
