@@ -35,6 +35,8 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     private boolean running = false;
     private ArrayList<Entity> nemici;
+    private int TimeSeconds = 0; // Il tempo in secondi
+    private int TimeTicks = 0;   // Conta i frame
     
     //Dichiariamo l'oggetto CollisionChecker
     private CollisionChecker collisionChecker;
@@ -116,13 +118,18 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         // Aggiorna la logica solo se stiamo giocando
         switch (state) {
-            case PLAYING:
+   case PLAYING:
                 if (player != null) player.update();
-for (Entity nemicoCorrente : nemici) {
+                
+                TimeTicks++; 
+                if (TimeTicks >= 60) {
+                    TimeSeconds++;
+                    TimeTicks = 0;
+                }
+
+                for (Entity nemicoCorrente : nemici) {
                     nemicoCorrente.update();
-                }                break;
-            default:
-                break;
+                }
         }
     }
 
@@ -146,6 +153,10 @@ for (Entity nemicoCorrente : nemici) {
 
             case PLAYING:
                 renderGameWorld(g);
+                g.drawString("Tempo: " + TimeSeconds + "s", 20, 30);
+                g.drawString("Monete: " + player.getMonetePrese(), 20, 50);
+                g.drawString("Vite: " + player.getVite(), 20, 70);
+
                 break;
 
             case PAUSE:
@@ -169,4 +180,15 @@ for (Entity nemicoCorrente : nemici) {
             nemicoCorrente.draw(g);
         }
     }
+
+
+    public void resetPartita() {
+        TimeSeconds = 0;
+        TimeTicks = 0;
+        
+        // Qui in futuro aggiungerai anche:
+        // player.resetPosizione();
+        // ricaricaNemici();
+    }
+    
 }
