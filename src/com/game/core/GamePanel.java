@@ -19,9 +19,7 @@ import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -36,7 +34,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     private Thread gameThread;
     private boolean running = false;
-    private ArrayList<Entity> nemici;
     private ArrayList<Entity> nemici;
     
     //Dichiariamo l'oggetto CollisionChecker
@@ -79,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
         collisionChecker = new CollisionChecker(levelManager);
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(30, 500, 100, 100, this);
-        // Creiamo i nemici
+        // Creiamo i nrmici
         nemici=levelManager.getListaNemici();
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
