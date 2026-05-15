@@ -135,6 +135,11 @@ public class GamePanel extends JPanel implements Runnable {
         switch (state) {
    case PLAYING:
                 if (player != null) player.update();
+  for (Entity nemicoCorrente : nemici) {
+                    nemicoCorrente.update();
+                }                break;
+            default:
+                break;
                 
                 TimeTicks++; 
                 if (TimeTicks >= 60) {
