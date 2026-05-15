@@ -42,7 +42,6 @@ public class GamePanel extends JPanel implements Runnable {
     private CollisionChecker collisionChecker;
 
     private Player player;
-    private Bee bee;
     private Background bg;
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
