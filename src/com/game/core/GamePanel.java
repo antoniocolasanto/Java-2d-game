@@ -133,8 +133,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         // Aggiorna la logica solo se stiamo giocando
         switch (state) {
-   case PLAYING:
+            case PLAYING:
                 if (player != null) player.update();
+
+                for (Entity nemicoCorrente : nemici) {
+                    nemicoCorrente.update();
+                }
                 
                 TimeTicks++; 
                 if (TimeTicks >= 60) {
@@ -145,6 +149,9 @@ public class GamePanel extends JPanel implements Runnable {
                 for (Entity nemicoCorrente : nemici) {
                     nemicoCorrente.update();
                 }
+                break;
+            default:
+                break;
         }
     }
 

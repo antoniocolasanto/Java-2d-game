@@ -1,12 +1,59 @@
 package com.game.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * MODELLO DEI DATI (Data Transfer Object - DTO)
- * - Mappa i dati del giocatore per prepararli all'invio al database (similmente a un JSON).
- * - Contiene campi come: username, totalCoins, levelReached.
- * - QUI va inserito il metodo concordato getAvarage() per calcolare e restituire la 
- * media delle statistiche del giocatore estrapolate dai match precedenti.
+ * - Mappa i dati del giocatore per prepararli all'invio al database o per leggerli (simile a un JSON).
+ * - Contiene il nome e la lista delle sue partite precedenti.
+ * - Contiene metodi di business logic come getAverageCoins() per calcolare statistiche in tempo reale.
  */
 public class PlayerProfile {
-    // ...
+    
+    private String nickname;
+    private List<GameSession> sessions;
+
+    public PlayerProfile(String nickname) {
+        this.nickname = nickname;
+        this.sessions = nList<>()ew Array;
+    }
+
+    public String getNickname() { return nickname; }
+    public void setNickname(String nickname) { this.nickname = nickname; }
+    
+    public List<GameSession> getSessions() { return sessions; }
+    public void setSessions(List<GameSession> sessions) { this.sessions = sessions; }
+
+    /**
+     * Calcola la media delle monete raccolte nelle sessioni precedenti.
+     * Utile per mostrare statistiche al giocatore o per la valutazione del professore.
+     */
+    public double getAverageCoins() {
+        if (sessions.isEmpty()) return 0.0;
+        int total = 0;
+        for (GameSession s : sessions) {
+            total += s.getCoins();
+        }
+        return (double) total / sessions.size();
+    }
+}
+
+/**
+ * Sotto-classe di supporto che rappresenta la singola partita giocata.
+ */
+class GameSession {
+    private int coins;
+    private int livesRemaining;
+    private long timeSec;
+
+    public GameSession(int coins, int livesRemaining, long timeSec) {
+        this.coins = coins;
+        this.livesRemaining = livesRemaining;
+        this.timeSec = timeSec;
+    }
+
+    public int getCoins() { return coins; }
+    public int getLivesRemaining() { return livesRemaining; }
+    public long getTimeSec() { return timeSec; }
 }
