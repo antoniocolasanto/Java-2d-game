@@ -82,6 +82,7 @@ private void caricaImmagine() {
     @Override
     public void update() {
         aggiornaPosizione();
+        aggiornaAnimazione();
         // 1. Controlla se hai preso monete
         gamePanel.getCollisionChecker().checkCoins(this);
     }
