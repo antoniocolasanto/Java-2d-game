@@ -1,8 +1,6 @@
 {
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "libreria/bson-5.7.0.jar",
-        "libreria/mongodb-driver-core-5.7.0.jar",
-        "libreria/mongodb-driver-sync-5.7.0.jar"
+        "libreria/*.jar",
+        "libreria/**/*.jar"
     ]
 }
