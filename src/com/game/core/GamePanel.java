@@ -19,7 +19,11 @@ import com.game.utils.Constants;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 //* // -Per disegnare qualcosa a schermo si utilizza la classe
@@ -36,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
     private ArrayList<Entity> nemici;
     private int TimeSeconds = 0; // Il tempo in secondi
     private int TimeTicks = 0;   // Conta i frame
+    private BufferedImage heartImage;
     
     //Dichiariamo l'oggetto CollisionChecker
     private CollisionChecker collisionChecker;
@@ -87,6 +92,12 @@ public class GamePanel extends JPanel implements Runnable {
         nemici=levelManager.getListaNemici();
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
+        try {
+            // CAMBIA QUESTO PERCORSO CON QUELLO VERO DELLA TUA IMMAGINE!
+            heartImage = ImageIO.read(new File("res/Sprites/Tiles/Double/heart.png")); 
+        } catch (IOException e) {
+            System.err.println("Errore: Immagine del cuore non trovata!");
+        }
     }
 
     public void startGameThread() {
@@ -158,9 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             case PLAYING:
                 renderGameWorld(g);
-                g.drawString("Tempo: " + TimeSeconds + "s", 20, 30);
-                g.drawString("Monete: " + player.getMonetePrese(), 20, 50);
-                g.drawString("Vite: " + player.getVite(), 20, 70);
+                drawUI(g);
 
                 break;
 
@@ -194,6 +203,34 @@ public class GamePanel extends JPanel implements Runnable {
         // Qui in futuro aggiungerai anche:
         // player.resetPosizione();
         // ricaricaNemici();
+    }
+    // Metodo per disegnare l'Interfaccia Utente (UI)
+    private void drawUI(Graphics g) {
+        // Se il player non esiste ancora, non disegnare nulla per evitare errori
+        if (player == null) return;
+
+        // 1. Impostiamo colore bianco e un font bello grande per le scritte
+        g.setColor(Color.GREEN);
+        g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
+
+        // Disegniamo il contatore delle monete (X=20, Y=60 per non sovrapporlo al tempo)
+        g.drawString("Monete: " + player.getMonetePrese(), 20, 60);
+
+        // 2. Disegniamo la salute (Vite)
+        g.drawString("Vite: ", 20, 95); // Etichetta testuale
+        
+        g.setColor(Color.RED); // Cambiamo colore in rosso per i cuori
+        int vite = player.getVite();
+        
+        // Ciclo magico: disegna un'immagine del cuore per ogni vita che possiedi
+        for (int i = 0; i < vite; i++) {
+            // Controlliamo che l'immagine sia stata caricata correttamente
+            if (heartImage != null) {
+                // X = 75 + (i * 30), Y = 78, Larghezza = 25, Altezza = 25
+                // Puoi cambiare 25, 25 per fare i cuoricini più grandi o più piccoli!
+                g.drawImage(heartImage, 75 + (i * 30), 78, 25, 25, null); 
+            }
+        }
     }
     
 }
