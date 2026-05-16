@@ -80,12 +80,14 @@ public class CollisionChecker {
 
         if (levelManager.isCoin(row, col)) {
             levelManager.removeTile(row, col); 
-            // cast necessario
-            if (entity instanceof Player) {
-                Player p = (Player) entity;
+            if (entity instanceof Player p) {
                 p.aggiungiMoneta();
             }
-            System.out.println("Nicolo Non sa Fare i Merge!!");
         }
+        if (levelManager.isDamage(row, col)) {
+                if (entity instanceof Player p) {
+                    p.rimuoviVita();
+                }
+            }
     }
 }

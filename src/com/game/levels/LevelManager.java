@@ -168,6 +168,11 @@ public class LevelManager {
         int tile = getTileType(riga, col);
         return tile == 3;
     }
+
+    public boolean isDamage(int riga, int col) {
+        int tile = getTileType(riga, col);
+        return tile == 4 || tile == 9; // Spuntoni o Api(Api non funziona per ora)
+    }
     
     /**
      * Sostituisce il blocco attuale con il vuoto (0). 

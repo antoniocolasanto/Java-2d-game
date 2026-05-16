@@ -36,7 +36,7 @@ public class GameWindow {
     private void createWindow() {
 
         // 1. Inizializza l'oggetto finestra e assegna il titolo che apparirà nella barra superiore
-        jframe = new JFrame("Super Nicolo");
+        jframe = new JFrame("Nick MongoDB");
 
         // 2. Uccide forzatamente il processo Java associato al gioco quando l'utente clicca la 'X' rossa. 
         // Senza questo, la finestra sparirebbe ma il gioco continuerebbe a consumare CPU/RAM in background.

@@ -228,9 +228,15 @@ private void aggiornaAnimazione() {
     public int getVite() {
         return vite;
     }
-
-
-
+    public void rimuoviVita(){
+        if(vite==0){
+            System.out.println("Game Over!");
+            resetPosition(50, 450);
+            //logica per terminare il gioco o resettare il livello
+        }else{
+            vite--;
+        }
+    }
     
     //Funzioni Setter per il movimento
     public void setLeft(boolean left) {

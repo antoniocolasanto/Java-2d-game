@@ -87,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Creiamo il controllore delle collisioni
         collisionChecker = new CollisionChecker(levelManager);
         // Creiamo il giocatore alle coordinate iniziali
-        player = new Player(30, 500, 100, 100, this);
+        player = new Player(50, 480, 100, 100, this);
         // Creiamo i nrmici
         nemici=levelManager.getListaNemici();
         mainMenu = new MainMenu();
@@ -125,7 +125,13 @@ public class GamePanel extends JPanel implements Runnable {
                 update(); // 1. Aggiorna dati
                 repaint(); // 2. Disegna (chiama paintComponent)
             } else {
-                Thread.yield();
+                // Avoid busy-waiting; sleep briefly to reduce CPU usage
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
             }
         }
     }
@@ -206,7 +212,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void resetPartita() {
         TimeSeconds = 0;
         TimeTicks = 0;
-        
         // Qui in futuro aggiungerai anche:
         // player.resetPosizione();
         // ricaricaNemici();
@@ -221,10 +226,7 @@ public class GamePanel extends JPanel implements Runnable {
         g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
 
         // Disegniamo il contatore delle monete (X=20, Y=60 per non sovrapporlo al tempo)
-        g.drawString("Monete: " + player.getMonetePrese(), 20, 60);
-
-        // 2. Disegniamo la salute (Vite)
-        g.drawString("Vite: ", 20, 95); // Etichetta testuale
+        g.drawString("Monete " + player.getMonetePrese(), 20, 50);
         
         g.setColor(Color.RED); // Cambiamo colore in rosso per i cuori
         int vite = player.getVite();
@@ -235,7 +237,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (heartImage != null) {
                 // X = 75 + (i * 30), Y = 78, Larghezza = 25, Altezza = 25
                 // Puoi cambiare 25, 25 per fare i cuoricini più grandi o più piccoli!
-                g.drawImage(heartImage, 75 + (i * 30), 78, 25, 25, null); 
+                g.drawImage(heartImage, 10 + (i * 40), 55, 60, 60, null); 
             }
         }
     }

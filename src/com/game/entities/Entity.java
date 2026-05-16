@@ -49,7 +49,12 @@ public abstract class Entity {
     public void setDirection(String direction) {
         this.direction = direction;
     }
-    
+
+    public void resetPosition(int position_x, int position_y){
+        this.x = position_x;
+        this.y = position_y;
+    }
+
         // polimorfismo
     // Inizializza il rettangolo della hitbox sulle coordinate dell'entità ma su questa funzione sarà fatto Override
     protected void initHitbox() {
