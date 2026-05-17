@@ -222,7 +222,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (player == null) return;
 
         // 1. Impostiamo colore bianco e un font bello grande per le scritte
-        g.setColor(Color.GREEN);
+        g.setColor(Color.BLACK);
         g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
 
         // Disegniamo il contatore delle monete (X=20, Y=60 per non sovrapporlo al tempo)
@@ -230,7 +230,11 @@ public class GamePanel extends JPanel implements Runnable {
         
         g.setColor(Color.RED); // Cambiamo colore in rosso per i cuori
         int vite = player.getVite();
-        
+
+        disegnaVite(g, vite);
+    }
+
+    public void disegnaVite(Graphics g, int vite){
         // Ciclo magico: disegna un'immagine del cuore per ogni vita che possiedi
         for (int i = 0; i < vite; i++) {
             // Controlliamo che l'immagine sia stata caricata correttamente

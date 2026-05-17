@@ -244,6 +244,4 @@ private void aggiornaAnimazione() {
       public void setDown(boolean down) {
         this.down = down;
     }
-
-    
 }
