@@ -216,15 +216,6 @@ private void aggiornaAnimazione() {
     public int getMonetePrese() {
         return monetePrese;
     }
-    //VITA
-    public void subisciDanno() {
-        vite--;
-        System.out.println("Hai subito danno! Vite rimaste: " + vite);
-        if (vite <= 0) {
-            System.out.println("Game Over!");
-            // Qui potresti aggiungere logica per terminare il gioco o resettare il livello
-        }
-    }
     public int getVite() {
         return vite;
     }
