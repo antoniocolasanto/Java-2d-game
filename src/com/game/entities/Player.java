@@ -51,15 +51,15 @@ private void caricaImmagine() {
         sprites = new BufferedImage[5]; 
         try {
             // Carichiamo la prima immagine alla posizione 0 abbassato
-            sprites[0] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_duck.png"));
+            sprites[0] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_duck.png"));
             // Carichiamo la seconda immagine alla posizione fermo
-            sprites[1] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_jump.png"));
+            sprites[1] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_jump.png"));
             // Carichiamo la terza  immagine alla posizione salto
-            sprites[2] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_idle.png"));
+            sprites[2] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_idle.png"));
             // Carichiamo la quarta immagine alla posizione movimento1
-            sprites[3] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_a.png"));
+            sprites[3] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_walk_a.png"));
             // Carichiamo la quinta immagine alla posizione movimento2
-            sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_b.png"));
+            sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_walk_b.png"));
 
         } catch (IOException e) {
             System.err.println("Errore: Immagini del Player non trovate!");
