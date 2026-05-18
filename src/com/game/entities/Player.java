@@ -1,6 +1,9 @@
 package com.game.entities;
 
 import com.game.core.GamePanel;
+import com.game.core.GameState;
+import com.game.db.PlayerDAO;
+import com.game.db.PlayerProfile; // Importiamo la classe del profilo
 import com.game.utils.Constants;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -16,6 +19,12 @@ public class Player extends Entity {
     // Statistiche del giocatore
     private int vite = 3;         
     private int monetePrese = 0;
+
+    //istanzio la classe PlayerDAO per gestire il salvataggio dei vari dati
+    private PlayerDAO playerDAO = new PlayerDAO();
+    
+    // Sostituiamo la stringa con l'oggetto PlayerProfile
+    private PlayerProfile profilo;
 
     // Variabili per gli Input (Tastiera)
     private boolean left, right, jump, down;
@@ -44,6 +53,9 @@ public class Player extends Entity {
 
         //polimorfismo
         caricaImmagine();
+        
+        // Inizializziamo il profilo con il nome di test predefinito
+        this.profilo = new PlayerProfile("GiocatoreTest");
     }
 
 private void caricaImmagine() {
@@ -51,15 +63,15 @@ private void caricaImmagine() {
         sprites = new BufferedImage[5]; 
         try {
             // Carichiamo la prima immagine alla posizione 0 abbassato
-            sprites[0] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_duck.png"));
+            sprites[0] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_duck.png"));
             // Carichiamo la seconda immagine alla posizione fermo
-            sprites[1] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_jump.png"));
+            sprites[1] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_jump.png"));
             // Carichiamo la terza  immagine alla posizione salto
-            sprites[2] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_idle.png"));
+            sprites[2] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_idle.png"));
             // Carichiamo la quarta immagine alla posizione movimento1
-            sprites[3] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_a.png"));
-            // Carichiamo la quinta immagine alla posizione movimento2
-            sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_yellow_walk_b.png"));
+            sprites[3] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_walk_a.png"));
+            // Carichiamo la quindicesima immagine alla posizione movimento2
+            sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_walk_b.png"));
 
         } catch (IOException e) {
             System.err.println("Errore: Immagini del Player non trovate!");
@@ -84,7 +96,7 @@ private void caricaImmagine() {
         aggiornaPosizione();
         aggiornaAnimazione();
         // 1. Controlla se hai preso monete
-        gamePanel.getCollisionChecker().checkCoins(this);
+        gamePanel.getCollisionChecker().checkCollision(this);
     }
 
 
@@ -243,5 +255,45 @@ private void aggiornaAnimazione() {
     }
       public void setDown(boolean down) {
         this.down = down;
+    }
+
+    public void saveWinningSession(){
+        // 1 Recuperiamo i dati della partita dal player che sta giocando
+        int moneteRaccolte = this.getMonetePrese();
+        int viteRimanenti = this.getVite();
+        long tempoImpiegato = gamePanel.getTimeSeconds();
+
+        System.out.println("--- BANDIERA TOCCATA! ---");
+        
+        // Recuperiamo il nickname dinamico direttamente dal PlayerProfile
+        String nicknameAttuale = profilo.getNickname();
+
+        // 2 Assicuriamoci che il player esista altrimenti lo creiamo
+        if(!playerDAO.playerExists(nicknameAttuale)){
+            playerDAO.createNewPlayer(nicknameAttuale);
+        }
+
+        try{
+        // 3 Salviamo la sessione vincente nel database
+        playerDAO.saveWinningSession(nicknameAttuale, moneteRaccolte, viteRimanenti, tempoImpiegato);
+
+        // 4 Cambiamo lo stato del gioco
+        GamePanel.state = GameState.LEADERBOARD;
+
+        } catch (Exception e){
+            System.err.println("Errore durante il salvataggio su MongoDB: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Permette di aggiornare il nickname del profilo.
+     * quando si chiederà al giocatore di inserire il nickname, si chiamerà 
+     * questo metodo per aggiornarlo nel profilo
+     */
+    public void setNickname(String nuovoNickname) {
+        if (this.profilo != null) {
+            this.profilo.setNickname(nuovoNickname);
+        }
     }
 }

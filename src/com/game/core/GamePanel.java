@@ -59,17 +59,17 @@ public class GamePanel extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA));
         this.setBackground(Color.CYAN);
         this.setDoubleBuffered(true); // Serve per rendere il disegno più fluido
-        this.setFocusable(true); // Permette al pannello di "ascoltare" i tasti
         
         // Inizializzazione componenti
         this.addKeyListener(new KeyInput(this));
+        
         // Permette a questo pannello di interagire con la tastiera
         // dice al computer che questo pannello è pronto a ricevere 
         // input da tastiera
         this.setFocusable(true);
-        // Creiamo lo sfondo collegandolo passandogli
         
-        //Qui istanziamo lo sfondo mappabile come vogliamo
+        // Creiamo lo sfondo collegandolo passandogli 
+        // Qui istanziamo lo sfondo mappabile come vogliamo
         layeredBg = new LayeredBackground();
 
         // 1. IL CIELO (Lo mettiamo come primissimo livello, partendo da 0,0. Coprirà tutta la fascia vuota!)
@@ -83,17 +83,20 @@ public class GamePanel extends JPanel implements Runnable {
 
         // 4. L'ERBA / TERRENO (Partono da Y=450 e si ripetono SOLO in orizzontale)
         layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_sand.png", 0, 450, true, false);
+        
         levelManager = new LevelManager();
         // Creiamo il controllore delle collisioni
         collisionChecker = new CollisionChecker(levelManager);
         // Creiamo il giocatore alle coordinate iniziali
         player = new Player(50, 480, 100, 100, this);
-        // Creiamo i nrmici
-        nemici=levelManager.getListaNemici();
+        // Creiamo i nemici
+        nemici = levelManager.getListaNemici();
+        
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
+        
         try {
-            // CAMBIA QUESTO PERCORSO CON QUELLO VERO DELLA TUA IMMAGINE!
+            // Immagine del cuore
             heartImage = ImageIO.read(new File("res/Sprites/Tiles/Double/heart.png")); 
         } catch (IOException e) {
             System.err.println("Errore: Immagine del cuore non trovata!");
@@ -106,10 +109,23 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
+    // =========================================
+    // GETTERS (Raggruppati per ordine e pulizia)
+    // =========================================
     public Player getPlayer() {
         return player;
     }
+    
+    public int getTimeSeconds() {
+        return TimeSeconds;
+    } 
 
+    // Serve al Player per prendere i controlli fisici
+    public CollisionChecker getCollisionChecker() {
+        return collisionChecker;
+    }
+
+    // GAME LOOP (Motore del gioco)
     @Override
     public void run() {
         // Calcolo per mantenere i 60 FPS (Frames Per Second)
@@ -142,30 +158,25 @@ public class GamePanel extends JPanel implements Runnable {
             case PLAYING:
                 if (player != null) player.update();
 
+                // Aggiorniamo i nemici (CORRETTO: prima questo ciclo era ripetuto due volte!)
                 for (Entity nemicoCorrente : nemici) {
                     nemicoCorrente.update();
                 }
                 
+                // Gestione del Timer
                 TimeTicks++; 
                 if (TimeTicks >= 60) {
                     TimeSeconds++;
                     TimeTicks = 0;
                 }
-
-                for (Entity nemicoCorrente : nemici) {
-                    nemicoCorrente.update();
-                }
                 break;
+                
             default:
                 break;
         }
     }
 
-    // Serve al Player per prendere i controlli fisici
-    public CollisionChecker getCollisionChecker() {
-    return collisionChecker;
-}
-
+    // RENDER GRAFICO
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -174,6 +185,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (layeredBg != null) {
             layeredBg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
         }
+        
         // 2. Rendering basato sullo stato
         switch (state) {
             case MENU:
@@ -183,7 +195,6 @@ public class GamePanel extends JPanel implements Runnable {
             case PLAYING:
                 renderGameWorld(g);
                 drawUI(g);
-
                 break;
 
             case PAUSE:
@@ -208,7 +219,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-
     public void resetPartita() {
         TimeSeconds = 0;
         TimeTicks = 0;
@@ -216,6 +226,7 @@ public class GamePanel extends JPanel implements Runnable {
         // player.resetPosizione();
         // ricaricaNemici();
     }
+    
     // Metodo per disegnare l'Interfaccia Utente (UI)
     private void drawUI(Graphics g) {
         // Se il player non esiste ancora, non disegnare nulla per evitare errori

@@ -16,6 +16,7 @@ public class Main {
         // Istanziamo la GameWindow. Le passiamo il gamePanel in modo che la finestra sappia cosa deve mostrare.
         // Nota: non salviamo l'oggetto in una variabile (es. GameWindow gw = new...) 
         // perché ci basta che venga creata e mostrata a schermo.
+
         new GameWindow(gamePanel); 
 
         gamePanel.startGameThread(); // Controllare se in GamePanel è necessario chiamare questo metodo qui o se è già gestito internamente al costruttore.

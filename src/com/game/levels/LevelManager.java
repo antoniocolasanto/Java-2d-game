@@ -58,7 +58,7 @@ public class LevelManager {
             tileSprites[6] = ImageIO.read(new File("res/Sprites/Tiles/Double/bridge_logs.png"));
             
             // Decorazioni / Fine Livello
-            tileSprites[7] = ImageIO.read(new File("res/Sprites/Tiles/Double/background_color_trees.png"));
+            tileSprites[7] = ImageIO.read(new File("res/Sprites/Tiles/Double/flag_red_a.png"));
             
         } catch (IOException e) {
             System.out.println("ERRORE: Impossibile caricare le immagini");
@@ -126,8 +126,9 @@ public class LevelManager {
      * divisione matematica per capire la sua posizione sulla griglia:
      * Colonna: 130 / 64 = 2 (Si trova nella terza colonna, partendo da 0)
      * Riga: 70 / 64 = 1 (Si trova nella seconda riga, partendo da 0)
-
-     * Sapendo questo, il gioco va a guardare dentro la tua matrice mapData[1][2] per vedere che numero c'è. Se c'è un 1 (Erba), ti deve bloccare. Se c'è un 3 (Moneta), la deve raccogliere.
+     * Sapendo questo, il gioco va a guardare dentro la tua matrice mapData[1][2] 
+     * per vedere che numero c'è. Se c'è un 1 (Erba), ti deve bloccare. 
+     * Se c'è un 3 (Moneta), la deve raccogliere.
     
     /**
      * Restituisce il numero del blocco a una specifica riga e colonna.
@@ -172,6 +173,11 @@ public class LevelManager {
     public boolean isDamage(int riga, int col) {
         int tile = getTileType(riga, col);
         return tile == 4 || tile == 9; // Spuntoni o Api(Api non funziona per ora)
+    }
+
+    public boolean isChekpoint(int riga, int col) {
+        int tile = getTileType(riga, col);
+        return tile == 7; // Spuntoni o Api(Api non funziona per ora)
     }
     
     /**

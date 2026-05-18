@@ -70,7 +70,7 @@ public class CollisionChecker {
         }
     }
 
-    public void checkCoins(Entity entity) {
+    public void checkCollision(Entity entity) {
         // Usiamo getHitbox() per trovare il centro
         int entityCenterX = (int) (entity.getHitbox().getX() + (entity.getHitbox().getWidth() / 2));
         int entityCenterY = (int) (entity.getHitbox().getY() + (entity.getHitbox().getHeight() / 2));
@@ -88,6 +88,11 @@ public class CollisionChecker {
                 if (entity instanceof Player p) {
                     p.rimuoviVita();
                 }
-            }
+        }
+        if (levelManager.isChekpoint(row, col)) {
+                if (entity instanceof Player p) {
+                    p.saveWinningSession();
+                }
+        }
     }
 }
