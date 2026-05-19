@@ -93,8 +93,9 @@ private void caricaImmagine() {
             }
         }
         aggiornaAnimazione();
-        // 1. Controlla se hai preso monete
+        // 1. Controlla se hai preso monete e se ti scontri con i nemici
         gamePanel.getCollisionChecker().checkCoins(this);
+        gamePanel.getCollisionChecker().checkEnemyCollision(this, gamePanel.getNemici());
     }
 
 
@@ -233,6 +234,7 @@ public void rimuoviVita() {
         if (invincibile) return; 
 
         if (vite == 1) {
+            vite--;
             System.out.println("Game Over!");
             resetPosition(50, 450);
         } else {

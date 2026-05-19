@@ -237,6 +237,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void disegnaVite(Graphics g, int vite){
+    
         // Ciclo magico: disegna un'immagine del cuore per ogni vita che possiedi
         for (int i = 0; i < vite; i++) {
             // Controlliamo che l'immagine sia stata caricata correttamente
@@ -246,5 +247,8 @@ public class GamePanel extends JPanel implements Runnable {
                 g.drawImage(heartImage, 10 + (i * 40), 55, 60, 60, null); 
             }
         }
+    }
+    public ArrayList<Entity> getNemici() {
+        return nemici;
     }
 }
