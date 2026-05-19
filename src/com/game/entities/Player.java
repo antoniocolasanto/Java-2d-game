@@ -237,6 +237,7 @@ public void rimuoviVita() {
             vite--;
             System.out.println("Game Over!");
             resetPosition(50, 450);
+            gamePanel.resetPartita();
         } else {
             vite--;
             invincibile = true; // ATTIVA L'INVINCIBILITÀ!
@@ -257,5 +258,13 @@ public void rimuoviVita() {
     }
     public void setDown(boolean down) {
         this.down = down;
+    }
+
+  
+    public void ResetMonete(){
+monetePrese=0;
+    }
+    public void resetVite(){
+        vite=3;
     }
 }
