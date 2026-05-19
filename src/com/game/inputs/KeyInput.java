@@ -15,14 +15,6 @@ public class KeyInput implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (GamePanel.state == GameState.IDENTIFICATION) {
-            char c = e.getKeyChar();
-            String currentName = gamePanel.getCurrentNickname();
-            
-            if (Character.isLetterOrDigit(c) && currentName.length() < 15) {
-                gamePanel.setCurrentNickname(currentName + c);
-            }
-        }
     }
 
     @Override
@@ -47,14 +39,20 @@ public class KeyInput implements KeyListener {
             
             if (key == KeyEvent.VK_BACK_SPACE && currentName.length() > 0) {
                 gamePanel.setCurrentNickname(currentName.substring(0, currentName.length() - 1));
-            }
-            
-            if (key == KeyEvent.VK_ENTER && currentName.length() > 0) {
+            } 
+            else if (key == KeyEvent.VK_ENTER && currentName.length() > 0) {
+                gamePanel.getPlayer().setNickname(currentName);
                 if (gamePanel.getPlayerDAO().playerExists(currentName)) {
                     GamePanel.state = GameState.CONFIRM_PLAYER;
                 } else {
                     gamePanel.getPlayerDAO().createNewPlayer(currentName);
                     GamePanel.state = GameState.PLAYING;
+                }
+            } 
+            else {
+                char c = e.getKeyChar();
+                if (Character.isLetterOrDigit(c) && currentName.length() < 15) {
+                    gamePanel.setCurrentNickname(currentName + c);
                 }
             }
             return;
