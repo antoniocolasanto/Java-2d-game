@@ -19,6 +19,9 @@ public class Player extends Entity {
     // Statistiche del giocatore
     private int vite = 3;         
     private int monetePrese = 0;
+    // Variabili per l'invincibilità
+    private boolean invincibile = false;
+    private int invincibileTick = 0;
 
     //istanzio la classe PlayerDAO per gestire il salvataggio dei vari dati
     private PlayerDAO playerDAO = new PlayerDAO();
@@ -70,7 +73,7 @@ private void caricaImmagine() {
             sprites[2] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_idle.png"));
             // Carichiamo la quarta immagine alla posizione movimento1
             sprites[3] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_walk_a.png"));
-            // Carichiamo la quindicesima immagine alla posizione movimento2
+            // Carichiamo la quinta immagine alla posizione movimento2
             sprites[4] = ImageIO.read(new File("res/Sprites/Characters/Double/character_pink_walk_b.png"));
 
         } catch (IOException e) {
@@ -94,9 +97,17 @@ private void caricaImmagine() {
     @Override
     public void update() {
         aggiornaPosizione();
+        if (invincibile) {
+            invincibileTick++;
+            if (invincibileTick >= 60) {
+                invincibile = false;     // Torna vulnerabile
+                invincibileTick = 0;     // Azzera il cronometro
+            }
+        }
         aggiornaAnimazione();
-        // 1. Controlla se hai preso monete
+        // 1. Controlla se hai preso monete e se ti scontri con i nemici
         gamePanel.getCollisionChecker().checkCollision(this);
+        gamePanel.getCollisionChecker().checkEnemyCollision(this, gamePanel.getNemici());
     }
 
 
@@ -231,13 +242,20 @@ private void aggiornaAnimazione() {
     public int getVite() {
         return vite;
     }
-    public void rimuoviVita(){
-        if(vite==0){
+public void rimuoviVita() {
+        if (invincibile) return; 
+
+        if (vite == 1) {
+            vite--;
             System.out.println("Game Over!");
             resetPosition(50, 450);
-            //logica per terminare il gioco o resettare il livello
-        }else{
+            GamePanel.state = GameState.DEATH;
+            gamePanel.resetPartita();
+        } else {
             vite--;
+            invincibile = true; // ATTIVA L'INVINCIBILITÀ!
+            resetPosition(50, 450);
+
         }
     }
     
@@ -245,15 +263,13 @@ private void aggiornaAnimazione() {
     public void setLeft(boolean left) {
         this.left = left;
     }
-
     public void setRight(boolean right) {
         this.right = right;
     }
-
     public void setJump(boolean jump) {
         this.jump = jump;
     }
-      public void setDown(boolean down) {
+    public void setDown(boolean down) {
         this.down = down;
     }
 
@@ -295,5 +311,11 @@ private void aggiornaAnimazione() {
         if (this.profilo != null) {
             this.profilo.setNickname(nuovoNickname);
         }
+      
+    public void ResetMonete(){
+        monetePrese=0;
+    }
+    public void resetVite(){
+        vite=3;
     }
 }

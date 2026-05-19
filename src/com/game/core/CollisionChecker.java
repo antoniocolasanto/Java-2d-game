@@ -4,6 +4,7 @@ import com.game.entities.Entity;
 import com.game.entities.Player;
 import com.game.levels.LevelManager;
 import com.game.utils.Constants;
+import java.util.ArrayList;
 
 public class CollisionChecker {
     
@@ -93,6 +94,19 @@ public class CollisionChecker {
                 if (entity instanceof Player p) {
                     p.saveWinningSession();
                 }
+            }
+
+    }
+    public void checkEnemyCollision(Player player, ArrayList<Entity> nemici) {
+        // Scorriamo tutti i nemici presenti nel livello
+        for (Entity nemico : nemici) {
+            // Se la hitbox del nemico non è nulla...
+            if (nemico.getHitbox() != null) {
+                // ...ecco la magia di Java! Chiediamo se i due rettangoli si sovrappongono
+                if (player.getHitbox().intersects(nemico.getHitbox())) {
+                    player.rimuoviVita(); 
+                }
+            }
         }
     }
 }

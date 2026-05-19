@@ -2,7 +2,7 @@ package com.game.db;
 
 /**
  * ENTITÀ DI SESSIONE DI GIOCO (Model)
- * - Questa classe rappresenta una singola partita vinta da un giocatore.
+ * - Questa classe rappresenta una singola sessione vinta da un giocatore.
  * - È un oggetto di supporto (Data Transfer Object) che viene memorizzato 
  * all'interno della lista 'sessions' della classe PlayerProfile.
  * - Quando salviamo i dati su MongoDB, le variabili di questa classe 
