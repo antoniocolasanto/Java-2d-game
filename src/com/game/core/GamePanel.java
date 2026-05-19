@@ -281,7 +281,7 @@ public class GamePanel extends JPanel implements Runnable {
         TimeSeconds = 0;
         TimeTicks = 0;
         player.resetVite();
-        player.ResetMonete();
+        player.resetMonete();
         player.resetPosition(50, 480);
 
         levelManager = new LevelManager();

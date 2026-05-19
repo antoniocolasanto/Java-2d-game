@@ -311,8 +311,9 @@ public void rimuoviVita() {
         if (this.profilo != null) {
             this.profilo.setNickname(nuovoNickname);
         }
+    }
       
-    public void ResetMonete(){
+    public void resetMonete(){
         monetePrese=0;
     }
     public void resetVite(){
