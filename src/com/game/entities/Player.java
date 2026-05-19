@@ -2,6 +2,8 @@ package com.game.entities;
 
 import com.game.core.GamePanel;
 import com.game.core.GameState;
+import com.game.db.PlayerDAO;
+import com.game.db.PlayerProfile; // Importiamo la classe del profilo
 import com.game.utils.Constants;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -20,6 +22,12 @@ public class Player extends Entity {
     // Variabili per l'invincibilità
     private boolean invincibile = false;
     private int invincibileTick = 0;
+
+    //istanzio la classe PlayerDAO per gestire il salvataggio dei vari dati
+    private PlayerDAO playerDAO = new PlayerDAO();
+    
+    // Sostituiamo la stringa con l'oggetto PlayerProfile
+    private PlayerProfile profilo;
 
     // Variabili per gli Input (Tastiera)
     private boolean left, right, jump, down;
@@ -48,6 +56,9 @@ public class Player extends Entity {
 
         //polimorfismo
         caricaImmagine();
+        
+        // Inizializziamo il profilo con il nome di test predefinito
+        this.profilo = new PlayerProfile("GiocatoreTest");
     }
 
 private void caricaImmagine() {
@@ -95,7 +106,7 @@ private void caricaImmagine() {
         }
         aggiornaAnimazione();
         // 1. Controlla se hai preso monete e se ti scontri con i nemici
-        gamePanel.getCollisionChecker().checkCoins(this);
+        gamePanel.getCollisionChecker().checkCollision(this);
         gamePanel.getCollisionChecker().checkEnemyCollision(this, gamePanel.getNemici());
     }
 
@@ -262,9 +273,47 @@ public void rimuoviVita() {
         this.down = down;
     }
 
-  
+    public void saveWinningSession(){
+        // 1 Recuperiamo i dati della partita dal player che sta giocando
+        int moneteRaccolte = this.getMonetePrese();
+        int viteRimanenti = this.getVite();
+        long tempoImpiegato = gamePanel.getTimeSeconds();
+
+        System.out.println("--- BANDIERA TOCCATA! ---");
+        
+        // Recuperiamo il nickname dinamico direttamente dal PlayerProfile
+        String nicknameAttuale = profilo.getNickname();
+
+        // 2 Assicuriamoci che il player esista altrimenti lo creiamo
+        if(!playerDAO.playerExists(nicknameAttuale)){
+            playerDAO.createNewPlayer(nicknameAttuale);
+        }
+
+        try{
+        // 3 Salviamo la sessione vincente nel database
+        playerDAO.saveWinningSession(nicknameAttuale, moneteRaccolte, viteRimanenti, tempoImpiegato);
+
+        // 4 Cambiamo lo stato del gioco
+        GamePanel.state = GameState.LEADERBOARD;
+
+        } catch (Exception e){
+            System.err.println("Errore durante il salvataggio su MongoDB: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Permette di aggiornare il nickname del profilo.
+     * quando si chiederà al giocatore di inserire il nickname, si chiamerà 
+     * questo metodo per aggiornarlo nel profilo
+     */
+    public void setNickname(String nuovoNickname) {
+        if (this.profilo != null) {
+            this.profilo.setNickname(nuovoNickname);
+        }
+      
     public void ResetMonete(){
-monetePrese=0;
+        monetePrese=0;
     }
     public void resetVite(){
         vite=3;

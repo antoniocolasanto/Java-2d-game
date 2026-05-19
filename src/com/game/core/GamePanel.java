@@ -59,11 +59,16 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel() {
         this.setPreferredSize(new Dimension(Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA));
         this.setBackground(Color.CYAN);
-        this.setDoubleBuffered(true); 
-        this.setFocusable(true); 
+        this.setDoubleBuffered(true); // Serve per rendere il disegno più fluido
         
         // Inizializzazione componenti
         this.addKeyListener(new KeyInput(this));
+        
+        // Inizializzazione componenti
+        this.addKeyListener(new KeyInput(this));
+         // Permette a questo pannello di interagire con la tastiera
+        // dice al computer che questo pannello è pronto a ricevere 
+        // input da tastiera
         this.setFocusable(true);
         
         // --- CONNESSIONE E INIZIALIZZAZIONE COMPONENTI DATABASE ---
@@ -83,11 +88,14 @@ public class GamePanel extends JPanel implements Runnable {
         levelManager = new LevelManager();
         collisionChecker = new CollisionChecker(levelManager);
         player = new Player(50, 480, 100, 100, this);
+        // Creiamo i nemici
         nemici = levelManager.getListaNemici();
+        
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
         
         try {
+            // Immagine del cuore
             heartImage = ImageIO.read(new File("res/Sprites/Tiles/Double/heart.png")); 
         } catch (IOException e) {
             System.err.println("Errore: Immagine del cuore non trovata!");
@@ -109,10 +117,23 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
+    // =========================================
+    // GETTERS (Raggruppati per ordine e pulizia)
+    // =========================================
     public Player getPlayer() {
         return player;
     }
+    
+    public int getTimeSeconds() {
+        return TimeSeconds;
+    } 
 
+    // Serve al Player per prendere i controlli fisici
+    public CollisionChecker getCollisionChecker() {
+        return collisionChecker;
+    }
+
+    // GAME LOOP (Motore del gioco)
     @Override
     public void run() {
         final long TARGET_NS = 1_000_000_000L / 60;
@@ -142,16 +163,19 @@ public class GamePanel extends JPanel implements Runnable {
             case PLAYING:
                 if (player != null) player.update();
 
+                // Aggiorniamo i nemici (CORRETTO: prima questo ciclo era ripetuto due volte!)
                 for (Entity nemicoCorrente : nemici) {
                     nemicoCorrente.update();
                 }
                 
+                // Gestione del Timer
                 TimeTicks++; 
                 if (TimeTicks >= 60) {
                     TimeSeconds++;
                     TimeTicks = 0;
                 }
                 break;
+                
             default:
                 break;
         }
@@ -169,6 +193,7 @@ public class GamePanel extends JPanel implements Runnable {
             layeredBg.draw(g, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
         }
         
+        // 2. Rendering basato sullo stato
         switch (state) {
             case MENU:
                 mainMenu.draw(g); 
@@ -256,8 +281,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-
- public void resetPartita() {
+    public void resetPartita() {
         TimeSeconds = 0;
         TimeTicks = 0;
         player.resetVite();
@@ -271,7 +295,8 @@ public class GamePanel extends JPanel implements Runnable {
   
         nemici = levelManager.getListaNemici();
     }
-
+    
+    // Metodo per disegnare l'Interfaccia Utente (UI)
     private void drawUI(Graphics g) {
         if (player == null) return;
 
