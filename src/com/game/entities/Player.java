@@ -1,6 +1,7 @@
 package com.game.entities;
 
 import com.game.core.GamePanel;
+import com.game.core.GameState;
 import com.game.utils.Constants;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -237,6 +238,7 @@ public void rimuoviVita() {
             vite--;
             System.out.println("Game Over!");
             resetPosition(50, 450);
+            GamePanel.state = GameState.DEATH;
             gamePanel.resetPartita();
         } else {
             vite--;
