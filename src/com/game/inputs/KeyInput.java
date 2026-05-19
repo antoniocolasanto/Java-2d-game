@@ -40,13 +40,31 @@ public class KeyInput implements KeyListener {
             if (key == KeyEvent.VK_BACK_SPACE && currentName.length() > 0) {
                 gamePanel.setCurrentNickname(currentName.substring(0, currentName.length() - 1));
             } 
-            else if (key == KeyEvent.VK_ENTER && currentName.length() > 0) {
-                gamePanel.getPlayer().setNickname(currentName);
-                if (gamePanel.getPlayerDAO().playerExists(currentName)) {
-                    GamePanel.state = GameState.CONFIRM_PLAYER;
-                } else {
-                    gamePanel.getPlayerDAO().createNewPlayer(currentName);
-                    GamePanel.state = GameState.PLAYING;
+            else if (key == KeyEvent.VK_ENTER) { // Rimosso il controllo della lunghezza qui per poter debuggare
+                
+                System.out.println("Hai premuto INVIO. Nome attuale: '" + currentName + "'");
+                
+                if (currentName.trim().isEmpty()) {
+                    System.out.println("Non puoi confermare un nome vuoto!");
+                    return;
+                }
+
+                try {
+                    System.out.println("Contatto il Database MongoDB...");
+                    gamePanel.getPlayer().setNickname(currentName);
+                    
+                    if (gamePanel.getPlayerDAO().playerExists(currentName)) {
+                        System.out.println("Giocatore trovato! Passo a CONFIRM_PLAYER.");
+                        GamePanel.state = GameState.CONFIRM_PLAYER;
+                    } else {
+                        System.out.println("Nuovo giocatore! Lo creo e passo a PLAYING.");
+                        gamePanel.getPlayerDAO().createNewPlayer(currentName);
+                        GamePanel.state = GameState.PLAYING;
+                    }
+                } catch (Exception ex) {
+                    System.err.println("ERRORE CRITICO DATABASE: MongoDB è acceso?");
+                    System.err.println("Dettaglio errore: " + ex.getMessage());
+                    ex.printStackTrace();
                 }
             } 
             else {
