@@ -18,7 +18,10 @@ import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -195,6 +198,54 @@ public class GamePanel extends JPanel implements Runnable {
                 g.setColor(Color.YELLOW);
                 g.drawString("CLASSIFICA - In attesa di MongoDB...", 500, 300);
                 break;
+               case DEATH:
+                // 1. Disegna il mondo di gioco bloccato sullo sfondo
+                renderGameWorld(g);
+
+                // Facciamo il cast a Graphics2D per sbloccare effetti grafici avanzati
+                Graphics2D g2 = (Graphics2D) g;
+                
+                // Attiviamo l'antialiasing per rendere i font liscissimi e professionali
+                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+                // 2. SFONDO: Un gradiente sfumato semi-trasparente dal nero a un rosso scuro "cupo"
+                GradientPaint sfumaturaSfondo = new GradientPaint(
+                    0, 0, new Color(0, 0, 0, 220), 
+                    0, Constants.ALTEZZA_FINESTRA, new Color(35, 5, 5, 200)
+                );
+                g2.setPaint(sfumaturaSfondo);
+                g2.fillRect(0, 0, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
+
+                // 3. TITOLO "GAME OVER" CON EFFETTO OMBRA PROFONDA
+                String titolo = "GAME OVER";
+                g2.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 65));
+                
+                // Calcoliamo la X dinamicamente per centrare la scritta al millimetro su qualsiasi schermo
+                int xTitolo = (Constants.LARGHEZZA_FINESTRA - g2.getFontMetrics().stringWidth(titolo)) / 2;
+                int yTitolo = 260;
+
+                // Disegniamo prima l'ombra nera (spostata in basso a destra)
+                g2.setColor(Color.BLACK);
+                g2.drawString(titolo, xTitolo + 4, yTitolo + 4);
+                // Disegniamo il testo principale sopra in rosso intenso
+                g2.setColor(new Color(220, 20, 20));
+                g2.drawString(titolo, xTitolo, yTitolo);
+
+                // 4. ISTRUZIONE INSERITA COME TESTO ELEGANTE (Senza pulsanti di restart)
+                String istruzione = "PREMI INVIO PER TORNARE AL MENU";
+                g2.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
+                
+                // Centriamo dinamicamente anche l'istruzione
+                int xIstruzione = (Constants.LARGHEZZA_FINESTRA - g2.getFontMetrics().stringWidth(istruzione)) / 2;
+                int yIstruzione = 370;
+
+                // Ombra sottile per la leggibilità
+                g2.setColor(Color.BLACK);
+                g2.drawString(istruzione, xIstruzione + 2, yIstruzione + 2);
+                // Testo bianco brillante pulito
+                g2.setColor(Color.WHITE);
+                g2.drawString(istruzione, xIstruzione, yIstruzione);
+                break;
         }
     }
 
@@ -209,16 +260,19 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
-    public void resetPartita() {
+ public void resetPartita() {
         TimeSeconds = 0;
         TimeTicks = 0;
         player.resetVite();
         player.ResetMonete();
         player.resetPosition(50, 480);
-        nemici = levelManager.getListaNemici(); // Ricarica i nemici dal LevelManager (assicurati che il LevelManager abbia un metodo per resettare i nemici alla posizione iniziale)
-        // Qui in futuro aggiungerai anche:
-        // player.resetPosizione();
-        // ricaricaNemici();
+
+        levelManager = new LevelManager();
+
+                collisionChecker = new CollisionChecker(levelManager);
+        
+  
+        nemici = levelManager.getListaNemici();
     }
     // Metodo per disegnare l'Interfaccia Utente (UI)
     private void drawUI(Graphics g) {
