@@ -284,6 +284,29 @@ public class GamePanel extends JPanel implements Runnable {
         int vite = player.getVite();
 
         disegnaVite(g, vite);
+        // --- 3. DISEGNAMO IL TIMER CON SFONDO UI ---
+        
+        // Calcoliamo i minuti e i secondi
+        int minuti = TimeSeconds / 60;
+        int secondi = TimeSeconds % 60;
+        String testoTempo = String.format("Tempo: %02d:%02d", minuti, secondi);
+        
+        // Calcoliamo la X per centrare tutto
+        int xTempo = (Constants.LARGHEZZA_FINESTRA - g.getFontMetrics().stringWidth(testoTempo)) / 2;
+        int yTempo = 40; 
+        
+        // 3a. Disegniamo lo sfondo semi-trasparente (Badge)
+        int padding = 12; // Spazio extra ai lati del testo
+        int larghezzaSfondo = g.getFontMetrics().stringWidth(testoTempo) + (padding * 2);
+        int altezzaSfondo = 30; // Altezza del rettangolo
+        
+        g.setColor(new Color(0, 0, 0, 150)); // Nero con trasparenza (150 su 255)
+        // Disegniamo un rettangolo con gli angoli arrotondati dietro al testo
+        g.fillRoundRect(xTempo - padding, yTempo - 22, larghezzaSfondo, altezzaSfondo, 15, 15);
+        
+        // 3b. Disegniamo il testo bianco sopra al badge
+        g.setColor(Color.WHITE);
+        g.drawString(testoTempo, xTempo, yTempo);;
     }
 
     public void disegnaVite(Graphics g, int vite){
