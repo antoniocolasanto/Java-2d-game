@@ -212,6 +212,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void resetPartita() {
         TimeSeconds = 0;
         TimeTicks = 0;
+        player.resetVite();
+        player.ResetMonete();
         player.resetPosition(50, 480);
         nemici = levelManager.getListaNemici(); // Ricarica i nemici dal LevelManager (assicurati che il LevelManager abbia un metodo per resettare i nemici alla posizione iniziale)
         // Qui in futuro aggiungerai anche:
