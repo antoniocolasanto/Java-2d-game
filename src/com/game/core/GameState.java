@@ -6,5 +6,6 @@ public enum GameState {
     CONFIRM_PLAYER,   // Domanda "Sei tu? SI/NO"
     PLAYING, 
     PAUSE, 
-    LEADERBOARD
+    LEADERBOARD,
+    DEATH
 }

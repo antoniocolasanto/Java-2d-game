@@ -95,7 +95,16 @@ public class KeyInput implements KeyListener {
             if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) gamePanel.getPlayer().setJump(true);
             if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) gamePanel.getPlayer().setDown(true);
         }
+        // --- GESTIONE GAME OVER (DEATH) ---
+        if (GamePanel.state == GameState.DEATH) {
+            if (key == KeyEvent.VK_ENTER) {
+                gamePanel.resetPartita();         // 1. Resetta mappa, monete, tempo e vite a 3
+                GamePanel.state = GameState.MENU; // 2. Riporta il giocatore al Menu principale
+            }
+            return; 
+        }
     }
+    
 
     @Override
     public void keyReleased(KeyEvent e) {
