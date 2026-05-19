@@ -180,10 +180,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public CollisionChecker getCollisionChecker() {
-        return collisionChecker;
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
