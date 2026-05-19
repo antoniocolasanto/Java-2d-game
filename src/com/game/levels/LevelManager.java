@@ -113,8 +113,7 @@ public class LevelManager {
     }
     
     /**
-     * Getter vitale per lo Studente A (Antonio).
-     * Gli permetterà di leggere dove sono i blocchi solidi per fermare la gravità del player.
+     * getter permetterà di leggere dove sono i blocchi solidi per fermare la gravità del player.
      */
     public int[][] getLevelData() {
         return mapData;
@@ -171,7 +170,7 @@ public class LevelManager {
 
     public boolean isDamage(int riga, int col) {
         int tile = getTileType(riga, col);
-        return tile == 4 || tile == 9; // Spuntoni o Api(Api non funziona per ora)
+        return tile == 4; // Spuntoni o Api(Api non funziona per ora)
     }
     
     /**
