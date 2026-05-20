@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+
 public class Bee extends Entity {
 
 // array che conterrà tutti i fotogrammi dell'animazione dell ape
@@ -22,7 +23,10 @@ public class Bee extends Entity {
     private int aniIndex = 0;  // indice fotogramma attuale 
     private int aniSpeed = 10; // velocità dell'animazione  
     
-    
+    // Variabili per il range di volo delle api
+    private float startX;
+    private float rangeX = 200.0f;
+
     // Variabili per il movimento del nemico
     private float beeSpeed = 2.0f;    // velocità ape
     private boolean movingRight = true;
@@ -31,6 +35,8 @@ public class Bee extends Entity {
     public Bee(float x, float y, int width, int height) {
 
         super(x, y, width, height);
+
+        startX = x;
         caricaImmagine();
     }
 
@@ -65,21 +71,50 @@ private void caricaImmagine() {
     
 
     private void pattuglia() {
+        // Evita errori se il GamePanel non è 
+        // ancora collegato
+        if (gamePanel == null) return; 
+
+        // 1. Diciamo al CollisionChecker a che velocità andiamo
+        this.speed = beeSpeed; 
+        
+        // 2. Impostiamo la direzione in base a dove stiamo andando
         if (movingRight) {
-            x += beeSpeed;
-            
-            // --- MURO PROVVISORIO A DESTRA ---
-            // Quando arriva alla coordinata X = 800, inverte la direzione
-            if (x >= 800) {
-                movingRight = false;
-            }
+            setDirection("RIGHT");
         } else {
-            x -= beeSpeed;
+            setDirection("LEFT");
+        }
+
+        // 3. Resettiamo la collisione e chiediamo 
+        // al GamePanel di controllare
+        setCollisionOn(false);
+        gamePanel.getCollisionChecker().checkTile(this);
+
+        // 4. Se sbattiamo contro un muro (collisionOn diventa true)
+        // invertiamo la marcia
+        if (isCollisionOn()) {
+            movingRight = !movingRight;
+        } else {
+            // Se la strada è libera, continuiamo a volare fino ad un certo range
+            if (movingRight) {
+                // Se la sua X attuale è maggiore o uguale al punto di partenza più 
+                // il range
+                if (x >= startX + rangeX) {
+                    // Ha raggiunto il massimo range e si volta
+                    movingRight = false; 
+                } else {
+                    x += beeSpeed;
+                }
+            } else {
+                // Se la sua X attuale è minore o uguale al punto di partenza meno 
+                // il range
+                if (x <= startX - rangeX) {
+                    // Ha raggiunto il minimo range e si volta
+                    movingRight = true;
+                } else {
+                    x -= beeSpeed;
+                }
             
-            // --- MURO PROVVISORIO A SINISTRA ---
-            // Quando torna alla coordinata X = 400, inverte di nuovo la direzione
-            if (x <= 400) {
-                movingRight = true;
             }
         }
     }
@@ -90,7 +125,6 @@ private void caricaImmagine() {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
         }
         
-        drawHitbox(g);
     }
 
     private void aggiornaAnimazione() {
