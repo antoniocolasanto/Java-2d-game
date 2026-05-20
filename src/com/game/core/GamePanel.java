@@ -29,7 +29,6 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel {
 
     private javax.swing.Timer gameTimer;
-    private boolean running = false;
     private ArrayList<Entity> nemici;
     private int TimeSeconds = 0; // Il tempo in secondi
     private int TimeTicks = 0;   // Conta i frame
