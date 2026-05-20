@@ -87,22 +87,14 @@ private void caricaImmagine() {
     protected void updateHitbox() {
         //Quando si abbasa ha una certa hitbox altrimenti no
         if (down) {
-            //STATO ABBASSATO
+            //STATO ABBASSATO - Spingiamo la Y e X verso il basso
             hitbox.x = (int) x + 23;
-            // Spingiamo la Y verso il basso (abbassiamo il tetto)
             hitbox.y = (int) y + 55; 
-            hitbox.width = width - 50;
-            // height - 56 mantiene il fondo della hitbox 
-            // esattamente alla stessa identica altezza dello stato in piedi!
-            hitbox.height = height - 55; 
         } else {
             //STATO IN PIEDI
             hitbox.x = (int) x + 23;
             hitbox.y = (int) y + 30;
-            hitbox.width = width - 50;
-            hitbox.height = height - 30;
         }
-
     }
 
     // Metodo per aggiornare le coordinate del giocatore (logica del movimento, gravità, ecc.)
