@@ -52,7 +52,7 @@ public class IdentificationScreen {
 
             g2.setFont(new Font("Arial", Font.BOLD, 35));
             g2.setColor(Color.GREEN);
-            g2.drawString("[ S ] SI, gioca", Constants.LARGHEZZA_FINESTRA / 2 - 200, 400);
+            g2.drawString("[ S ] SI, gioca", Constants.LARGHEZZA_FINESTRA / 2 - 250, 400);
             
             g2.setColor(Color.RED);
             g2.drawString("[ N ] NO, cambia nome", Constants.LARGHEZZA_FINESTRA / 2 + 10, 400);
