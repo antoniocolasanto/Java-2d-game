@@ -89,6 +89,12 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player(50, 480, 100, 100, this);
         // Creiamo i nemici
         nemici = levelManager.getListaNemici();
+
+        //Cicliamo tutta la lista dei nemici e gli settiamo
+        //GamePanel così possono interagire con esso
+        for (Entity nemico : nemici) {
+            nemico.setGamePanel(this);
+        }
         
         mainMenu = new MainMenu();
         pauseMenu = new PauseMenu();
@@ -287,6 +293,12 @@ public class GamePanel extends JPanel implements Runnable {
         levelManager = new LevelManager();
         collisionChecker = new CollisionChecker(levelManager);
         nemici = levelManager.getListaNemici();
+
+        //Quando viene resettata la partita vengono
+        // reimpostati anche i nemici nel GamePanel
+        for (Entity nemico : nemici) {
+            nemico.setGamePanel(this);
+        }
     }
     
     // Metodo per disegnare l'Interfaccia Utente (UI)

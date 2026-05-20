@@ -65,21 +65,35 @@ private void caricaImmagine() {
     
 
     private void pattuglia() {
+        // Evita errori se il GamePanel non è 
+        // ancora collegato
+        if (gamePanel == null) return; 
+
+        // 1. Diciamo al CollisionChecker a che velocità andiamo
+        this.speed = beeSpeed; 
+        
+        // 2. Impostiamo la direzione in base a dove stiamo andando
         if (movingRight) {
-            x += beeSpeed;
-            
-            // --- MURO PROVVISORIO A DESTRA ---
-            // Quando arriva alla coordinata X = 800, inverte la direzione
-            if (x >= 800) {
-                movingRight = false;
-            }
+            setDirection("RIGHT");
         } else {
-            x -= beeSpeed;
-            
-            // --- MURO PROVVISORIO A SINISTRA ---
-            // Quando torna alla coordinata X = 400, inverte di nuovo la direzione
-            if (x <= 400) {
-                movingRight = true;
+            setDirection("LEFT");
+        }
+
+        // 3. Resettiamo la collisione e chiediamo 
+        // al GamePanel di controllare
+        setCollisionOn(false);
+        gamePanel.getCollisionChecker().checkTile(this);
+
+        // 4. Se sbattiamo contro un muro (collisionOn diventa true)
+        // invertiamo la marcia
+        if (isCollisionOn()) {
+            movingRight = !movingRight;
+        } else {
+            // Se la strada è libera, continuiamo a muoverci
+            if (movingRight) {
+                x += beeSpeed;
+            } else {
+                x -= beeSpeed;
             }
         }
     }
@@ -90,7 +104,6 @@ private void caricaImmagine() {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
         }
         
-        drawHitbox(g);
     }
 
     private void aggiornaAnimazione() {
