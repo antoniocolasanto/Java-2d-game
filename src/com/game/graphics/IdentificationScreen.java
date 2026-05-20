@@ -11,6 +11,12 @@ import java.awt.*;
  */
 public class IdentificationScreen {
 
+    /**
+     * Metodo per disegnare la schermata di identificazione. Viene chiamato ogni frame finché il giocatore non conferma il nickname.
+     * @param g - l'oggetto Graphics su cui disegnare
+     * @param currentName - il nickname attualmente digitato dal giocatore
+     * @param askConfirmation - se true, mostra la fase di conferma dell'identità. Altrimenti mostra la fase di inserimento del nickname
+     */
     public void draw(Graphics g, String currentName, boolean askConfirmation) {
         Graphics2D g2 = (Graphics2D) g;
 
@@ -59,7 +65,12 @@ public class IdentificationScreen {
         }
     }
 
-    // Metodo helper per centrare il testo orizzontalmente
+/**
+ * funzione che stampa a schermo un testo centrato.
+ * @param g2 oggetto grafico su cui disegnare
+ * @param text testo da disegnare
+ * @param y coordinata verticale per disegnare il testo(x automatica)
+ */    
     private void drawCenteredText(Graphics2D g2, String text, int y) {
         FontMetrics fm = g2.getFontMetrics();
         int x = (Constants.LARGHEZZA_FINESTRA - fm.stringWidth(text)) / 2;
