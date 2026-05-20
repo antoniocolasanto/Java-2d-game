@@ -268,7 +268,7 @@ public class GamePanel extends JPanel {
         TimeTicks = 0;
         player.resetVite();
         player.resetMonete();
-        player.resetPosition(50, 400);
+        player.resetPosition(50, 350);
 
         levelManager = new LevelManager();
         collisionChecker = new CollisionChecker(levelManager);
