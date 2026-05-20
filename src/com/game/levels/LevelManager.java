@@ -13,6 +13,7 @@ package com.game.levels;
 
 import com.game.entities.Bee;
 import com.game.entities.Entity;
+import com.game.entities.Ladybug;
 import com.game.utils.Constants;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -196,16 +197,20 @@ public class LevelManager {
                 
                 int tileType = mapData[riga][col];
                 switch(tileType){
-                    case 9:nemici.add(new Bee(col*Constants.SIZE_BLOCCO, riga*Constants.SIZE_BLOCCO,100,100));
+                    //APE
+                    case 9:nemici.add(new Bee(col*Constants.SIZE_BLOCCO, riga*Constants.SIZE_BLOCCO,70,70));
                     mapData[riga][col] = 0;
                         break;
 
                         default: break;
-                }
-                
+                    case 8:
+                    //COCCINELLA
+                    nemici.add(new Ladybug(col * Constants.SIZE_BLOCCO, riga * Constants.SIZE_BLOCCO, 60, 60));
+                        mapData[riga][col] = 0;
+                        break;
+                }  
             }
         }
- 
         return nemici;
     }
 }
