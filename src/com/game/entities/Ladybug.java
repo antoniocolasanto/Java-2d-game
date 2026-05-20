@@ -44,7 +44,9 @@ public class Ladybug extends Entity {
             System.err.println("Errore: Immagini della Coccinella non trovate!");
         }
     }
-
+    /**
+     * Aggiorna lo stato della coccinella, gestisce il movimento e le collisioni.
+     */
     @Override
     public void update() {
         volaSuEGiù();
