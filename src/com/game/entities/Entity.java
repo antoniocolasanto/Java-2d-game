@@ -7,6 +7,7 @@ package com.game.entities;
  * dovranno obbligatoriamente implementare.
  */
 
+import com.game.core.GamePanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -103,7 +104,7 @@ public abstract class Entity {
      */
     public abstract void draw(Graphics g);
 
-    
+
     protected void drawHitbox(Graphics g) {
         g.setColor(Color.PINK);
         g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
