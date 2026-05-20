@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MODELLO DEI DATI (Data Transfer Object - DTO)
- * - Mappa i dati del giocatore per prepararli all'invio al database o per leggerli (simile a un JSON).
- * - Contiene il nome e la lista delle sue partite precedenti.
- * - Contiene metodi di business logic come getPerformanceRatio() per calcolare statistiche in tempo reale.
+ *Rappresenta il profilo utente completo sotto forma di DTO, 
+ *utile sia per preparare i dati da inviare al database, sia per leggere quelli estratti.
+ *Ruolo principale: Associa un identificativo univoco (nickname) 
+ *allo storico di tutte le partite giocate da quell'utente (una lista di oggetti GameSession).
+ *Oltre a immagazzinare dati, espone il metodo getPerformanceRatio() 
+ *che calcola una statistica in tempo reale delle prestazioni del giocatore, 
+ *dividendo il numero totale di monete accumulate per il tempo complessivo di gioco. 
+ *(Nota: Il file contiene in fondo anche una classe interna GameSession di supporto, 
+ *che duplica la struttura dell'omonima classe esterna). 
  */
 public class PlayerProfile {
     
@@ -16,7 +21,6 @@ public class PlayerProfile {
 
     public PlayerProfile(String nickname) {
         this.nickname = nickname;
-        // ERRORE DI SINTASSI CORRETTO QUI:
         this.sessions = new ArrayList<>();
     }
 
