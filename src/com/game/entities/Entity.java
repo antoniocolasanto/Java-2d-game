@@ -10,21 +10,31 @@ package com.game.entities;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-// classe astratta che definisce un entita del nostro videogioco
+/**
+ * Classe astratta che definisce un entità del nostro videogioco
+ */
 public abstract class Entity {
 
     protected float x, y;
     protected int width, height;
     
-    // AGGIUNTE PER LE COLLISIONI (a tutte le entità)
+    /**
+     *  AGGIUNTE PER LE COLLISIONI
+     */ 
     public float speed;
     public String direction = "IDLE";
     public boolean collisionOn = false;
 
-    // creo una heatbox per inizaire 
+    
     protected Rectangle hitbox;
 
-    // Costruttore: chi crea il player inserirà dove nascerà coordinate(x,y) e quanto sarà grande
+ /**
+  * Costruttore della nostra entità 
+  * @param x ascissa di generazione
+  * @param y ordinata di generazione
+  * @param width largheza dell immagine
+  * @param height altezza dell immagine
+  */
     public Entity(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -34,15 +44,19 @@ public abstract class Entity {
         //polimorfismo
         initHitbox();
     }
-
-    // --- GETTER ---
+/**
+ *  Funzioni Getter
+ **/ 
     public float getX() { return x; }
     public float getY() { return y; }
     public float getSpeed() { return speed; }
+    public Rectangle getHitbox() { return hitbox;}
     public String getDirection() { return direction; }
     public boolean isCollisionOn() { return collisionOn; }
 
-    // --- SETTER ---
+    /**
+     * Funzioni Setter
+     */
     public void setCollisionOn(boolean collisionOn) {
         this.collisionOn = collisionOn;
     }
@@ -50,34 +64,43 @@ public abstract class Entity {
         this.direction = direction;
     }
 
+    /**
+     * riporta l entità alla posizione indicata
+     * @param position_x ascissa  x
+     * @param position_y  ordinata y
+     */
     public void resetPosition(int position_x, int position_y){
         this.x = position_x;
         this.y = position_y;
     }
 
-        // polimorfismo
-    // Inizializza il rettangolo della hitbox sulle coordinate dell'entità ma su questa funzione sarà fatto Override
+
+    /**
+     * Inizializza la hitbox sulle coordinate dell'entità
+     */
     protected void initHitbox() {
         hitbox = new Rectangle((int) x, (int) y, width, height);
     }
-
-    // Metodo che aggiorna la posizione della hitbox seguendo le X e Y dell'entità
+    /**
+     * Aggiorna la posizione della hitbox in base alle coordinate attuali dell'entità
+     */
     protected void updateHitbox() {
         hitbox.x = (int) x;
         hitbox.y = (int) y;
     } 
-    // fa return della heatbox
-    public Rectangle getHitbox() {
-        return hitbox;
-    }
-
-    // funzione che aggiorna le coordinate del personaggio
+    
+  
+    /**
+     * Metodo astratto per aggiornare lo stato dell'entità.
+     */
     public abstract void update();
-    // funzione per stampare a schermo l entità
+    /**
+     * metodo astratto per disegnare l'entità sullo schermo.
+     * @param g oggetto Graphics per disegnare l'entità
+     */
     public abstract void draw(Graphics g);
 
-    // Questo metodo disegnerà un rettangolo rosa attorno al personaggio
-    //metodo per il debug
+    
     protected void drawHitbox(Graphics g) {
         g.setColor(Color.PINK);
         g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
