@@ -25,6 +25,14 @@ public class LayeredBackground {
         int x, y;
         boolean repeatX, repeatY;
 
+        /**
+         * costruttore per uno sfondo
+         * @param imagePath percorso dell immagine dello sfondo
+         * @param x ascissa di partenza
+         * @param y ordinata di partenza
+         * @param repeatX se true, ripete l immagine per tutta la lunghezza
+         * @param repeatY se true, ripete l immagine per tutta l altezza
+         */
         public Layer(String imagePath, int x, int y, boolean repeatX, boolean repeatY) {
             this.x = x;
             this.y = y;
