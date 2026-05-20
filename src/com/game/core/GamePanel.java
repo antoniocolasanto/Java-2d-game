@@ -122,7 +122,6 @@ public class GamePanel extends JPanel {
             update();
             repaint();
         });
-        running = true;
         gameTimer.start();
     }
 
