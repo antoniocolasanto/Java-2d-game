@@ -59,6 +59,9 @@ public class KeyInput implements KeyListener {
                     } else {
                         System.out.println("Nuovo giocatore! Lo creo e passo a PLAYING.");
                         gamePanel.getPlayerDAO().createNewPlayer(currentName);
+                        
+                        // FIX: Resettiamo la mappa prima di iniziare a giocare!
+                        gamePanel.resetPartita();
                         GamePanel.state = GameState.PLAYING;
                     }
                 } catch (Exception ex) {
@@ -78,7 +81,11 @@ public class KeyInput implements KeyListener {
 
         // --- GESTIONE CONFERMA PROFILO ---
         if (GamePanel.state == GameState.CONFIRM_PLAYER) {
-            if (key == KeyEvent.VK_S) GamePanel.state = GameState.PLAYING;
+            if (key == KeyEvent.VK_S) {
+                // FIX: Resettiamo la mappa per il giocatore esistente prima di giocare!
+                gamePanel.resetPartita();
+                GamePanel.state = GameState.PLAYING;
+            }
             if (key == KeyEvent.VK_N) {
                 gamePanel.setCurrentNickname("");
                 GamePanel.state = GameState.IDENTIFICATION;
