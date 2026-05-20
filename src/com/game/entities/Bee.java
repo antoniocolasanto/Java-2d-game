@@ -123,9 +123,7 @@ private void caricaImmagine() {
     public void draw(Graphics g) {
         if (sprites != null && sprites[aniIndex] != null) {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
-        }
-        drawHitbox(g);
-        
+        }   
     }
     /**
      * Aggiorna l'animazione dell'ape cambiando l'immagine visualizzata in base al tempo trascorso.

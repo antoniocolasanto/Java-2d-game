@@ -105,6 +105,10 @@ public abstract class Entity {
     public abstract void draw(Graphics g);
 
 
+     /**
+     * Metodo che disegan un riquadro attorno al personaggio per capire
+     * con precisione l'hitbox (usato solo in fase di sviluppo del gioco)
+     */
     protected void drawHitbox(Graphics g) {
         g.setColor(Color.PINK);
         g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
