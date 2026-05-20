@@ -39,9 +39,7 @@ public class Bee extends Entity {
       * @param height altezza dell immagine
      */
     public Bee(float x, float y, int width, int height) {
-
         super(x, y, width, height);
-
         startX = x;
         caricaImmagine();
     }
