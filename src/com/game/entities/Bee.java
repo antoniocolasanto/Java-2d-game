@@ -15,23 +15,29 @@ import javax.imageio.ImageIO;
 
 public class Bee extends Entity {
 
-// array che conterrà tutti i fotogrammi dell'animazione dell ape
+
     private BufferedImage[] sprites;
     
     // Variabili per gestire il tempo e i fotogrammi
-    private int aniTick = 0;   // cronometro frame
-    private int aniIndex = 0;  // indice fotogramma attuale 
-    private int aniSpeed = 10; // velocità dell'animazione  
+    private int aniTick = 0;
+    private int aniIndex = 0;
+    private int aniSpeed = 10;
     
     // Variabili per il range di volo delle api
     private float startX;
     private float rangeX = 200.0f;
 
-    // Variabili per il movimento del nemico
+    // Variabili per il movimento dell ape
     private float beeSpeed = 2.0f;    // velocità ape
     private boolean movingRight = true;
 
-    // Costruttore
+    /**
+     * Costruttore del nemico Ape
+      * @param x ascissa di generazione
+      * @param y ordinata di generazione
+      * @param width larghezza dell immagine
+      * @param height altezza dell immagine
+     */
     public Bee(float x, float y, int width, int height) {
 
         super(x, y, width, height);
@@ -39,9 +45,10 @@ public class Bee extends Entity {
         startX = x;
         caricaImmagine();
     }
-
+/**
+ * Carica le immagini dell'ape e le memorizza nell'array sprites.
+ */
 private void caricaImmagine() {
-//array che contiene 2 immagini per l animazione dell ape
         sprites = new BufferedImage[2];
         //gestiamo eccezione
         try {
@@ -51,65 +58,58 @@ private void caricaImmagine() {
             System.err.println("Errore: Immagini del Nemico non trovate!");
         }
     }
-    // Aggiorna le coordinate del nemico (Logica IA)
+    /**
+     * Aggiorna lo stato dell'ape, gestisce il movimento e le collisioni.
+     */
     @Override
     public void update() {
         pattuglia();
         updateHitbox();
         aggiornaAnimazione();
     }
+    /**
+     * Aggiorna la posizione della hitbox in base alla posizione attuale dell'ape.
+     */
     @Override 
     protected void updateHitbox(){
         hitbox.x = (int) x+5;
         hitbox.y = (int) y+20;
 
     }
-        // Inizializza il rettangolo della hitbox sulle coordinate dell'entità
+        /**
+         * inizializza il rettangolo dell hitbox adattandola all immagine
+         */
     protected void initHitbox() {
         hitbox = new Rectangle((int) x+5, (int) y+20, width-20, height-30);
     }
     
-
+    /**
+     * implementa il movimento dell ape
+     */
     private void pattuglia() {
-        // Evita errori se il GamePanel non è 
-        // ancora collegato
         if (gamePanel == null) return; 
 
-        // 1. Diciamo al CollisionChecker a che velocità andiamo
-        this.speed = beeSpeed; 
-        
-        // 2. Impostiamo la direzione in base a dove stiamo andando
+        this.speed = beeSpeed;         
         if (movingRight) {
             setDirection("RIGHT");
         } else {
             setDirection("LEFT");
         }
 
-        // 3. Resettiamo la collisione e chiediamo 
-        // al GamePanel di controllare
         setCollisionOn(false);
         gamePanel.getCollisionChecker().checkTile(this);
 
-        // 4. Se sbattiamo contro un muro (collisionOn diventa true)
-        // invertiamo la marcia
         if (isCollisionOn()) {
             movingRight = !movingRight;
         } else {
-            // Se la strada è libera, continuiamo a volare fino ad un certo range
             if (movingRight) {
-                // Se la sua X attuale è maggiore o uguale al punto di partenza più 
-                // il range
                 if (x >= startX + rangeX) {
-                    // Ha raggiunto il massimo range e si volta
                     movingRight = false; 
                 } else {
                     x += beeSpeed;
                 }
             } else {
-                // Se la sua X attuale è minore o uguale al punto di partenza meno 
-                // il range
                 if (x <= startX - rangeX) {
-                    // Ha raggiunto il minimo range e si volta
                     movingRight = true;
                 } else {
                     x -= beeSpeed;
@@ -118,8 +118,10 @@ private void caricaImmagine() {
             }
         }
     }
-
-// Disegna il nemico sullo schermo in base all indice attuale aniIndex
+    /**
+     * Disegna l'ape sullo schermo utilizzando l'immagine corrente dell'animazione.
+      * @param g oggetto Graphics per disegnare l'ape
+     */
     public void draw(Graphics g) {
         if (sprites != null && sprites[aniIndex] != null) {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
@@ -127,15 +129,13 @@ private void caricaImmagine() {
         drawHitbox(g);
         
     }
-
-    private void aggiornaAnimazione() {
-        aniTick++; // Il cronometro aumenta di 1 ad ogni frame
-        
-        // Se il cronometro raggiunge la velocità desiderata (es. 15) resetto il cronometro e passo all immagine successiva
+    /**
+     * Aggiorna l'animazione dell'ape cambiando l'immagine visualizzata in base al tempo trascorso.
+     */
+    private void aggiornaAnimazione() {  
         if (aniTick >= aniSpeed) {
             aniTick = 0; 
             aniIndex++;  
-            // Quando scorro tutto l array inizio da capo
             if (aniIndex >= sprites.length) {
                 aniIndex = 0;
             }
