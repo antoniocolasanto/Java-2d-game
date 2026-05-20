@@ -10,6 +10,8 @@ package com.game.entities;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import com.game.core.GamePanel;
 // classe astratta che definisce un entita del nostro videogioco
 public abstract class Entity {
 
@@ -20,6 +22,10 @@ public abstract class Entity {
     public float speed;
     public String direction = "IDLE";
     public boolean collisionOn = false;
+
+    //Aggiungiamo la variabile gamePanel così tutte le entita
+    //anche i nemici possono interagire con esso
+    protected GamePanel gamePanel;
 
     // creo una heatbox per inizaire 
     protected Rectangle hitbox;
@@ -45,6 +51,9 @@ public abstract class Entity {
     // --- SETTER ---
     public void setCollisionOn(boolean collisionOn) {
         this.collisionOn = collisionOn;
+    }
+    public void setGamePanel(GamePanel gp) {
+        this.gamePanel = gp;
     }
     public void setDirection(String direction) {
         this.direction = direction;
