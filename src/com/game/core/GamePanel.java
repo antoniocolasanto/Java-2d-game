@@ -26,9 +26,9 @@ import java.util.List; // Import per gestire la lista dei record
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel {
 
-    private Thread gameThread;
+    private javax.swing.Timer gameTimer;
     private boolean running = false;
     private ArrayList<Entity> nemici;
     private int TimeSeconds = 0; // Il tempo in secondi
@@ -116,10 +116,15 @@ public class GamePanel extends JPanel implements Runnable {
         currentTopPlayers = leaderboardDAO.getTop10Players();
     }
 
+    // GAME LOOP (Motore del gioco)
     public void startGameThread() {
-        gameThread = new Thread(this);
+        // Il Timer di Java eseguirà questa parentesi graffa 60 volte al secondo (1000 millisecondi / 60)
+        gameTimer = new javax.swing.Timer(1000 / 60, e -> {
+            update();
+            repaint();
+        });
         running = true;
-        gameThread.start();
+        gameTimer.start();
     }
 
     // =========================================
@@ -136,31 +141,6 @@ public class GamePanel extends JPanel implements Runnable {
     // Serve al Player per prendere i controlli fisici
     public CollisionChecker getCollisionChecker() {
         return collisionChecker;
-    }
-
-    // GAME LOOP (Motore del gioco)
-    @Override
-    public void run() {
-        final long TARGET_NS = 1_000_000_000L / 60;
-        long lastTime = System.nanoTime();
-
-        while (running) {
-            long now = System.nanoTime();
-            long elapsed = now - lastTime;
-
-            if (elapsed >= TARGET_NS) {
-                lastTime = now;
-                update(); 
-                repaint(); 
-            } else {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        }
     }
 
     public void update() {
