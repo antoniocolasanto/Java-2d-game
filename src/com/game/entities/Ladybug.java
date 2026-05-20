@@ -58,14 +58,14 @@ public class Ladybug extends Entity {
     // Aggiorniamo la hitbox
     @Override 
     protected void updateHitbox() {
-        hitbox.x = (int) x + 10;
+        hitbox.x = (int) x + 5;
         hitbox.y = (int) y + 20;
     }
 
     //Creiamo la hitbox
     @Override
     protected void initHitbox() {
-        hitbox = new Rectangle((int) x + 10, (int) y + 20, width - 20, height - 30);
+        hitbox = new Rectangle((int) x + 10, (int) y + 20, width - 10, height - 20);
     }
 
     private void volaSuEGiù() {
@@ -119,7 +119,7 @@ public class Ladybug extends Entity {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
         }
         
-        // drawHitbox(g); // Decommenta questa riga se vuoi vedere la hitbox rosa per il debug
+        drawHitbox(g);
     }
 
     private void aggiornaAnimazione() {
