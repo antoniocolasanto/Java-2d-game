@@ -54,8 +54,8 @@ public class LevelManager {
             // Spuntoni
             tileSprites[4] = ImageIO.read(new File("res/Sprites/Tiles/Double/spikes.png"));
             
-            // Blocco legno
-            tileSprites[5] = ImageIO.read(new File("res/Sprites/Tiles/Double/block_coin.png"));
+            // Blocco Sospeso
+            tileSprites[5] = ImageIO.read(new File("res/Sprites/Tiles/Double/terrain_grass_cloud.png"));
             //Ponte
             tileSprites[6] = ImageIO.read(new File("res/Sprites/Tiles/Double/bridge_logs.png"));
             
@@ -67,10 +67,10 @@ public class LevelManager {
             tileSprites[11] = ImageIO.read(new File("res/Sprites/Tiles/Double/water.png"));
 
             // Catena
-            tileSprites[12] = ImageIO.read(new File("res/Sprites/Tiles/Double/flag_red_a.png"));
+            tileSprites[12] = ImageIO.read(new File("res/Sprites/Tiles/Double/chain.png"));
 
             // Piattaforma
-            tileSprites[13] = ImageIO.read(new File("res/Sprites/Tiles/Double/flag_red_a.png"));
+            tileSprites[13] = ImageIO.read(new File("res/Sprites/Tiles/Double/bridge.png"));
             
         } catch (IOException e) {
             System.out.println("ERRORE: Impossibile caricare le immagini");
@@ -82,7 +82,7 @@ public class LevelManager {
         try {
             File file = new File(filePath);
             
-            // SISTEMA DI SICUREZZA: Se il file .txt non esiste, carica la mappa di riserva
+            // Se il file .txt non esiste, carica la mappa di riserva
             if (!file.exists()) {
                 System.out.println("ATTENZIONE: File della mappa non trovato in " + filePath + ". Carico la mappa di backup.");
                 return;

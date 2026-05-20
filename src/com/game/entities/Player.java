@@ -81,12 +81,27 @@ private void caricaImmagine() {
 // adattiamo la heatbox rispetto a entity
     @Override
     protected void initHitbox() {
-        hitbox = new Rectangle((int) x+23, (int) y+30, width-50, height-31);
+        hitbox = new Rectangle((int) x + 23, (int) y + 30, width - 50, height - 30);
     }
         @Override
     protected void updateHitbox() {
-        hitbox.x = (int) x+23;
-        hitbox.y = (int) y+30;
+        //Quando si abbasa ha una certa hitbox altrimenti no
+        if (down) {
+            //STATO ABBASSATO
+            hitbox.x = (int) x + 23;
+            // Spingiamo la Y verso il basso (abbassiamo il tetto)
+            hitbox.y = (int) y + 55; 
+            hitbox.width = width - 50;
+            // height - 56 mantiene il fondo della hitbox 
+            // esattamente alla stessa identica altezza dello stato in piedi!
+            hitbox.height = height - 55; 
+        } else {
+            //STATO IN PIEDI
+            hitbox.x = (int) x + 23;
+            hitbox.y = (int) y + 30;
+            hitbox.width = width - 50;
+            hitbox.height = height - 30;
+        }
 
     }
 
@@ -109,7 +124,7 @@ private void caricaImmagine() {
 
 
     private void aggiornaPosizione() {
-        // --- PARTE 1: MOVIMENTO ORIZZONTALE (X) ---
+        // PARTE 1: MOVIMENTO ORIZZONTALE (X)
         if (left || right) {
             // Diciamo all'entità da che parte stiamo andando
             if (left) setDirection("LEFT");
@@ -166,11 +181,15 @@ private void caricaImmagine() {
                     // Sbattevo in GIÙ: sono atterrato sul pavimento!
                     inAria = false;
                     ariaSpeed = 0;
-                    // Calcola dove effettivamente stai atterrando (posizione proiettata)
-                    int bottomPixel = (int)(hitbox.y + hitbox.height + speed);
-                     int tileRow = bottomPixel / Constants.SIZE_BLOCCO;
+                    
+                    // Usiamo la Y fissa e l'Height fisso del corpo (100)
+                    // Nessun riferimento alla Hitbox! Così non si incastra mai.
+                    int bottomPixel = (int)(y + height);
+                    int tileRow = bottomPixel / Constants.SIZE_BLOCCO;
+                    
                     // Allinea la Y al bordo superiore del tile
-                    y = (tileRow * Constants.SIZE_BLOCCO) - hitbox.height - 30;
+                    y = (tileRow * Constants.SIZE_BLOCCO) - height;
+                    
                 } else if (getDirection().equals("UP")) {
                     // Sbattevo in SU: ho picchiato la testa sul soffitto!
                     ariaSpeed = 0; // Azzero la velocità di salita, inizio a cadere
@@ -183,7 +202,7 @@ private void caricaImmagine() {
             setDirection("DOWN");
             
             // FONDAMENTALE 3: Simulo di cadere di 1 solo pixel per vedere se c'è il vuoto sotto di me
-            speed = 1.0f; 
+            speed = 1.0f;
             
             setCollisionOn(false);
             gamePanel.getCollisionChecker().checkTile(this); 
@@ -192,7 +211,7 @@ private void caricaImmagine() {
                 inAria = true; // C'è il vuoto, cadi!
             }
         }
-    }   
+    } 
 
     // disegno il giocatore sullo schermo in base all indice aniIndex (stato del movimento attuale)
     @Override
