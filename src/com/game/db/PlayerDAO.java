@@ -21,6 +21,8 @@ public class PlayerDAO {
 
     /**
      * Controlla se un nickname è già registrato nel database (SELECT/FIND).
+     *@param nickname - l'identificatore univoco del giocatore da verificare
+     *@return boolean - true se il gicatore esiste, false altrimenti
      */
     public boolean playerExists(String nickname) {
         Document found = collection.find(new Document("_id", nickname)).first();
@@ -29,6 +31,8 @@ public class PlayerDAO {
 
     /**
      * Crea un nuovo documento per un nuovo giocatore con un array di sessioni vuoto (INSERT).
+     * Vine chiamato quando un giocatore inserisce un nickname per la prima volta.
+     * @param nickname - l'identificatore univoco del nuovo giocatore da creare
      */
     public void createNewPlayer(String nickname) {
         if (!playerExists(nickname)) {
@@ -41,6 +45,10 @@ public class PlayerDAO {
 
     /**
      * Salva i dati di una sessione vinta aggiungendoli all'array "sessions" del giocatore (UPDATE).
+     * @param nickname - l'identificatore univoco del giocatore
+     * @param coins - il numero di monete raccolte nella sessione
+     * @param lives - il numero di vite rimanenti alla fine della sessione
+     * @param timeSec - il tempo impiegato nella sessione (in secondi)
      * Utilizza l'operatore $push di MongoDB per inserire l'elemento nell'array.
      */
     public void saveWinningSession(String nickname, int coins, int lives, long timeSec) {
