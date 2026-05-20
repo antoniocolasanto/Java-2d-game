@@ -25,7 +25,7 @@ public abstract class Entity {
     public String direction = "IDLE";
     public boolean collisionOn = false;
 
-    
+    protected GamePanel gamePanel;
     protected Rectangle hitbox;
 
  /**
@@ -59,6 +59,9 @@ public abstract class Entity {
      */
     public void setCollisionOn(boolean collisionOn) {
         this.collisionOn = collisionOn;
+    }
+    public void setGamePanel(GamePanel gp) {
+        this.gamePanel = gp;
     }
     public void setDirection(String direction) {
         this.direction = direction;

@@ -46,9 +46,6 @@ public class Player extends Entity {
     private float forzaSalto = -10.0f; // Forza iniziale del salto
     private boolean inAria = true;     // giocatore in aria o a terra
 
-    //Inizializza GamePanel per poterlo utilizzare (es. collisioni)
-    private GamePanel gamePanel;
-
     public Player(float x, float y, int width, int height, GamePanel gp) {
 
         super(x, y, width, height);
@@ -293,8 +290,9 @@ public void rimuoviVita() {
         // 3 Salviamo la sessione vincente nel database
         playerDAO.saveWinningSession(nicknameAttuale, moneteRaccolte, viteRimanenti, tempoImpiegato);
 
-        // 4 Cambiamo lo stato del gioco
-        GamePanel.state = GameState.LEADERBOARD;
+                // Prima di visualizzare la classifica, diciamo al GamePanel di interrogare il DB
+                gamePanel.fetchLeaderboard();
+                GamePanel.state = GameState.LEADERBOARD;
 
         } catch (Exception e){
             System.err.println("Errore durante il salvataggio su MongoDB: " + e.getMessage());

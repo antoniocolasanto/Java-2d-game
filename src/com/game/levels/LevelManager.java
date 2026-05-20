@@ -13,6 +13,7 @@ package com.game.levels;
 
 import com.game.entities.Bee;
 import com.game.entities.Entity;
+import com.game.entities.Ladybug;
 import com.game.utils.Constants;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -43,22 +44,33 @@ public class LevelManager {
     private void loadTileImages() {
         try {
             // Mappatura Terreno
-            // Usiamo "top" per la superficie (erba sopra) e "center" per il riempimento (terra sotto)
+            // 1 erba e 2 terreno sotto
             tileSprites[1] = ImageIO.read(new File("res/Sprites/Tiles/Double/terrain_grass_block_top.png"));
             tileSprites[2] = ImageIO.read(new File("res/Sprites/Tiles/Double/terrain_grass_block_center.png"));
             
-            // Collezionabili
+            // Monete
             tileSprites[3] = ImageIO.read(new File("res/Sprites/Tiles/Double/coin_gold.png"));
             
-            // Ostacoli Pericolosi
+            // Spuntoni
             tileSprites[4] = ImageIO.read(new File("res/Sprites/Tiles/Double/spikes.png"));
             
-            // Blocchi e Piattaforme sospese
+            // Blocco legno
             tileSprites[5] = ImageIO.read(new File("res/Sprites/Tiles/Double/block_coin.png"));
+            //Ponte
             tileSprites[6] = ImageIO.read(new File("res/Sprites/Tiles/Double/bridge_logs.png"));
             
-            // Decorazioni / Fine Livello
+            // Bandiera Checkpoint
             tileSprites[7] = ImageIO.read(new File("res/Sprites/Tiles/Double/flag_red_a.png"));
+
+            // Acqua sopra e sotto
+            tileSprites[10] = ImageIO.read(new File("res/Sprites/Tiles/Double/water_top.png"));
+            tileSprites[11] = ImageIO.read(new File("res/Sprites/Tiles/Double/water.png"));
+
+            // Catena
+            tileSprites[12] = ImageIO.read(new File("res/Sprites/Tiles/Double/flag_red_a.png"));
+
+            // Piattaforma
+            tileSprites[13] = ImageIO.read(new File("res/Sprites/Tiles/Double/flag_red_a.png"));
             
         } catch (IOException e) {
             System.out.println("ERRORE: Impossibile caricare le immagini");
@@ -144,7 +156,9 @@ public class LevelManager {
 
     /**
      * Ritorna true se il blocco NON si può attraversare (muri, pavimenti)
-     * Legenda: 1 = Erba, 2 = Terra, 5 = Cassa, 6 = Ponte
+     * Legenda: 1 = Erba, 2 = Terra, 5 = Blocco solido, 6 = Ponte, 
+     * 7= Checkpoint, 8= Coccinella, 9= Ape, 10= Acqua, 110 Acqua sotto 12= Catena
+     * 13= Piattaforma
      */
     public boolean isSolid(int riga, int col) {
         // --- BLINDA I BORDI DELLO SCHERMO ---
@@ -155,7 +169,7 @@ public class LevelManager {
         }
         
         int tile = getTileType(riga, col);
-        if (tile == 1 || tile == 2 || tile == 5 || tile == 6) {
+        if (tile == 1 || tile == 2 || tile == 5 || tile == 6 || tile == 13) {
             return true; // È solido, il player sbatte!
         }
         return false; // Ci si può camminare attraverso (vuoto, monete, ecc.)
@@ -196,16 +210,20 @@ public class LevelManager {
                 
                 int tileType = mapData[riga][col];
                 switch(tileType){
-                    case 9:nemici.add(new Bee(col*Constants.SIZE_BLOCCO, riga*Constants.SIZE_BLOCCO,100,100));
+                    //APE
+                    case 9:nemici.add(new Bee(col*Constants.SIZE_BLOCCO, riga*Constants.SIZE_BLOCCO,70,70));
                     mapData[riga][col] = 0;
                         break;
 
                         default: break;
-                }
-                
+                    case 8:
+                    //COCCINELLA
+                    nemici.add(new Ladybug(col * Constants.SIZE_BLOCCO, riga * Constants.SIZE_BLOCCO, 60, 60));
+                        mapData[riga][col] = 0;
+                        break;
+                }  
             }
         }
- 
         return nemici;
     }
 }
