@@ -9,8 +9,6 @@ import javax.imageio.ImageIO;
 
 public class Ladybug extends Entity {
 
-    //Array per i fotogrammi dell'animazione
-
     private BufferedImage[] sprites;
 
     //Variabili per gestire l'aniamazione
@@ -19,28 +17,27 @@ public class Ladybug extends Entity {
     //Velocità battito ali
     private int aniSpeed = 15;
 
-    //Variabili pe ril range di volo della coccinella
+    //Variabili per il volo della coccinella
     private float startY;
-    private float rangeY = 100.0f;
-
-    //Variabili per il movimento verticale
-    //Velocità volo
+    private float rangeY = 500.0f;
     private float ladybugSpeed = 2.0f;
-    //Direzione di volo (verso l'alto)
     private boolean movingUp = true;
-
+/**
+ * costruttore coccinella
+ * @param x ascissa di generazione
+ * @param y ordinata di generazione
+ * @param width
+ * @param height
+ */
     public Ladybug(float x, float y, int width, int height) {
         super(x, y, width, height);
-        //Si salva il punto di partenza della coccinella
         this.startY = y;
-        //carica le immagini per l'animazione
         caricaImmagine();
     }
 
     private void caricaImmagine(){
         sprites = new BufferedImage[2];
         try {
-            // Assicurati che i nomi dei file e i percorsi corrispondano a dove hai salvato le immagini
             sprites[0] = ImageIO.read(new File("res/Sprites/Enemies/Double/ladybug_rest.png"));
             sprites[1] = ImageIO.read(new File("res/Sprites/Enemies/Double/ladybug_fly.png"));
         } catch (IOException e) {
@@ -67,14 +64,14 @@ public class Ladybug extends Entity {
     protected void initHitbox() {
         hitbox = new Rectangle((int) x + 10, (int) y + 20, width - 10, height - 20);
     }
-
+/**
+ * Gestisce il volo della coccinella su e giù, controllando le collisioni con muri, pavimenti e soffitti.
+ */
     private void volaSuEGiù() {
-        // Se il GamePanel non è ancora caricato, non fare nulla (evita crash)
         if (gamePanel == null) return; 
 
         // 1. Diciamo al CollisionChecker a che velocità andiamo
         this.speed = ladybugSpeed;
-
         // 2. Impostiamo la direzione sull'asse Y
         if (movingUp) {
             setDirection("UP");
@@ -113,6 +110,10 @@ public class Ladybug extends Entity {
         }
     }
 
+    /**
+     * Disegna la coccinella sullo schermo utilizzando l'immagine corrente dell'animazione.
+     * @param g oggetto Graphics per disegnare la coccinella
+     */
     @Override
     public void draw(Graphics g) {
         if (sprites != null && sprites[aniIndex] != null) {
@@ -121,7 +122,9 @@ public class Ladybug extends Entity {
         
         drawHitbox(g);
     }
-
+    /**
+     * Aggiorna l'animazione della coccinella cambiando l'immagine visualizzata in base al tempo trascorso.
+     */
     private void aggiornaAnimazione() {
         aniTick++; 
         if (aniTick >= aniSpeed) {

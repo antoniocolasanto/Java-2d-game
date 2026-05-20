@@ -23,7 +23,7 @@ public abstract class Entity {
      *  AGGIUNTE PER LE COLLISIONI
      */ 
     public float speed;
-    public String direction = "IDLE";
+    public String direction = "IDLE";//entità ferma di default
     public boolean collisionOn = false;
 
     protected GamePanel gamePanel;
