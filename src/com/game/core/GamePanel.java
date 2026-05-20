@@ -125,9 +125,7 @@ public class GamePanel extends JPanel {
         gameTimer.start();
     }
 
-    // =========================================
-    // GETTERS (Raggruppati per ordine e pulizia)
-    // =========================================
+    // GETTERS 
     public Player getPlayer() {
         return player;
     }
