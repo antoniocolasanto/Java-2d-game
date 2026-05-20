@@ -209,8 +209,6 @@ private void caricaImmagine() {
         if (sprites != null && sprites[aniIndex] != null) {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
         }
-        
-        drawHitbox(g);
     }
 
  //aggiorno l animazione in base al movimento(abbassato,salto,cammino,fermo)

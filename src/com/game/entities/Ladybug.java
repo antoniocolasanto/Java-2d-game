@@ -121,8 +121,6 @@ public class Ladybug extends Entity {
         if (sprites != null && sprites[aniIndex] != null) {
             g.drawImage(sprites[aniIndex], (int) x, (int) y, width, height, null);
         }
-        
-        drawHitbox(g);
     }
     /**
      * Aggiorna l'animazione della coccinella cambiando l'immagine visualizzata in base al tempo trascorso.
