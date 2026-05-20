@@ -86,7 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
         
         levelManager = new LevelManager();
         collisionChecker = new CollisionChecker(levelManager);
-        player = new Player(50, 300, 100, 100, this);
+        player = new Player(10, 10, 100, 100, this);
         // Creiamo i nemici
         nemici = levelManager.getListaNemici();
 
@@ -288,7 +288,7 @@ public class GamePanel extends JPanel implements Runnable {
         TimeTicks = 0;
         player.resetVite();
         player.resetMonete();
-        player.resetPosition(50, 480);
+        player.resetPosition(50, 400);
 
         levelManager = new LevelManager();
         collisionChecker = new CollisionChecker(levelManager);
