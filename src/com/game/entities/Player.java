@@ -182,14 +182,12 @@ private void caricaImmagine() {
                     inAria = false;
                     ariaSpeed = 0;
                     
-                    // Usiamo la Y fissa e l'Height fisso del corpo (100)
-                    // Nessun riferimento alla Hitbox! Così non si incastra mai.
-                    int bottomPixel = (int)(y + height);
+                    int bottomPixel = (int)(hitbox.y + hitbox.height + speed);
                     int tileRow = bottomPixel / Constants.SIZE_BLOCCO;
                     
-                    // Allinea la Y al bordo superiore del tile
-                    y = (tileRow * Constants.SIZE_BLOCCO) - height;
-                    
+                    // CORREZIONE: Allineiamo la base dell'HITBOX al blocco, non l'immagine intera
+                    // La Y reale dell'entità deve essere: BordoSuperioreTile - AltezzaHitbox - L'OffsetDi30Pixel
+                    y = (tileRow * Constants.SIZE_BLOCCO) - hitbox.height - 30; // <-- Mantieni questo calcolo, ma...
                 } else if (getDirection().equals("UP")) {
                     // Sbattevo in SU: ho picchiato la testa sul soffitto!
                     ariaSpeed = 0; // Azzero la velocità di salita, inizio a cadere
