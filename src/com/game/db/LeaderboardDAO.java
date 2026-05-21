@@ -10,10 +10,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Questo DAO ha uno scopo è dedicato esclusivamente alla generazione della classifica generale (Leaderboard).
+ * Ruolo principale: Elabora grandi quantità di documenti dalla collezione "Players" per estrarre la top 10 globale.
+ * Non modifica nulla; 
+ * Esegue una complessa operazione di calcolo e lettura chiamata Aggregation Pipeline (Pipeline di Aggregazione) di MongoDB.
+ */
+
 public class LeaderboardDAO {
 
     private MongoCollection<Document> collection;
 
+    /**
+     * Recupera l'istanza del database tramite il tuo Singleton MongoDBManager e si posiziona sulla collezione "Players". 
+     * È esattamente la stessa collezione usata da PlayerDAO, 
+     * perché è lì dentro che risiedono tutti i dati necessari per stilare la classifica.
+     */
     public LeaderboardDAO() {
         // Recupera la collezione "Players" per eseguire le query
         this.collection = MongoDBManager.getDatabase().getCollection("Players");
@@ -21,7 +33,10 @@ public class LeaderboardDAO {
 
     /**
      * Esegue una pipeline di aggregazione per calcolare i migliori giocatori.
+     * Invece di scaricare tutti i dati in Java e fare i calcoli nella RAM del computer (operazione inefficiente se avessi migliaia di giocatori), 
+     * delega il calcolo pesante direttamente a MongoDB tramite quattro fasi sequenziali (la pipeline):
      * Criterio: Punteggio massimo di monete in una singola sessione.
+     * @return leaderboard - una lista ordinata dei migliori 10 giocatori, con nickname, monete massime e tempo medio tra le sessioni.
      */
     public List<PlayerRecord> getTop10Players() {
         List<PlayerRecord> leaderboard = new ArrayList<>();
@@ -61,7 +76,11 @@ public class LeaderboardDAO {
     }
 
     /**
-     * DTO (Data Transfer Object) interno per trasportare i dati dalla query alla grafica.
+     * DTO (Data Transfer Object) Non rappresenta un documento così come è salvato nel database, 
+     * ma rappresenta il risultato specifico della query di classifica.
+     * Contiene solo i campi utili alla schermata della classifica della tua interfaccia grafica: il nome dell'utente, 
+     * il suo record di monete e il suo tempo medio di gioco. Essendo una classe statica, 
+     * può essere utilizzata dal resto del gioco senza bisogno di istanziare ogni volta la classe esterna LeaderboardDAO
      */
     public static class PlayerRecord {
         private String nickname;
