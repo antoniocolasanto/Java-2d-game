@@ -22,8 +22,8 @@ public class GamePanel extends JPanel {
 
     private javax.swing.Timer gameTimer;
     private ArrayList<Entity> nemici;
-    private int TimeSeconds = 0; // Il tempo in secondi
-    private int TimeTicks = 0;   // Conta i frame
+    private int TimeSeconds = 0;
+    private int TimeTicks = 0;  
     private BufferedImage heartImage;
     
     // Dichiariamo l'oggetto CollisionChecker
@@ -35,7 +35,7 @@ public class GamePanel extends JPanel {
     private LevelManager levelManager;
     private LayeredBackground layeredBg;
 
-    // --- VARIABILI PER L'IDENTIFICAZIONE E CLASSIFICA ---
+    //VARIABILI PER L'IDENTIFICAZIONE E CLASSIFICA
     private IdentificationScreen idScreen;
     private PlayerDAO playerDAO;
     private String currentNickname = ""; 
