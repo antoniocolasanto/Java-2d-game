@@ -1,75 +1,72 @@
 package com.game.core;
-import com.game.db.*;
-// Entità e grafica del gioco
+
+import com.game.db.LeaderboardDAO; // Import per la classifica
+import com.game.db.MongoDBManager;
+import com.game.db.PlayerDAO;
 import com.game.entities.*;
-import com.game.graphics.*;
-// Input, livelli e utility del gioco
+import com.game.graphics.IdentificationScreen;
+import com.game.graphics.LayeredBackground;
+import com.game.graphics.LeaderboardScreen; // Import per la schermata classifica
+import com.game.graphics.MainMenu;
+import com.game.graphics.PauseMenu;
 import com.game.inputs.KeyInput;
 import com.game.levels.LevelManager;
 import com.game.utils.Constants;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List; // Import per gestire la lista dei record
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-/**
- * E' la classe fondamentale del gioco permette di unire tutte le varie componenti
- * come lo stato del gioco, la grafica, le entità, le collisioni, i livelli ecc.
- * verrà poi inserito nella classe GameWindow per far comparire tutto a schermo
- * 
- * @version 1.0
- */
+
 public class GamePanel extends JPanel {
-    // STATO DEL GIOCO
-    public static GameState state = GameState.MENU;
 
-    // LOGICA E MOTORE DI GIOCO
-    private CollisionChecker collisionChecker;
-    private LevelManager levelManager;
     private javax.swing.Timer gameTimer;
-    //Conta il tempo in secondo
-    private int TimeSeconds = 0;
-    //Conta i frame per calcolare poi il tempo in secondi
-    private int TimeTicks = 0;
-
-    // ENTITÀ E PERSONAGGI
-    private Player player;
     private ArrayList<Entity> nemici;
+    private int TimeSeconds = 0; // Il tempo in secondi
+    private int TimeTicks = 0;   // Conta i frame
+    private BufferedImage heartImage;
+    
+    // Dichiariamo l'oggetto CollisionChecker
+    private CollisionChecker collisionChecker;
 
-    // LE VARIE INTERFACCE
+    private Player player;
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
+    private LevelManager levelManager;
     private LayeredBackground layeredBg;
-    private BufferedImage heartImage;
 
-    // DATI GIOCATORE PER IL DATABASE
-    //La schermata che chiede all'untente di inserire nome e cognome
+    // --- VARIABILI PER L'IDENTIFICAZIONE E CLASSIFICA ---
     private IdentificationScreen idScreen;
     private PlayerDAO playerDAO;
     private String currentNickname = ""; 
 
-    // CLASSIFICA
     private LeaderboardDAO leaderboardDAO;
     private LeaderboardScreen leaderboardScreen;
     private List<LeaderboardDAO.PlayerRecord> currentTopPlayers;
 
-   public GamePanel() {
+    // Lo stato iniziale è il MENU
+    public static GameState state = GameState.MENU;
+
+    public GamePanel() {
     
     // --- 1. IMPOSTAZIONI DEL PANNELLO ---
     // Definisce le dimensioni, il colore di sfondo e ottimizza il rendering
     this.setPreferredSize(new Dimension(Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA));
     this.setBackground(Color.CYAN);
-    // Rende il disegno a schermo più fluido ed evita sfarfallii (flickering)
-    this.setDoubleBuffered(true);
+    this.setDoubleBuffered(true); // Rende il disegno a schermo più fluido ed evita sfarfallii (flickering)
 
     // --- 2. GESTIONE INPUT ---
     // Dice al sistema che questo pannello ha il focus ed è pronto a ricevere input da tastiera
-    this.setFocusable(true);
-    // Collega il KeyListener per gestire la pressione dei tasti
-    this.addKeyListener(new KeyInput(this));
+    this.setFocusable(true); 
+    this.addKeyListener(new KeyInput(this)); // Collega il KeyListener per gestire la pressione dei tasti
 
     // --- 3. DATABASE E GESTIONE DATI ---
     // Connessione al DB e inizializzazione dei Data Access Object (DAO)
