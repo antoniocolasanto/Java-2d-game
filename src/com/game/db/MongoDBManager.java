@@ -23,7 +23,7 @@ public class MongoDBManager {
 
     // Stringa di connessione per il database MongoDB in esecuzione sul tuo PC
     private static final String URI = "mongodb://localhost:27017";
-    private static final String DB_NAME = "SuperNicoloDB";
+    private static final String DB_NAME = "DBSpaceBugGame";
 
     /**
      * Metodo per stabilire la connessione a MongoDB. Viene chaiamato la prima volta che si accede al database.
