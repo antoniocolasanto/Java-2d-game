@@ -24,14 +24,31 @@ public class PlayerProfile {
         this.sessions = new ArrayList<>();
     }
 
-    public String getNickname() { return nickname; }
-    public void setNickname(String nickname) { this.nickname = nickname; }
+    /**
+     * Getter e setter per nickname e sessions
+     * @return nickname - l'identificativo univoco del giocatore
+     */
+    public String getNickname() { 
+        return nickname; 
+    }
+    public void setNickname(String nickname) { 
+        this.nickname = nickname; 
+    }
     
-    public List<GameSession> getSessions() { return sessions; }
-    public void setSessions(List<GameSession> sessions) { this.sessions = sessions; }
+    /**
+     * Getter e setter per la lista di session
+     * @return sessions - la lista di tutte le partite giocate da questo giocatore, con tutti i dettagli (monete, vite, tempo)
+     */
+    public List<GameSession> getSessions() { 
+        return sessions; 
+    }
+    public void setSessions(List<GameSession> sessions) { 
+        this.sessions = sessions; 
+    }
 
     /**
      * Calcola il rapporto di prestazione tra monete raccolte e tempo impiegato.
+     * @return performanceRatio - un valore che rappresenta l'efficienza del giocatore.
      */
     public double getPerformanceRatio() {
         if (sessions.isEmpty()) return 0.0;

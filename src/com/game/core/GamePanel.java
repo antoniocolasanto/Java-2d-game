@@ -7,7 +7,7 @@ import com.game.graphics.*;
 import com.game.inputs.KeyInput;
 import com.game.levels.LevelManager;
 import com.game.utils.Constants;
-// Librerie standard Java (AWT, Swing, IO, Util)
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -18,32 +18,35 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
 
+// --- STATO DEL GIOCO ---
+    public static GameState state = GameState.MENU;
+
+    // --- LOGICA E MOTORE DI GIOCO ---
     private javax.swing.Timer gameTimer;
-    private ArrayList<Entity> nemici;
+    private CollisionChecker collisionChecker;
+    private LevelManager levelManager;
     private int TimeSeconds = 0; // Il tempo in secondi
     private int TimeTicks = 0;   // Conta i frame
-    private BufferedImage heartImage;
-    
-    // Dichiariamo l'oggetto CollisionChecker
-    private CollisionChecker collisionChecker;
 
+    // --- ENTITÀ E PERSONAGGI ---
     private Player player;
+    private ArrayList<Entity> nemici;
+
+    // --- GRAFICA E INTERFACCIA (UI) ---
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
-    private LevelManager levelManager;
     private LayeredBackground layeredBg;
+    private BufferedImage heartImage;
 
-    // --- VARIABILI PER L'IDENTIFICAZIONE E CLASSIFICA ---
+    // --- IDENTIFICAZIONE E DATI GIOCATORE ---
     private IdentificationScreen idScreen;
     private PlayerDAO playerDAO;
     private String currentNickname = ""; 
 
+    // --- CLASSIFICA ---
     private LeaderboardDAO leaderboardDAO;
     private LeaderboardScreen leaderboardScreen;
     private List<LeaderboardDAO.PlayerRecord> currentTopPlayers;
-
-    // Lo stato iniziale è il MENU
-    public static GameState state = GameState.MENU;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA));
