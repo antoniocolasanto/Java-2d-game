@@ -18,27 +18,32 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
 
-// --- STATO DEL GIOCO ---
+    // STATO DEL GIOCO
     public static GameState state = GameState.MENU;
-    // --- LOGICA E MOTORE DI GIOCO ---
+
+    // LOGICA E MOTORE DI GIOCO
     private javax.swing.Timer gameTimer;
     private CollisionChecker collisionChecker;
     private LevelManager levelManager;
     private int TimeSeconds = 0; // Il tempo in secondi
     private int TimeTicks = 0;   // Conta i frame
-    // --- ENTITÀ E PERSONAGGI ---
+
+    // ENTITÀ E PERSONAGGI
     private Player player;
     private ArrayList<Entity> nemici;
-    // --- GRAFICA E INTERFACCIA (UI) ---
+
+    // GRAFICA E INTERFACCIA (UI)
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
     private LayeredBackground layeredBg;
     private BufferedImage heartImage;
-    // --- IDENTIFICAZIONE E DATI GIOCATORE ---
+
+    // IDENTIFICAZIONE E DATI GIOCATORE
     private IdentificationScreen idScreen;
     private PlayerDAO playerDAO;
     private String currentNickname = ""; 
-    // --- CLASSIFICA ---
+
+    // CLASSIFICA
     private LeaderboardDAO leaderboardDAO;
     private LeaderboardScreen leaderboardScreen;
     private List<LeaderboardDAO.PlayerRecord> currentTopPlayers;
