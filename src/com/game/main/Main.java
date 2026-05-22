@@ -1,9 +1,4 @@
 package com.game.main;
-<<<<<<< HEAD
-
-import com.game.core.GamePanel;
-
-=======
 import com.game.core.GamePanel;
 /**
  * ENTRY POINT DELL'APPLICAZIONE
@@ -11,7 +6,6 @@ import com.game.core.GamePanel;
  * - Il suo unico scopo è istanziare la GameWindow e avviare il gioco.
  * - Non deve contenere logica di gioco.
  */
->>>>>>> 778c2576db3c897211fbc246bd7c59da1ea168e5
 public class Main {
     public static void main(String[] args) {
         
