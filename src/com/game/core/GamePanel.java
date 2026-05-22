@@ -1,28 +1,20 @@
 package com.game.core;
 
-import com.game.db.LeaderboardDAO; // Import per la classifica
-import com.game.db.MongoDBManager;
-import com.game.db.PlayerDAO;
+// Pacchetto database del gioco
+import com.game.db.*;
+// Entità e grafica del gioco
 import com.game.entities.*;
-import com.game.graphics.IdentificationScreen;
-import com.game.graphics.LayeredBackground;
-import com.game.graphics.LeaderboardScreen; // Import per la schermata classifica
-import com.game.graphics.MainMenu;
-import com.game.graphics.PauseMenu;
+import com.game.graphics.*;
+// Input, livelli e utility del gioco
 import com.game.inputs.KeyInput;
 import com.game.levels.LevelManager;
 import com.game.utils.Constants;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+// Librerie standard Java (AWT, Swing, IO, Util)
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
 import java.util.ArrayList;
-import java.util.List; // Import per gestire la lista dei record
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 

@@ -6,10 +6,21 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * GESTIONE DEL MENU PRINCIPALE
+ * - Gestisce il caricamento e il disegno dello sfondo del menu iniziale.
+ * - Disegna il titolo del gioco con un effetto ombra.
+ * - Mostra le istruzioni a schermo per navigare nei vari menu.
+ * - Non ci sono bottoni cliccabili, tutto è gestito tramite input da tastiera.
+ */
 public class MainMenu {
 
     private Image immagineSfondo;
 
+    /**
+     * Costruttore del MainMenu.
+     * Tenta di caricare l'immagine di sfondo specificata dal percorso.
+     */
     public MainMenu() {
         try {
             immagineSfondo = ImageIO.read(new File("res/Sprites/Backgrounds/Double/sfondo.png"));
@@ -18,33 +29,38 @@ public class MainMenu {
         }
     }
 
+    /**
+     * Disegna l'intero menu principale a schermo.
+     * @param g Il pennello Graphics utilizzato per disegnare
+     * variabile g = oggetto che fa parte della famiglia Graphics, accetta solo quell'oggetto specifico 
+     * che contiene i metodi per colorare lo schermo (come drawLine, fillRect, drawString).
+     */
     public void draw(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        // Antialiasing per rendere i testi perfettamente lisci
+        // Antialiasing per rendere i testi perfettamente lisci e leggibili
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // --- GESTIONE SFONDO ---
         if (immagineSfondo != null) {
+            // Se l'immagine è stata caricata, la adatta alle dimensioni della finestra
             g2.drawImage(immagineSfondo, 0, 0, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA, null);
-        } else {
-            GradientPaint gp = new GradientPaint(0, 0, new Color(10, 15, 30), 0, Constants.ALTEZZA_FINESTRA, new Color(25, 42, 70));
-            g2.setPaint(gp);
-            g2.fillRect(0, 0, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
         }
 
         // --- TITOLO ---
         String title = "SPACE BUG";
         g2.setFont(new Font("Verdana", Font.BOLD, 85));
         FontMetrics fmTitle = g2.getFontMetrics();
+        
+        // Calcola le coordinate per centrare orizzontalmente il titolo
         int titoloX = (Constants.LARGHEZZA_FINESTRA - fmTitle.stringWidth(title)) / 2;
         int titoloY = 250;
         
-        // Ombra semplice nera
+        // Disegna l'ombra del titolo (nera, leggermente spostata)
         g2.setColor(Color.BLACK);
         g2.drawString(title, titoloX + 5, titoloY + 5);
         
-        // Colore principale del titolo (Giallo acceso)
+        // Disegna il corpo principale del titolo (Giallo acceso)
         g2.setColor(new Color(255, 215, 0)); 
         g2.drawString(title, titoloX, titoloY);
 
@@ -56,12 +72,19 @@ public class MainMenu {
         drawCenteredText(g2, "Premi [ESC] per Uscire", 500, Color.LIGHT_GRAY);
     }
 
-    // Metodo semplificato per disegnare testo centrato con uno sfondo scuro leggibile
+    /**
+     * Metodo helper per disegnare un testo centrato orizzontalmente, 
+     * circondato da un box scuro semitrasparente per migliorarne la leggibilità.
+     * * @param g2 Il pennello Graphics2D
+     * @param text Il testo da stampare a schermo
+     * @param y L'ordinata (altezza) a cui posizionare il testo
+     * @param color Il colore desiderato per il testo
+     */
     private void drawCenteredText(Graphics2D g2, String text, int y, Color color) {
         FontMetrics fm = g2.getFontMetrics();
         int larghezzaTesto = fm.stringWidth(text);
         
-        // Sfondo scuro semi-trasparente
+        // Dimensioni e posizionamento dello sfondo scuro semi-trasparente
         int paddingX = 30;
         int paddingY = 10;
         int larghezzaSfondo = larghezzaTesto + (paddingX * 2);
@@ -69,10 +92,11 @@ public class MainMenu {
         int rectX = (Constants.LARGHEZZA_FINESTRA - larghezzaSfondo) / 2;
         int rectY = y - fm.getAscent() - paddingY + 5;
 
+        // Disegna il rettangolo di sfondo con bordi arrotondati
         g2.setColor(new Color(0, 0, 0, 180)); // Nero trasparente
         g2.fillRoundRect(rectX, rectY, larghezzaSfondo, altezzaSfondo, 15, 15);
 
-        // Testo
+        // Disegna il testo colorato perfettamente centrato nel riquadro
         int testoX = (Constants.LARGHEZZA_FINESTRA - larghezzaTesto) / 2;
         g2.setColor(color);
         g2.drawString(text, testoX, y);
