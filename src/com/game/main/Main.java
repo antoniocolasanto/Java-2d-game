@@ -1,14 +1,11 @@
+package com.game.main;
+import com.game.core.GamePanel;
 /**
  * ENTRY POINT DELL'APPLICAZIONE
  * - Contiene solo il metodo public static void main(String[] args).
  * - Il suo unico scopo è istanziare la GameWindow e avviare il gioco.
  * - Non deve contenere logica di gioco.
  */
-
-package com.game.main;
-
-import com.game.core.GamePanel;
-
 public class Main {
     public static void main(String[] args) {
         GamePanel gamePanel = new GamePanel(); 
