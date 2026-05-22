@@ -15,30 +15,38 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
+/**
+ * E' la classe fondamentale del gioco permette di unire tutte le varie componenti
+ * come lo stato del gioco, la grafica, le entità, le collisioni, i livelli ecc.
+ * verrà poi inserito nella classe GameWindow per far comparire tutto a schermo
+ * 
+ * @version 1.0
+ */
 public class GamePanel extends JPanel {
-
     // STATO DEL GIOCO
     public static GameState state = GameState.MENU;
 
     // LOGICA E MOTORE DI GIOCO
-    private javax.swing.Timer gameTimer;
     private CollisionChecker collisionChecker;
     private LevelManager levelManager;
-    private int TimeSeconds = 0; // Il tempo in secondi
-    private int TimeTicks = 0;   // Conta i frame
+    private javax.swing.Timer gameTimer;
+    //Conta il tempo in secondo
+    private int TimeSeconds = 0;
+    //Conta i frame per calcolare poi il tempo in secondi
+    private int TimeTicks = 0;
 
     // ENTITÀ E PERSONAGGI
     private Player player;
     private ArrayList<Entity> nemici;
 
-    // GRAFICA E INTERFACCIA (UI)
+    // LE VARIE INTERFACCE
     private MainMenu mainMenu;
     private PauseMenu pauseMenu;
     private LayeredBackground layeredBg;
     private BufferedImage heartImage;
 
-    // IDENTIFICAZIONE E DATI GIOCATORE
+    // DATI GIOCATORE PER IL DATABASE
+    //La schermata che chiede all'untente di inserire nome e cognome
     private IdentificationScreen idScreen;
     private PlayerDAO playerDAO;
     private String currentNickname = ""; 
@@ -48,56 +56,62 @@ public class GamePanel extends JPanel {
     private LeaderboardScreen leaderboardScreen;
     private List<LeaderboardDAO.PlayerRecord> currentTopPlayers;
 
-    public GamePanel() {
-        this.setPreferredSize(new Dimension(Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA));
-        this.setBackground(Color.CYAN);
-        this.setDoubleBuffered(true); // Serve per rendere il disegno più fluido
-        
-        // Inizializzazione componenti
-        this.addKeyListener(new KeyInput(this));
-        
-        // Inizializzazione componenti
-         // Permette a questo pannello di interagire con la tastiera
-        // dice al computer che questo pannello è pronto a ricevere 
-        // input da tastiera
-        this.setFocusable(true);
-        
-        // --- CONNESSIONE E INIZIALIZZAZIONE COMPONENTI DATABASE ---
-        MongoDBManager.connect(); 
-        playerDAO = new PlayerDAO();
-        idScreen = new IdentificationScreen();
-        
-        leaderboardDAO = new LeaderboardDAO();
-        leaderboardScreen = new LeaderboardScreen();
+   public GamePanel() {
+    
+    // --- 1. IMPOSTAZIONI DEL PANNELLO ---
+    // Definisce le dimensioni, il colore di sfondo e ottimizza il rendering
+    this.setPreferredSize(new Dimension(Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA));
+    this.setBackground(Color.CYAN);
+    this.setDoubleBuffered(true); // Rende il disegno a schermo più fluido ed evita sfarfallii (flickering)
 
-        layeredBg = new LayeredBackground();
-        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_cloud.png", 0, 0, true, true);
-        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_cloud.png", 0, 50, true, false);
-        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_color_desert.png", 0, 100, true, false);
-        layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_sand.png", 0, 450, true, false);
-        
-        levelManager = new LevelManager();
-        collisionChecker = new CollisionChecker(levelManager);
-        player = new Player(10, 10, 100, 100, this);
-        // Creiamo i nemici
-        nemici = levelManager.getListaNemici();
+    // --- 2. GESTIONE INPUT ---
+    // Dice al sistema che questo pannello ha il focus ed è pronto a ricevere input da tastiera
+    this.setFocusable(true); 
+    this.addKeyListener(new KeyInput(this)); // Collega il KeyListener per gestire la pressione dei tasti
 
-        //Cicliamo tutta la lista dei nemici e gli settiamo
-        //GamePanel così possono interagire con esso
-        for (Entity nemico : nemici) {
-            nemico.setGamePanel(this);
-        }
-        
-        mainMenu = new MainMenu();
-        pauseMenu = new PauseMenu();
-        
-        try {
-            // Immagine del cuore
-            heartImage = ImageIO.read(new File("res/Sprites/Tiles/Double/heart.png")); 
-        } catch (IOException e) {
-            System.err.println("Errore: Immagine del cuore non trovata!");
-        }
+    // --- 3. DATABASE E GESTIONE DATI ---
+    // Connessione al DB e inizializzazione dei Data Access Object (DAO)
+    MongoDBManager.connect(); 
+    playerDAO = new PlayerDAO();
+    leaderboardDAO = new LeaderboardDAO();
+
+    // --- 4. MENU E SCHERMATE UI ---
+    // Inizializzazione di tutte le interfacce grafiche slegate dal gameplay attivo
+    mainMenu = new MainMenu();
+    pauseMenu = new PauseMenu();
+    idScreen = new IdentificationScreen();
+    leaderboardScreen = new LeaderboardScreen();
+
+    // --- 5. CARICAMENTO ASSET E SFONDI ---
+    // Caricamento dell'immagine del cuore (vita del giocatore)
+    try {
+        heartImage = ImageIO.read(new File("res/Sprites/Tiles/Double/heart.png")); 
+    } catch (IOException e) {
+        System.err.println("Errore: Immagine del cuore non trovata!");
     }
+
+    // Creazione dello sfondo a scorrimento (Parallax/Layered)
+    layeredBg = new LayeredBackground();
+    layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_cloud.png", 0, 0, true, true);
+    layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_cloud.png", 0, 50, true, false);
+    layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_color_desert.png", 0, 100, true, false);
+    layeredBg.addLayer("res/Sprites/Backgrounds/Double/background_solid_sand.png", 0, 450, true, false);
+
+    // --- 6. MOTORE DI GIOCO ED ENTITÀ ---
+    // Inizializzazione della mappa, delle collisioni e del giocatore
+    levelManager = new LevelManager();
+    collisionChecker = new CollisionChecker(levelManager);
+    player = new Player(10, 10, 100, 100, this);
+    
+    // Recupero la lista dei nemici dal livello
+    nemici = levelManager.getListaNemici();
+
+    // Cicliamo tutta la lista dei nemici e passiamo loro il riferimento a questo 
+    // GamePanel in modo che possano interagire con l'ambiente di gioco
+    for (Entity nemico : nemici) {
+        nemico.setGamePanel(this);
+    }
+}
 
     public String getCurrentNickname() { return currentNickname; }
     public void setCurrentNickname(String nickname) { this.currentNickname = nickname; }
