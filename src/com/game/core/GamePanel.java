@@ -62,12 +62,14 @@ public class GamePanel extends JPanel {
     // Definisce le dimensioni, il colore di sfondo e ottimizza il rendering
     this.setPreferredSize(new Dimension(Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA));
     this.setBackground(Color.CYAN);
-    this.setDoubleBuffered(true); // Rende il disegno a schermo più fluido ed evita sfarfallii (flickering)
+    // Rende il disegno a schermo più fluido ed evita sfarfallii (flickering)
+    this.setDoubleBuffered(true);
 
     // --- 2. GESTIONE INPUT ---
     // Dice al sistema che questo pannello ha il focus ed è pronto a ricevere input da tastiera
-    this.setFocusable(true); 
-    this.addKeyListener(new KeyInput(this)); // Collega il KeyListener per gestire la pressione dei tasti
+    this.setFocusable(true);
+    // Collega il KeyListener per gestire la pressione dei tasti
+    this.addKeyListener(new KeyInput(this));
 
     // --- 3. DATABASE E GESTIONE DATI ---
     // Connessione al DB e inizializzazione dei Data Access Object (DAO)
