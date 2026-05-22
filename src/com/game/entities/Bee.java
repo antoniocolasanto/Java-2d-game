@@ -129,6 +129,7 @@ private void caricaImmagine() {
      * Aggiorna l'animazione dell'ape cambiando l'immagine visualizzata in base al tempo trascorso.
      */
     private void aggiornaAnimazione() {  
+        aniTick++;
         if (aniTick >= aniSpeed) {
             aniTick = 0; 
             aniIndex++;  
