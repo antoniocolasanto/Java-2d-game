@@ -6,14 +6,29 @@ import com.game.levels.LevelManager;
 import com.game.utils.Constants;
 import java.util.ArrayList;
 
+/**
+ * Gestisce la logica delle collisioni fisiche nel gioco.
+ * Verifica le interazioni tra le entità (come il Player o i nemici)
+ * e l'ambiente circostante (muri, pavimenti, elementi interagibili).
+ */
 public class CollisionChecker {
     
     private LevelManager levelManager;
 
+    /**
+     * Costruttore della classe CollisionChecker.
+     * * @param levelManager L'istanza del gestore dei livelli usata per leggere i dati strutturali della mappa.
+     */
     public CollisionChecker(LevelManager levelManager) {
         this.levelManager = levelManager;
     }
 
+    /**
+     * Controlla le collisioni di un'entità contro i blocchi solidi della griglia (muri, soffitti, pavimenti).
+     * Calcola la potenziale posizione futura dell'entità in base alla velocità e alla direzione
+     * per prevedere e bloccare il movimento prima che compenetri un ostacolo.
+     * * @param entity L'entità fisica in movimento di cui validare il percorso.
+     */
     public void checkTile(Entity entity) {
         // Usiamo getHitbox() per le posizioni
         int entityLeftX = (int) entity.getHitbox().getX();
@@ -71,6 +86,11 @@ public class CollisionChecker {
         }
     }
 
+    /**
+     * Verifica la collisione dell'entità contro elementi interattivi e dinamici della mappa,
+     * come monete, fonti di danno o punti di checkpoint (salvataggio).
+     * * @param entity L'entità che interagisce con gli elementi del livello.
+     */
     public void checkCollision(Entity entity) {
         // Usiamo getHitbox() per trovare il centro
         int entityCenterX = (int) (entity.getHitbox().getX() + (entity.getHitbox().getWidth() / 2));
@@ -97,6 +117,13 @@ public class CollisionChecker {
             }
 
     }
+    
+    /**
+     * Controlla le interazioni fisiche sovrapposte tra il Player e i nemici.
+     * Se rileva un'intersezione tra le rispettive hitbox, il Player subisce un danno.
+     * * @param player L'istanza del giocatore.
+     * @param nemici La lista delle entità nemiche attualmente attive nel livello.
+     */
     public void checkEnemyCollision(Player player, ArrayList<Entity> nemici) {
         // Scorriamo tutti i nemici presenti nel livello
         for (Entity nemico : nemici) {

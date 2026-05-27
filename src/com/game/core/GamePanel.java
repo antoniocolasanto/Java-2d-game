@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * Pannello centrale che gestisce il fulcro applicativo.
+ * Funge da motore del Game Loop, connettore con il Database, area preposta 
+ * alla renderizzazione a schermo degli elementi e accentratore degli input utente.
+ */
 public class GamePanel extends JPanel {
 
     private javax.swing.Timer gameTimer;
@@ -47,6 +52,11 @@ public class GamePanel extends JPanel {
     // Lo stato iniziale è il MENU
     public static GameState state = GameState.MENU;
 
+    /**
+     * Costruttore dell'intero pannello di rendering.
+     * Inizializza istanze UI, attiva il sistema dei DAO per MongoDB 
+     * e prepara il caricamento della logica fisica dei nemici e delle collisioni.
+     */
     public GamePanel() {
     
     // --- 1. IMPOSTAZIONI DEL PANNELLO ---
@@ -104,15 +114,33 @@ public class GamePanel extends JPanel {
     }
 }
 
+    /** * Restituisce la stringa del nome del giocatore attuale in uso a schermo.
+     * @return currentNickname Il nickname.
+     */
     public String getCurrentNickname() { return currentNickname; }
+    
+    /** * Applica un nuovo nome al player prima della query e conferma profilo.
+     * @param nickname Il nuovo string set.
+     */
     public void setCurrentNickname(String nickname) { this.currentNickname = nickname; }
+    
+    /**
+     * Fornisce accesso al sistema DAO in memoria per evitare allocazioni inefficaci multiple.
+     * @return L'oggetto playerDAO inizializzato.
+     */
     public PlayerDAO getPlayerDAO() { return playerDAO; }
 
+    /**
+     * Invoca in fase differita la ricostruzione della cache per la classifica globale estraendo i dati dal Database.
+     */
     // --- NUOVO METODO: RECUPERA LA CLASSIFICA AGGIORNATA ---
     public void fetchLeaderboard() {
         currentTopPlayers = leaderboardDAO.getTop10Players();
     }
 
+    /**
+     * Accende il metronomo di gioco bloccando l'aggiornamento logico-visivo su specifici Frame-Per-Second (60Hz).
+     */
     // GAME LOOP (Motore del gioco)
     public void startGameThread() {
         // Il Timer di Java eseguirà questa parentesi graffa 60 volte al secondo (1000 millisecondi / 60)
@@ -123,20 +151,36 @@ public class GamePanel extends JPanel {
         gameTimer.start();
     }
 
+    /**
+     * Fornisce il puntatore di memoria dell'entità Player per logiche esterne e Input.
+     * @return Il giocatore attivo e giocabile.
+     */
     // GETTERS 
     public Player getPlayer() {
         return player;
     }
     
+    /**
+     * Estrapola il calcolo formale dei secondi puri passati all'interno della sessione di gioco.
+     * @return L'integer temporale in secondi.
+     */
     public int getTimeSeconds() {
         return TimeSeconds;
     } 
 
+    /**
+     * Consente a tutti gli elementi di servirsi del calcolatore di fisica senza doverlo ricreare.
+     * @return Il Checker delle Hitbox e direzioni.
+     */
     // Serve al Player per prendere i controlli fisici
     public CollisionChecker getCollisionChecker() {
         return collisionChecker;
     }
 
+    /**
+     * Metodo esecutivo ad altissima frequenza che ricalcola attivamente e prima del disegno le regole 
+     * di spostamento, i tic e i pattern comportamentali dell'Intelligenza Artificiale.
+     */
     public void update() {
         switch (state) {
             case PLAYING:
@@ -160,6 +204,11 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Sovrascrittura vitale della libreria visiva AWT che imprime la bufferizzazione 
+     * in pixel in base al GameState, processando gli sfondi multilivello e i filtri overlay (es. Pause, Morte).
+     * * @param g L'istanza fondamentale per applicare colori, rendering testuali e geometrie su JPanel.
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -248,6 +297,11 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Stampa in cascata il Level Design dei blocchi base, dopodiché sovrappone i layer 
+     * di nemici attivi e dello Sprite del Player.
+     * * @param g Il target visivo per elaborare il disegno grafico.
+     */
     private void renderGameWorld(Graphics g) {
         if (levelManager != null) levelManager.draw(g);
         if (player != null) player.draw(g);
@@ -257,6 +311,10 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Applica un reset forzato ripulendo i parametri in gioco ed estraendo
+     * la mappa incontaminata dal LevelManager per le nuove interazioni pulite.
+     */
     public void resetPartita() {
         TimeSeconds = 0;
         TimeTicks = 0;
@@ -275,6 +333,11 @@ public class GamePanel extends JPanel {
         }
     }
     
+    /**
+     * Genera e dimensiona gli strumenti testuali dell'interfaccia (User Interface) come Score Monete,
+     * UI delle vite restanti (cuori) e badge ad alta leggibilità per il Timer della prestazione in corso.
+     * * @param g L'istanza fondamentale Graphics.
+     */
     // Metodo per disegnare l'Interfaccia Utente (UI)
     private void drawUI(Graphics g) {
         if (player == null) return;
@@ -313,6 +376,12 @@ public class GamePanel extends JPanel {
         g.drawString(testoTempo, xTempo, yTempo);
     }
 
+    /**
+     * Cicla la stampa fisica in scala dello sprite "cuore" in proporzione precisa 
+     * alla statistica HP ancora viva che la variabile interna restituisce.
+     * * @param g Il target Graphics di disegno su finestra.
+     * @param vite La traccia in numeri dell'energia o della permanenza di gioco.
+     */
     public void disegnaVite(Graphics g, int vite){
         // Ciclo magico: disegna un'immagine del cuore per ogni vita che possiedi
         for (int i = 0; i < vite; i++) {
@@ -322,6 +391,11 @@ public class GamePanel extends JPanel {
         }
     }
     
+    /**
+     * Fornisce la lista attivamente elaborata di mostri. 
+     * Utile a test ed entità per convalidare cicli for o array dinamici condivisi.
+     * * @return L'arraylist dinamico.
+     */
     public ArrayList<Entity> getNemici() {
         return nemici;
     }

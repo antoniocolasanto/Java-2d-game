@@ -12,6 +12,11 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * Rappresenta l'avatar principale guidato dal giocatore.
+ * Gestisce l'interazione fisica completa: controlli di input, gravità, raccolta punti, 
+ * sistema delle vite e delegazione del salvataggio dati al Database.
+ */
 public class Player extends Entity {
 
     // L'array di immagini che rappresenta il giocatore (il suo sprite)
@@ -46,6 +51,14 @@ public class Player extends Entity {
     private float forzaSalto = -10.0f; // Forza iniziale del salto
     private boolean inAria = true;     // giocatore in aria o a terra
 
+    /**
+     * Costruttore dell'entità Player.
+     * * @param x Coordinata asse X di generazione.
+     * @param y Coordinata asse Y di generazione.
+     * @param width Larghezza del frame dell'entità.
+     * @param height Altezza del frame dell'entità.
+     * @param gp Il pannello di gioco che fa da environment per il Player.
+     */
     public Player(float x, float y, int width, int height, GamePanel gp) {
 
         super(x, y, width, height);
@@ -58,8 +71,11 @@ public class Player extends Entity {
         this.profilo = new PlayerProfile("GiocatoreTest");
     }
 
-private void caricaImmagine() {
-//carichiamo un array che conterra 4 immagini per l animazione del Player
+    /**
+     * Carica i file di immagine dal disco fisso necessari a costruire l'animazione base.
+     */
+    private void caricaImmagine() {
+    //carichiamo un array che conterra 4 immagini per l animazione del Player
         sprites = new BufferedImage[5]; 
         try {
             // Carichiamo la prima immagine alla posizione 0 abbassato
@@ -78,12 +94,20 @@ private void caricaImmagine() {
         }
     }
 
-// adattiamo la heatbox rispetto a entity
+    /**
+     * Inizializza l'ingombro fisico personalizzato per il Player, escludendo
+     * gli spazi vuoti attorno al file immagine per rendere le collisioni coerenti.
+     */
     @Override
     protected void initHitbox() {
         hitbox = new Rectangle((int) x + 23, (int) y + 30, width - 50, height - 30);
     }
-        @Override
+    
+    /**
+     * Modifica attivamente le coordinate e l'ingombro della Hitbox
+     * durante le animazioni sensibili (come abbassarsi per schivare).
+     */
+    @Override
     protected void updateHitbox() {
         //Quando si abbasa ha una certa hitbox altrimenti no
         if (down) {
@@ -97,7 +121,10 @@ private void caricaImmagine() {
         }
     }
 
-    // Metodo per aggiornare le coordinate del giocatore (logica del movimento, gravità, ecc.)
+    /**
+     * Routine di ricalcolo del personaggio lanciata ad ogni frame.
+     * Richiama gli update logici fisici, i frame di animazione e i check di collisione.
+     */
     @Override
     public void update() {
         aggiornaPosizione();
@@ -114,7 +141,10 @@ private void caricaImmagine() {
         gamePanel.getCollisionChecker().checkEnemyCollision(this, gamePanel.getNemici());
     }
 
-
+    /**
+     * Applica le leggi vettoriali e della fisica gravitazionale per 
+     * il movimento orizzontale, la caduta e la spinta propulsiva dei salti.
+     */
     private void aggiornaPosizione() {
         // PARTE 1: MOVIMENTO ORIZZONTALE (X)
         if (left || right) {
@@ -203,7 +233,10 @@ private void caricaImmagine() {
         }
     } 
 
-    // disegno il giocatore sullo schermo in base all indice aniIndex (stato del movimento attuale)
+    /**
+     * Stampa sullo schermo il fotogramma di animazione corrente del giocatore.
+     * * @param g L'oggetto base di rendering per disegnare elementi a schermo.
+     */
     @Override
     public void draw(Graphics g) {
         if (sprites != null && sprites[aniIndex] != null) {
@@ -211,8 +244,11 @@ private void caricaImmagine() {
         }
     }
 
- //aggiorno l animazione in base al movimento(abbassato,salto,cammino,fermo)
-private void aggiornaAnimazione() {
+    /**
+     * Determina quale Sprite visualizzare, calcolando i frame necessari per 
+     * simulare il movimento in base allo stato attuale.
+     */
+    private void aggiornaAnimazione() {
         if (inAria) {
             aniIndex = 1;
         } 
@@ -235,18 +271,37 @@ private void aggiornaAnimazione() {
             aniIndex = 2;
         }
     }
+    
+    /**
+     * Aggiunge un punto moneta alla sessione corrente e notifica in console.
+     */
     //MONETE
     public void aggiungiMoneta() {
         monetePrese++; // Aumenta di 1
         System.out.println("Moneta presa! Totale: " + monetePrese);
     }
+    
+    /**
+     * Restituisce le monete attualmente incassate nel livello.
+     * @return Il numero di monete accumulate.
+     */
     public int getMonetePrese() {
         return monetePrese;
     }
+    
+    /**
+     * Restituisce le vite rimanenti prima del Game Over.
+     * @return Il pool di vite del Player.
+     */
     public int getVite() {
         return vite;
     }
-public void rimuoviVita() {
+    
+    /**
+     * Decrementa di un'unità la vita del Player, attivando lo stato 
+     * transitorio di invulnerabilità o, se necessario, lo stato di Game Over (DEATH).
+     */
+    public void rimuoviVita() {
         if (invincibile) return; 
 
         if (vite == 1) {
@@ -263,20 +318,42 @@ public void rimuoviVita() {
         }
     }
     
-    //Funzioni Setter per il movimento
+    /**
+     * Imposta il flag di camminata verso Sinistra.
+     * @param left Valore booleano per azionare o arrestare lo stato direzionale.
+     */
     public void setLeft(boolean left) {
         this.left = left;
     }
+    
+    /**
+     * Imposta il flag di camminata verso Destra.
+     * @param right Valore booleano per azionare o arrestare lo stato direzionale.
+     */
     public void setRight(boolean right) {
         this.right = right;
     }
+    
+    /**
+     * Imposta la richiesta proattiva di Salto.
+     * @param jump Valore booleano derivante dall'Input.
+     */
     public void setJump(boolean jump) {
         this.jump = jump;
     }
+    
+    /**
+     * Imposta lo stato di posizione rannicchiata.
+     * @param down Valore booleano di compressione Hitbox e modifica Sprite.
+     */
     public void setDown(boolean down) {
         this.down = down;
     }
 
+    /**
+     * Attiva le query verso il Database per archiviare le statiche al momento del checkpoint di fine livello.
+     * Effettua controlli di logica e gestisce in tempo reale le chiamate al DAO.
+     */
     public void saveWinningSession(){
         // 1 Recuperiamo i dati della partita dal player che sta giocando
         int moneteRaccolte = this.getMonetePrese();
@@ -310,7 +387,8 @@ public void rimuoviVita() {
     /**
      * Permette di aggiornare il nickname del profilo.
      * quando si chiederà al giocatore di inserire il nickname, si chiamerà 
-     * questo metodo per aggiornarlo nel profilo
+     * questo metodo per aggiornarlo nel profilo.
+     * * @param nuovoNickname Il nickname identificativo scelto dal giocatore.
      */
     public void setNickname(String nuovoNickname) {
         if (this.profilo != null) {
@@ -318,9 +396,16 @@ public void rimuoviVita() {
         }
     }
       
+    /**
+     * Azzera l'indicatore delle monete in occasione dei riavvii forzati o volontari.
+     */
     public void resetMonete(){
         monetePrese=0;
     }
+    
+    /**
+     * Piena rigenerazione della barra vitale.
+     */
     public void resetVite(){
         vite=3;
     }

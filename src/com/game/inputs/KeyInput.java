@@ -5,23 +5,42 @@ import com.game.core.GameState;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Gestore dell'input da tastiera per tutto il gioco.
+ * Implementa l'interfaccia KeyListener per intercettare la pressione e il rilascio 
+ * dei tasti, dirottando le azioni in base al GameState corrente.
+ */
 public class KeyInput implements KeyListener { 
    
     private GamePanel gamePanel;
 
+    /**
+     * Costruttore della classe KeyInput.
+     * * @param gamePanel Il pannello principale su cui agiscono gli input.
+     */
     public KeyInput(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
+    /**
+     * Metodo ignorato, richiesto dall'interfaccia KeyListener.
+     * * @param e L'evento da tastiera.
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * Cattura il momento esatto in cui un tasto viene premuto.
+     * Contiene le logiche per scorrere i menu, attivare abilità, identificare il giocatore
+     * e impartire i comandi direzionali al Player.
+     * * @param e L'evento da tastiera contenente il codice del tasto fisico premuto.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        // --- GESTIONE MENU PRINCIPALE ---
+        // GESTIONE MENU PRINCIPALE
         if (GamePanel.state == GameState.MENU) {
             if (key == KeyEvent.VK_ENTER) GamePanel.state = GameState.IDENTIFICATION;
             if (key == KeyEvent.VK_C) {
@@ -33,7 +52,7 @@ public class KeyInput implements KeyListener {
             return; 
         }
 
-        // --- GESTIONE IDENTIFICAZIONE ---
+        // GESTIONE IDENTIFICAZIONE 
         if (GamePanel.state == GameState.IDENTIFICATION) {
             String currentName = gamePanel.getCurrentNickname();
             
@@ -79,7 +98,7 @@ public class KeyInput implements KeyListener {
             return;
         }
 
-        // --- GESTIONE CONFERMA PROFILO ---
+        // GESTIONE CONFERMA PROFILO 
         if (GamePanel.state == GameState.CONFIRM_PLAYER) {
             if (key == KeyEvent.VK_S) {
                 // FIX: Resettiamo la mappa per il giocatore esistente prima di giocare!
@@ -93,7 +112,7 @@ public class KeyInput implements KeyListener {
             return;
         }
 
-        // --- GESTIONE PAUSA ---
+        // GESTIONE PAUSA 
         if (key == KeyEvent.VK_ESCAPE) {
             if (GamePanel.state == GameState.PLAYING) GamePanel.state = GameState.PAUSE;
             else if (GamePanel.state == GameState.PAUSE) GamePanel.state = GameState.PLAYING; 
@@ -105,20 +124,20 @@ public class KeyInput implements KeyListener {
             return;
         }
 
-        // --- GESTIONE CLASSIFICA ---
+        // GESTIONE CLASSIFICA
         if (GamePanel.state == GameState.LEADERBOARD) {
             if (key == KeyEvent.VK_ESCAPE) GamePanel.state = GameState.MENU;
             return;
         }
 
-        // --- MOVIMENTO PLAYER ---
+        // MOVIMENTO PLAYER 
         if (GamePanel.state == GameState.PLAYING && gamePanel.getPlayer() != null) {
             if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) gamePanel.getPlayer().setLeft(true);
             if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) gamePanel.getPlayer().setRight(true);
             if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) gamePanel.getPlayer().setJump(true);
             if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) gamePanel.getPlayer().setDown(true);
         }
-        // --- GESTIONE GAME OVER (DEATH) ---
+        // GESTIONE GAME OVER (DEATH) 
         if (GamePanel.state == GameState.DEATH) {
             if (key == KeyEvent.VK_ENTER) {
                 gamePanel.resetPartita();         // 1. Resetta mappa, monete, tempo e vite a 3
@@ -128,6 +147,11 @@ public class KeyInput implements KeyListener {
         }
     }
     
+    /**
+     * Cattura il momento in cui il giocatore rilascia un tasto.
+     * Serve prevalentemente per azzerare o interrompere le azioni cicliche (come il movimento o la corsa).
+     * * @param e L'evento da tastiera.
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();

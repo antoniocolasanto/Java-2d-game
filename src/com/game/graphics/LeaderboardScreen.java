@@ -79,7 +79,7 @@ public class LeaderboardScreen {
             }
         }
 
-        // --- ISTRUZIONE D'USCITA ---
+        //ISTRUZIONE D'USCITA
         g2.setFont(new Font("Arial", Font.BOLD, 18));
         g2.setColor(Color.LIGHT_GRAY);
         String escText = "Premi [ESC] per tornare al Menu";

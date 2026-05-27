@@ -22,7 +22,7 @@ public class PauseMenu {
         g2.setColor(new Color(0, 0, 0, 180));
         g2.fillRect(0, 0, Constants.LARGHEZZA_FINESTRA, Constants.ALTEZZA_FINESTRA);
 
-        // --- CORNICE CENTRALE ---
+        // CORNICE CENTRALE 
         // Impostazione delle dimensioni e calcolo per centrare il riquadro
         int w = 500;
         int h = 300;
@@ -38,11 +38,11 @@ public class PauseMenu {
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(x, y, w, h, 30, 30);
 
-        // --- TESTO PAUSA ---
+        // TESTO PAUSA 
         g2.setFont(new Font("Arial", Font.BOLD, 50));
         g2.drawString("PAUSA", x + 160, y + 80);
 
-        // --- OPZIONI DI GIOCO ---
+        // OPZIONI DI GIOCO 
         g2.setFont(new Font("Arial", Font.PLAIN, 25));
         g2.setColor(Color.WHITE);
         g2.drawString("Premi [INVIO] per Continuare", x + 70, y + 160);

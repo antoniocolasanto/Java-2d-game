@@ -1,38 +1,39 @@
-/**
- * GESTORE DELLA FINESTRA (JFrame)
- * - Crea la finestra di Windows/Mac (titolo, dimensioni, pulsante di chiusura X).
- * - Prende il GamePanel (che contiene il gioco vero e proprio) e lo "incolla" dentro la finestra.
- * - Assicura che la finestra non sia ridimensionabile se non volete gestire il resize dinamico.
- * 
- * Questa classe crea solo la cornice (finestra) visiva del gioco.
- * Non sa assolutamente nulla di regole fisiche, nemici, gravità o database. 
- * Funziona esclusivamente come "contenitore" per il nostro motore grafico
- */
-
 package com.game.main;
 
 import com.game.core.GamePanel; // Importa la classe GamePanel dal nostro pacchetto core, necessaria per collegare il motore del gioco alla finestra
 import javax.swing.JFrame; // Importa la classe JFrame dalla libreria standard Java Swing, che fornisce gli strumenti per creare finestre sul sistema operativo
 
-
 /**
- * COSTRUTTORE E DEPENDENCY INJECTION
- * Invece di costringere la finestra a fare una "new GamePanel()" al suo interno, 
- * glielo passiamo dall'esterno tramite i parametri. Così facendo la GameWindow è più flessibile e riutilizzabile,
- * permette di testare la finestra con GamePanel diversi se necessario.
+ * GESTORE DELLA FINESTRA (JFrame)
+ * - Crea la finestra di Windows/Mac (titolo, dimensions, pulsante di chiusura X).
+ * - Prende il GamePanel (che contiene il gioco vero e proprio) e lo "incolla" dentro la finestra.
+ * - Assicura che la finestra non sia ridimensionabile se non volete gestire il resize dinamico.
+ * * Questa classe crea solo la cornice (finestra) visiva del gioco.
+ * Non sa assolutamente nulla di regole fisiche, nemici, gravità o database. 
+ * Funziona esclusivamente come "contenitore" per il nostro motore grafico.
  */
 public class GameWindow {
 
     private JFrame jframe;
     private GamePanel gamePanel;
 
+    /**
+     * COSTRUTTORE E DEPENDENCY INJECTION
+     * Invece di costringere la finestra a fare una "new GamePanel()" al suo interno, 
+     * glielo passiamo dall'esterno tramite i parametri. Così facendo la GameWindow è più flessibile e riutilizzabile,
+     * permette di testare la finestra con GamePanel diversi se necessario.
+     * @param gamePanel Il pannello logico e grafico principale del gioco da mostrare all'interno del frame.
+     */
     public GameWindow(GamePanel gamePanel) {
         this.gamePanel = gamePanel; // Salva il pannello passato come parametro nella variabile interna della classe
         createWindow(); // Chiama il metodo dedicato per configurare e mostrare la finestra
     }
     
-    // CONFIGURAZIONE VISIVA DELLA FINESTRA
-    // Metodo privato affinché non possa essere chiamato per sbaglio dall'esterno (evitando di generare finestre doppie)
+    /**
+     * CONFIGURAZIONE VISIVA DELLA FINESTRA
+     * Metodo privato affinché non possa essere chiamato per sbaglio dall'esterno (evitando di generare finestre doppie).
+     * Configura le opzioni native del sistema operativo, ancora il focus grafico, centra la finestra e la rende visibile.
+     */
     private void createWindow() {
 
         // 1. Inizializza l'oggetto finestra e assegna il titolo che apparirà nella barra superiore

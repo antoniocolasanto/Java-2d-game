@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         
         // --- 1. ATTIVA L'ACCELERAZIONE HARDWARE (OpenGL) E IL V-SYNC ---
-        // Queste due righe dicono a Java di usare la Scheda Video invece del Processore
+        // questa  riga dice a Java di usare la Scheda Video invece del Processore
         System.setProperty("sun.java2d.opengl", "true");
         
 
