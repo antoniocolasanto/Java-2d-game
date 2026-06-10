@@ -204,12 +204,14 @@ public class Player extends Entity {
                     inAria = false;
                     ariaSpeed = 0;
                     
+                    //Calcola doce si troverebbe il bordo inferiore nel prossimo frame
                     int bottomPixel = (int)(hitbox.y + hitbox.height + speed);
+                    //trova l'indice di riga del blocco del pavimento dove sta arrivando
                     int tileRow = bottomPixel / Constants.SIZE_BLOCCO;
                     
                     // CORREZIONE: Allineiamo la base dell'HITBOX al blocco, non l'immagine intera
                     // La Y reale dell'entità deve essere: BordoSuperioreTile - AltezzaHitbox - L'OffsetDi30Pixel
-                    y = (tileRow * Constants.SIZE_BLOCCO) - hitbox.height - 30; // <-- Mantieni questo calcolo, ma...
+                    y = (tileRow * Constants.SIZE_BLOCCO) - hitbox.height - 30; 
                 } else if (getDirection().equals("UP")) {
                     // Sbattevo in SU: ho picchiato la testa sul soffitto!
                     ariaSpeed = 0; // Azzero la velocità di salita, inizio a cadere

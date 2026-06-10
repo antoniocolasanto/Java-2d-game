@@ -53,11 +53,33 @@ public class LayeredBackground {
             int imgH = image.getHeight();
             
             // Calcoliamo da dove a dove dobbiamo disegnare
-            int startX = repeatX ? 0 : x;
-            int endX = repeatX ? screenWidth : x + imgW;
-            
-            int startY = repeatY ? 0 : y;
-            int endY = repeatY ? screenHeight : y + imgH;
+            int startX;
+            if (repeatX) {
+                startX = 0;
+            } else {
+                startX = x;
+            }
+
+            int endX;
+            if (repeatX) {
+                endX = screenWidth;
+            } else {
+                endX = x + imgW;
+            }
+
+            int startY;
+            if (repeatY) {
+                startY = 0;
+            } else {
+                startY = y;
+            }
+
+            int endY;
+            if (repeatY) {
+                endY = screenHeight;
+            } else {
+                endY = y + imgH;
+            }
 
             // Se repeatX o repeatY sono true, questo ciclo riempie lo schermo
             for (int drawX = startX; drawX < endX; drawX += imgW) {

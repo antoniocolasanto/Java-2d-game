@@ -28,7 +28,7 @@ public class GamePanel extends JPanel {
     private javax.swing.Timer gameTimer;
     private ArrayList<Entity> nemici;
     private int TimeSeconds = 0;
-    private int TimeTicks = 0;  
+    private int TimeTicks = 0;
     private BufferedImage heartImage;
     
     // Dichiariamo l'oggetto CollisionChecker
@@ -186,7 +186,7 @@ public class GamePanel extends JPanel {
             case PLAYING:
                 if (player != null) player.update();
 
-                // Aggiorniamo i nemici (CORRETTO: prima questo ciclo era ripetuto due volte!)
+                // Aggiorniamo i nemici
                 for (Entity nemicoCorrente : nemici) {
                     nemicoCorrente.update();
                 }
@@ -253,10 +253,10 @@ public class GamePanel extends JPanel {
                 // Facciamo il cast a Graphics2D per sbloccare effetti grafici avanzati
                 Graphics2D g2 = (Graphics2D) g;
                 
-                // Attiviamo l'antialiasing per rendere i font liscissimi e professionali
+                // Facciamo comparire i font dopo la morte
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-                // 2. SFONDO: Un gradiente sfumato semi-trasparente dal nero a un rosso scuro "cupo"
+                // SFONDO
                 GradientPaint sfumaturaSfondo = new GradientPaint(
                     0, 0, new Color(0, 0, 0, 220), 
                     0, Constants.ALTEZZA_FINESTRA, new Color(35, 5, 5, 200)
@@ -272,14 +272,14 @@ public class GamePanel extends JPanel {
                 int xTitolo = (Constants.LARGHEZZA_FINESTRA - g2.getFontMetrics().stringWidth(titolo)) / 2;
                 int yTitolo = 260;
 
-                // Disegniamo prima l'ombra nera (spostata in basso a destra)
+                // Disegniamo prima l'ombra nera
                 g2.setColor(Color.BLACK);
                 g2.drawString(titolo, xTitolo + 4, yTitolo + 4);
                 // Disegniamo il testo principale sopra in rosso intenso
                 g2.setColor(new Color(220, 20, 20));
                 g2.drawString(titolo, xTitolo, yTitolo);
 
-                // 4. ISTRUZIONE INSERITA COME TESTO ELEGANTE (Senza pulsanti di restart)
+                // Istruzione per rendere il testo più leggibile
                 String istruzione = "PREMI INVIO PER TORNARE AL MENU";
                 g2.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
                 
@@ -287,10 +287,10 @@ public class GamePanel extends JPanel {
                 int xIstruzione = (Constants.LARGHEZZA_FINESTRA - g2.getFontMetrics().stringWidth(istruzione)) / 2;
                 int yIstruzione = 370;
 
-                // Ombra sottile per la leggibilità
+                // Ombra dietro al testo
                 g2.setColor(Color.BLACK);
                 g2.drawString(istruzione, xIstruzione + 2, yIstruzione + 2);
-                // Testo bianco brillante pulito
+                // Testo bianco
                 g2.setColor(Color.WHITE);
                 g2.drawString(istruzione, xIstruzione, yIstruzione);
                 break;

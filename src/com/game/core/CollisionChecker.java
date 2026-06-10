@@ -127,9 +127,9 @@ public class CollisionChecker {
     public void checkEnemyCollision(Player player, ArrayList<Entity> nemici) {
         // Scorriamo tutti i nemici presenti nel livello
         for (Entity nemico : nemici) {
-            // Se la hitbox del nemico non è nulla...
+            // Se la hitbox del nemico non è nulla
             if (nemico.getHitbox() != null) {
-                // ...ecco la magia di Java! Chiediamo se i due rettangoli si sovrappongono
+                // Chiediamo se i due rettangoli si sovrappongono
                 if (player.getHitbox().intersects(nemico.getHitbox())) {
                     player.rimuoviVita(); 
                 }

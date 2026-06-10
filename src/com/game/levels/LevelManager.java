@@ -34,7 +34,6 @@ public class LevelManager {
      */
     public LevelManager() {
         // Matrice 12 righe x 20 colonne 
-        // (per risoluzione 1280x720)
         mapData = new int[12][20];
         // Mappiamo fino a 20 tipi di blocchi diversi
         tileSprites = new BufferedImage[20]; 
@@ -95,7 +94,7 @@ public class LevelManager {
             
             // Se il file .txt non esiste, carica la mappa di riserva
             if (!file.exists()) {
-                System.out.println("ATTENZIONE: File della mappa non trovato in " + filePath + ". Carico la mappa di backup.");
+                System.out.println("ATTENZIONE: File della mappa non trovato in " + filePath);
                 return;
             }
 
@@ -103,6 +102,8 @@ public class LevelManager {
             for (int riga = 0; riga < mapData.length; riga++) {
                 String line = br.readLine();
                 if (line != null) {
+                    //Non può leggere la matrice nel file ma se lo ricrea e se la salva nella matrice 
+                    // instanziata nella classe mapData
                     // Divide i numeri separati dallo spazio
                     String[] numbers = line.split(" ");
                     for (int col = 0; col < mapData[riga].length && col < numbers.length; col++) {
